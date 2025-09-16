@@ -1,0 +1,253 @@
+import { useRouter } from "expo-router";
+import { useRef, useState } from "react";
+
+import {
+  Alert,
+  Image,
+  Keyboard,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
+import AppButton from "../components/AppButton";
+import CustomInput from "../components/CustomInput";
+import CustomText from "../components/CustomText";
+import OrDivider from "../components/OrDivider";
+import SafeScreen from "../components/SafeScreen";
+import { theme } from "../constants/theme";
+import { hp, wp } from "../helpers/common";
+import { supabase } from "../lib/supabase";
+
+export default function signup() {
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
+  const [loadingverify, setLoadingVerify] = useState(false);
+  const fullnameRef = useRef("");
+  const emailRef = useRef("");
+  const passwordRef = useRef("");
+  const [pendingVerification, setPendingVerification] = useState(false);
+  const [code, setCode] = useState("");
+  const [error, setError] = useState("");
+
+  const onSubmit = async () => {
+    if (!fullnameRef.current || !emailRef.current || !passwordRef.current) {
+      setError("Please enter your full name, email, and password.");
+    }
+
+    let name = fullnameRef.current.trim();
+    let email = emailRef.current.trim();
+    let password = passwordRef.current.trim();
+
+    setLoading(true);
+
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          name,
+        },
+      },
+    });
+
+    setLoading(false);
+    if (error) Alert.alert("Sign Up", error.message);
+  };
+
+  return (
+    <SafeScreen bg={theme.colors.white}>
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        extraScrollHeight={20}
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingHorizontal: 24,
+        }}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View style={{ flex: 1 }}>
+            <Image
+              style={styles.image}
+              resizeMode="contain"
+              source={require("../assets/images/bgImage.png")}
+            />
+            <View style={styles.logoContainer}>
+              <CustomText style={styles.title}>Join ReadVine</CustomText>
+              <CustomText style={styles.headline}>
+                Discover. Share. Connect
+              </CustomText>
+            </View>
+
+            <CustomInput
+              searchBox={true}
+              placeholder="Your full name"
+              style={{ marginTop: 10 }}
+              onChangeText={(value) => {
+                fullnameRef.current = value;
+                setError("");
+              }}
+            />
+            <CustomInput
+              searchBox={true}
+              placeholder="Email address"
+              keyboardType="email-address"
+              style={{ marginTop: 10 }}
+              onChangeText={(value) => {
+                emailRef.current = value;
+                setError("");
+              }}
+            />
+
+            <CustomInput
+              searchBox={true}
+              placeholder="Password"
+              secureTextEntry={true}
+              style={{ marginTop: 10 }}
+              onChangeText={(value) => {
+                passwordRef.current = value;
+                setError("");
+              }}
+            />
+
+            {/* display the error occurs during signing up */}
+            {error ? (
+              <View style={styles.errorContainer}>
+                <CustomText style={styles.errorText}>{error}</CustomText>
+              </View>
+            ) : null}
+
+            <View style={styles.btn}>
+              <AppButton
+                title={"Continue"}
+                onPress={onSubmit}
+                isLoading={loading}
+              />
+            </View>
+
+            {/* ---- or continue with ---- */}
+            <OrDivider />
+            <AppButton
+              shadow={true}
+              title="Continue with Google"
+              textStyle={styles.text}
+              imageUri={require("../assets/images/google.png")}
+              containerStyle={styles.loginOptionBtns}
+            />
+
+            <View style={styles.noAccountContainer}>
+              <View style={styles.noAccountContainerRow}>
+                <CustomText>Already a member of ReadVine community?</CustomText>
+                <TouchableOpacity onPress={() => router.replace("./login")}>
+                  <CustomText style={styles.signIn}>Sign In</CustomText>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAwareScrollView>
+    </SafeScreen>
+  );
+}
+const styles = StyleSheet.create({
+  logoContainer: {
+    alignItems: "center",
+  },
+  image: {
+    height: hp(30),
+    width: wp(100),
+    alignSelf: "center",
+  },
+  title: {
+    fontSize: hp(3),
+    fontWeight: theme.fonts.bold,
+    color: theme.colors.dark,
+  },
+  headline: {
+    fontSize: hp(1.8),
+    marginTop: hp(0.5),
+    marginBottom: hp(2),
+    textAlign: "center",
+    fontWeight: theme.fonts.medium,
+    color: theme.colors.textDark,
+  },
+  btn: {
+    marginTop: hp(3),
+  },
+
+  btnContainer: {
+    marginBottom: hp(3),
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  loginOptionBtns: {
+    backgroundColor: theme.colors.primary,
+  },
+  text: {
+    color: theme.colors.white,
+  },
+  noAccountContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  noAccountContainerRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  signIn: {
+    marginLeft: 5,
+    fontWeight: theme.fonts.medium,
+    color: theme.colors.primary,
+  },
+
+  // email verification section
+  imgContainer: {
+    paddingTop: 40,
+    alignItems: "center",
+  },
+  img: {
+    width: 150,
+    height: 150,
+    alignSelf: "center",
+  },
+
+  email: {
+    fontWeight: "bold",
+  },
+  verificationContainer: {
+    marginTop: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  codeInput: {
+    width: "60%",
+    height: 50,
+    borderWidth: 1,
+    borderColor: theme.colors.primary,
+    borderRadius: 10,
+    textAlign: "center",
+    fontSize: 20,
+    color: theme.colors.dark,
+  },
+  verificationBtn: {
+    marginTop: 25,
+  },
+
+  // display error message
+  errorContainer: {
+    width: "100%",
+    paddingHorizontal: 8,
+    marginVertical: 12,
+  },
+  errorText: {
+    color: theme.colors.rose,
+    fontSize: 13,
+  },
+});
