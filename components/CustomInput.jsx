@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 
 import { theme } from "../constants/theme";
 import { hp } from "../helpers/common";
-
+import AppText from "./AppText";
 const CustomInput = ({
   placeholder = "Enter text",
   value,
@@ -18,7 +18,7 @@ const CustomInput = ({
 
   return (
     <View style={style}>
-      {label && <Text style={{ marginTop: 20 }}>{label}</Text>}
+      {label && <AppText style={{ marginTop: 20 }}>{label}</AppText>}
       <TextInput
         clearButtonMode="while-editing"
         autoCapitalize="none"

@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import { theme } from "../constants/theme";
-import CustomText from "./CustomText";
+import AppText from "./AppText";
 
 export default function OrDivider({
   text = "Or",
@@ -11,9 +11,7 @@ export default function OrDivider({
   return (
     <View style={[styles.row, containerStyle]}>
       <View style={[styles.line, lineStyle]} />
-      <CustomText style={[{ marginHorizontal: 10 }, textStyle]}>
-        {text}
-      </CustomText>
+      <AppText style={[{ marginHorizontal: 10 }, textStyle]}>{text}</AppText>
       <View style={[styles.line, lineStyle]} />
     </View>
   );

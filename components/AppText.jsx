@@ -1,7 +1,7 @@
 import { Platform, Text } from "react-native";
 import { theme } from "../constants/theme";
 
-export default function CustomText({ children, style, ...rest }) {
+export default function AppText({ children, style, ...rest }) {
   return (
     <Text
       style={[

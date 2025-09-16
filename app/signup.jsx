@@ -2,7 +2,6 @@ import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
 
 import {
-  Alert,
   Image,
   Keyboard,
   StyleSheet,
@@ -13,9 +12,8 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import AppButton from "../components/AppButton";
+import AppText from "../components/AppText";
 import CustomInput from "../components/CustomInput";
-import CustomText from "../components/CustomText";
-import OrDivider from "../components/OrDivider";
 import SafeScreen from "../components/SafeScreen";
 import { theme } from "../constants/theme";
 import { hp, wp } from "../helpers/common";
@@ -36,6 +34,7 @@ export default function signup() {
   const onSubmit = async () => {
     if (!fullnameRef.current || !emailRef.current || !passwordRef.current) {
       setError("Please enter your full name, email, and password.");
+      return;
     }
 
     let name = fullnameRef.current.trim();
@@ -58,7 +57,9 @@ export default function signup() {
     });
 
     setLoading(false);
-    if (error) Alert.alert("Sign Up", error.message);
+    if (error) {
+      setError(error.message);
+    }
   };
 
   return (
@@ -80,10 +81,10 @@ export default function signup() {
               source={require("../assets/images/bgImage.png")}
             />
             <View style={styles.logoContainer}>
-              <CustomText style={styles.title}>Join ReadVine</CustomText>
-              <CustomText style={styles.headline}>
+              <AppText style={styles.title}>Join ReadVine</AppText>
+              <AppText style={styles.headline}>
                 Discover. Share. Connect
-              </CustomText>
+              </AppText>
             </View>
 
             <CustomInput
@@ -120,7 +121,7 @@ export default function signup() {
             {/* display the error occurs during signing up */}
             {error ? (
               <View style={styles.errorContainer}>
-                <CustomText style={styles.errorText}>{error}</CustomText>
+                <AppText style={styles.errorText}>{error}</AppText>
               </View>
             ) : null}
 
@@ -131,22 +132,11 @@ export default function signup() {
                 isLoading={loading}
               />
             </View>
-
-            {/* ---- or continue with ---- */}
-            <OrDivider />
-            <AppButton
-              shadow={true}
-              title="Continue with Google"
-              textStyle={styles.text}
-              imageUri={require("../assets/images/google.png")}
-              containerStyle={styles.loginOptionBtns}
-            />
-
             <View style={styles.noAccountContainer}>
               <View style={styles.noAccountContainerRow}>
-                <CustomText>Already a member of ReadVine community?</CustomText>
+                <AppText>Already a member of ReadVine?</AppText>
                 <TouchableOpacity onPress={() => router.replace("./login")}>
-                  <CustomText style={styles.signIn}>Sign In</CustomText>
+                  <AppText style={styles.signIn}>Sign In</AppText>
                 </TouchableOpacity>
               </View>
             </View>

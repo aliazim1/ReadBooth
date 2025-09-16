@@ -21,7 +21,7 @@ const Home = () => {
     <SafeScreen>
       <Text>Home</Text>
 
-      <AppButton title="Sign out" />
+      <AppButton title="Sign out" onPress={onLogout} />
     </SafeScreen>
   );
 };

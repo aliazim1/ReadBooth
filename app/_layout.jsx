@@ -8,18 +8,18 @@ import { supabase } from "../lib/supabase";
 const _layout = () => {
   return (
     <AuthProvider>
-      <RootLayout />
+      <MainLayout />
     </AuthProvider>
   );
 };
 
-const RootLayout = () => {
+const MainLayout = () => {
   const router = useRouter();
   const { setAuth } = useAuth();
 
   useEffect(() => {
     supabase.auth.onAuthStateChange((_event, session) => {
-      console.log("session user: ", session?.user?.id);
+      console.log("session user: ", session?.user);
 
       if (session) {
         setAuth(session?.user);
@@ -31,20 +31,6 @@ const RootLayout = () => {
     });
   }, []);
 
-  // const [loaded] = useFonts({
-  //   "Jakarta-Bold": require("../assets/fonts/PlusJakartaSans-Bold.ttf"),
-  // });
-
-  // useEffect(() => {
-  //   if (loaded) {
-  //     SplashScreen.hideAsync();
-  //   }
-  // }, [loaded]);
-
-  // if (!loaded) {
-  //   return null;
-  // }
-
   return (
     <Stack screenOptions={{ headerShown: false }} />
     //    <Stack.Screen name="index" />
@@ -55,3 +41,5 @@ const RootLayout = () => {
     // </Stack>
   );
 };
+
+export default _layout;

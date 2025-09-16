@@ -2,7 +2,6 @@ import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
 
 import {
-  Alert,
   Image,
   Keyboard,
   StyleSheet,
@@ -13,8 +12,8 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import AppButton from "../components/AppButton";
+import AppText from "../components/AppText";
 import CustomInput from "../components/CustomInput";
-import CustomText from "../components/CustomText";
 import SafeScreen from "../components/SafeScreen";
 import { theme } from "../constants/theme";
 import { hp, wp } from "../helpers/common";
@@ -26,7 +25,6 @@ export default function login() {
   const [loading, setLoading] = useState(false);
   const emailRef = useRef("");
   const passwordRef = useRef("");
-  const [code, setCode] = useState("");
   const [error, setError] = useState("");
 
   const onSubmit = async () => {
@@ -43,10 +41,9 @@ export default function login() {
       password,
     });
 
-    console.log("error", error);
     setLoading(false);
     if (error) {
-      Alert.alert("Login", error.message);
+      setError(error.message);
     }
   };
 
@@ -69,10 +66,10 @@ export default function login() {
               source={require("../assets/images/read.png")}
             />
             <View style={styles.logoContainer}>
-              <CustomText style={styles.title}>Welcome Back, Reader</CustomText>
-              <CustomText style={styles.headline}>
-                Your Book Community Awaits
-              </CustomText>
+              <AppText style={styles.title}>Welcome Back, Reader</AppText>
+              <AppText style={styles.headline}>
+                Your ReadVine community awaits
+              </AppText>
             </View>
 
             <CustomInput
@@ -100,7 +97,7 @@ export default function login() {
             {/* display the error occurs during signing up */}
             {error ? (
               <View style={styles.errorContainer}>
-                <CustomText style={styles.errorText}>{error}</CustomText>
+                <AppText style={styles.errorText}>{error}</AppText>
               </View>
             ) : null}
 
@@ -114,9 +111,9 @@ export default function login() {
 
             <View style={styles.noAccountContainer}>
               <View style={styles.noAccountContainerRow}>
-                <CustomText>Not a member of ReadVine community?</CustomText>
+                <AppText>Not a member of ReadVine?</AppText>
                 <TouchableOpacity onPress={() => router.replace("./signup")}>
-                  <CustomText style={styles.signIn}>Sign Up</CustomText>
+                  <AppText style={styles.signIn}>Sign Up</AppText>
                 </TouchableOpacity>
               </View>
             </View>
