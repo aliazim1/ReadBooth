@@ -1,8 +1,7 @@
 import { useRouter } from "expo-router";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import {
-  Image,
   Keyboard,
   StyleSheet,
   TouchableOpacity,
@@ -14,9 +13,11 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
 import CustomInput from "../components/CustomInput";
+import HeaderPunchLine from "../components/HeaderPunchLine";
+import Illustration from "../components/Illustration";
 import SafeScreen from "../components/SafeScreen";
 import { theme } from "../constants/theme";
-import { hp, wp } from "../helpers/common";
+import { hp } from "../helpers/common";
 import { supabase } from "../lib/supabase";
 
 export default function signup() {
@@ -24,41 +25,57 @@ export default function signup() {
 
   const [loading, setLoading] = useState(false);
   const [loadingverify, setLoadingVerify] = useState(false);
-  const fullnameRef = useRef("");
-  const emailRef = useRef("");
-  const passwordRef = useRef("");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [pendingVerification, setPendingVerification] = useState(false);
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
 
   const onSubmit = async () => {
-    if (!fullnameRef.current || !emailRef.current || !passwordRef.current) {
-      setError("Please enter your full name, email, and password.");
+    const trimmedName = fullName.trim();
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    // Validation
+    if (trimmedName.length < 2) {
+      setError("Name must be at least 2 characters.");
       return;
     }
 
-    let name = fullnameRef.current.trim();
-    let email = emailRef.current.trim();
-    let password = passwordRef.current.trim();
+    if (!trimmedEmail.includes("@") || !trimmedEmail.includes(".")) {
+      setError("Please enter a valid email.");
+      return;
+    }
+
+    if (trimmedPassword.length < 8) {
+      setError("Password must be at least 8 characters.");
+      return;
+    }
 
     setLoading(true);
 
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          name,
+    try {
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.signUp({
+        email: trimmedEmail,
+        password: trimmedPassword,
+        options: {
+          data: { name: trimmedName },
         },
-      },
-    });
+      });
 
-    setLoading(false);
-    if (error) {
-      setError(error.message);
+      if (error) {
+        setError(error.message);
+      } else {
+        setError("");
+      }
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -75,36 +92,26 @@ export default function signup() {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{ flex: 1 }}>
-            <Image
-              style={styles.image}
-              resizeMode="contain"
-              source={require("../assets/images/bgImage.png")}
-            />
-            <View style={styles.logoContainer}>
-              <AppText style={styles.title}>Join ReadVine</AppText>
-              <AppText style={styles.headline}>
-                Discover. Share. Connect
-              </AppText>
-            </View>
+            <Illustration source={require("../assets/images/bgImage.png")} />
 
+            <HeaderPunchLine
+              title={"Join ReadVine"}
+              punchLine={"Discover. Share. Connect"}
+            />
             <CustomInput
               searchBox={true}
               placeholder="Your full name"
               style={{ marginTop: 10 }}
-              onChangeText={(value) => {
-                fullnameRef.current = value;
-                setError("");
-              }}
+              value={fullName}
+              onChangeText={setFullName}
             />
             <CustomInput
               searchBox={true}
               placeholder="Email address"
               keyboardType="email-address"
               style={{ marginTop: 10 }}
-              onChangeText={(value) => {
-                emailRef.current = value;
-                setError("");
-              }}
+              value={email}
+              onChangeText={setEmail}
             />
 
             <CustomInput
@@ -112,10 +119,8 @@ export default function signup() {
               placeholder="Password"
               secureTextEntry={true}
               style={{ marginTop: 10 }}
-              onChangeText={(value) => {
-                passwordRef.current = value;
-                setError("");
-              }}
+              value={password}
+              onChangeText={setPassword}
             />
 
             {/* display the error occurs during signing up */}
@@ -147,27 +152,6 @@ export default function signup() {
   );
 }
 const styles = StyleSheet.create({
-  logoContainer: {
-    alignItems: "center",
-  },
-  image: {
-    height: hp(30),
-    width: wp(100),
-    alignSelf: "center",
-  },
-  title: {
-    fontSize: hp(3),
-    fontWeight: theme.fonts.bold,
-    color: theme.colors.dark,
-  },
-  headline: {
-    fontSize: hp(1.8),
-    marginTop: hp(0.5),
-    marginBottom: hp(2),
-    textAlign: "center",
-    fontWeight: theme.fonts.medium,
-    color: theme.colors.textDark,
-  },
   btn: {
     marginTop: hp(3),
   },
@@ -193,7 +177,7 @@ const styles = StyleSheet.create({
   },
   signIn: {
     marginLeft: 5,
-    fontWeight: theme.fonts.medium,
+    fontWeight: theme.fonts.bold,
     color: theme.colors.primary,
   },
 

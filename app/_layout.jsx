@@ -4,6 +4,7 @@ import "react-native-reanimated";
 
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
 import { supabase } from "../lib/supabase";
+import { getUserData } from "../services/userService";
 
 const _layout = () => {
   return (
@@ -15,14 +16,13 @@ const _layout = () => {
 
 const MainLayout = () => {
   const router = useRouter();
-  const { setAuth } = useAuth();
+  const { setAuth, setUserData } = useAuth();
 
   useEffect(() => {
     supabase.auth.onAuthStateChange((_event, session) => {
-      console.log("session user: ", session?.user);
-
       if (session) {
         setAuth(session?.user);
+        updateUserData(session?.user);
         router.replace("/home");
       } else {
         setAuth(null);
@@ -30,6 +30,12 @@ const MainLayout = () => {
       }
     });
   }, []);
+
+  const updateUserData = async (user) => {
+    let res = await getUserData(user?.id);
+    console.log("User data: ", res.data);
+    // if (res.success) setUserData(res.data);
+  };
 
   return (
     <Stack screenOptions={{ headerShown: false }} />

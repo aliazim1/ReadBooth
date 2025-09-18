@@ -1,8 +1,9 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { theme } from "../constants/theme";
 import { hp } from "../helpers/common";
 import AppIonicon from "./AppIonicon";
+import AppText from "./AppText";
 import Loading from "./Loading";
 
 const AppButton = ({
@@ -28,12 +29,7 @@ const AppButton = ({
 
   return (
     <TouchableOpacity
-      style={[
-        styles.button,
-        hasShadow && styles.shadowBtn,
-        containerStyle,
-        containerStyle,
-      ]}
+      style={[styles.button, hasShadow && styles.shadowBtn, containerStyle]}
       onPress={onPress}
     >
       {iconName && !isLoading && (
@@ -47,7 +43,7 @@ const AppButton = ({
       {imageUri && !isLoading && (
         <Image source={imageUri} resizeMode="contain" style={styles.image} />
       )}
-      {title && <Text style={[styles.text, textStyle]}>{title}</Text>}
+      {title && <AppText style={[styles.text, textStyle]}>{title}</AppText>}
     </TouchableOpacity>
   );
 };

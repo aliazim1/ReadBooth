@@ -6,8 +6,7 @@ import { supabase } from "../../lib/supabase";
 import AppButton from "../../components/AppButton";
 
 const Home = () => {
-  const { setAuth } = useAuth();
-
+  const { user, setAuth } = useAuth();
   const onLogout = async () => {
     setAuth(null);
     const { error } = await supabase.auth.signOut();
@@ -21,7 +20,7 @@ const Home = () => {
     <SafeScreen>
       <Text>Home</Text>
 
-      <AppButton title="Sign out" onPress={onLogout} />
+      <AppButton title="Sign Out" onPress={onLogout} />
     </SafeScreen>
   );
 };

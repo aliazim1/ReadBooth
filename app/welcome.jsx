@@ -1,8 +1,9 @@
 import { useRouter } from "expo-router";
-import { Image, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import AppButton from "../components/AppButton";
-import AppText from "../components/AppText";
+import HeaderPunchLine from "../components/HeaderPunchLine";
+import Illustration from "../components/Illustration";
 import { theme } from "../constants/theme";
 import { hp, wp } from "../helpers/common";
 
@@ -11,23 +12,24 @@ const Welcome = () => {
   return (
     <View style={styles.container}>
       <View>
-        <Image
-          style={styles.welcomeImage}
-          resizeMode="contain"
-          source={require("../assets/images/welcome.png")}
+        <Illustration source={require("../assets/images/welcome.png")} />
+        <HeaderPunchLine
+          title={"ReadVine"}
+          punchLine={"More Than Books—A Community"}
         />
-        <View style={styles.headlineContainer}>
-          <AppText style={styles.title}>ReadVine</AppText>
-          <AppText style={styles.punchLine}>
-            A Community Built for Book Lovers
-          </AppText>
-        </View>
       </View>
-      {/* footer for the button to get started */}
       <View style={styles.footer}>
         <AppButton
-          title="Get Started"
+          title="Sign Up"
+          textStyle={styles.btnTitle}
           onPress={() => router.replace("./signup")}
+        />
+        <AppButton
+          title="Sign In"
+          hasShadow={true}
+          containerStyle={{ backgroundColor: theme.colors.white }}
+          textStyle={[styles.btnTitle, { color: theme.colors.dark }]}
+          onPress={() => router.replace("./login")}
         />
       </View>
     </View>
@@ -40,31 +42,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     backgroundColor: "white",
+    paddingTop: hp(15),
     paddingHorizontal: wp(4),
   },
-  welcomeImage: {
-    height: hp(30),
-    width: wp(100),
-    alignSelf: "center",
-  },
-  headlineContainer: {
-    gap: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    color: theme.colors.text,
-    fontSize: hp(4),
-    textAlign: "center",
-    fontWeight: theme.fonts.extraBold,
-  },
-  punchLine: {
-    textAlign: "center",
-    color: theme.colors.text,
-  },
   footer: {
-    marginTop: hp(39),
+    marginTop: hp(15),
     width: "100%",
+    gap: 20,
+  },
+  btnTitle: {
+    fontWeight: theme.fonts.bold,
   },
 });
 

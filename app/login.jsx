@@ -1,8 +1,7 @@
 import { useRouter } from "expo-router";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import {
-  Image,
   Keyboard,
   StyleSheet,
   TouchableOpacity,
@@ -14,39 +13,57 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
 import CustomInput from "../components/CustomInput";
+import HeaderPunchLine from "../components/HeaderPunchLine";
+import Illustration from "../components/Illustration";
 import SafeScreen from "../components/SafeScreen";
 import { theme } from "../constants/theme";
-import { hp, wp } from "../helpers/common";
+import { hp } from "../helpers/common";
 import { supabase } from "../lib/supabase";
 
 export default function login() {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
-  const emailRef = useRef("");
-  const passwordRef = useRef("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const onSubmit = async () => {
-    if (!emailRef.current || !passwordRef.current) {
+    // --- Validation ---
+    if (!email || !password) {
       setError("Please enter your email and password.");
       return;
     }
-    setLoading(true);
 
-    let email = emailRef.current.trim();
-    let password = passwordRef.current.trim();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    if (!email.includes("@") || !email.includes(".")) {
+      setError("Please enter a valid email address.");
+      return;
+    }
 
-    setLoading(false);
-    if (error) {
-      setError(error.message);
+    // --- Clean inputs ---
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    try {
+      setLoading(true);
+
+      const { error } = await supabase.auth.signInWithPassword({
+        email: trimmedEmail,
+        password: trimmedPassword,
+      });
+
+      if (error) {
+        setError(error.message);
+      } else {
+        setError("");
+        router.replace("/home");
+      }
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
-
   return (
     <SafeScreen bg={theme.colors.white}>
       <KeyboardAwareScrollView
@@ -60,27 +77,20 @@ export default function login() {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{ flex: 1 }}>
-            <Image
-              style={styles.image}
-              resizeMode="contain"
-              source={require("../assets/images/read.png")}
+            <Illustration source={require("../assets/images/read.png")} />
+
+            <HeaderPunchLine
+              title={"Welcome Back"}
+              punchLine={"Your ReadVine community awaits"}
             />
-            <View style={styles.logoContainer}>
-              <AppText style={styles.title}>Welcome Back, Reader</AppText>
-              <AppText style={styles.headline}>
-                Your ReadVine community awaits
-              </AppText>
-            </View>
 
             <CustomInput
               searchBox={true}
               placeholder="Email address"
               keyboardType="email-address"
               style={{ marginTop: 10 }}
-              onChangeText={(value) => {
-                emailRef.current = value;
-                setError("");
-              }}
+              value={email}
+              onChangeText={setEmail}
             />
 
             <CustomInput
@@ -88,10 +98,8 @@ export default function login() {
               placeholder="Password"
               secureTextEntry={true}
               style={{ marginTop: 10 }}
-              onChangeText={(value) => {
-                passwordRef.current = value;
-                setError("");
-              }}
+              value={password}
+              onChangeText={setPassword}
             />
 
             {/* display the error occurs during signing up */}
@@ -112,8 +120,8 @@ export default function login() {
             <View style={styles.noAccountContainer}>
               <View style={styles.noAccountContainerRow}>
                 <AppText>Not a member of ReadVine?</AppText>
-                <TouchableOpacity onPress={() => router.replace("./signup")}>
-                  <AppText style={styles.signIn}>Sign Up</AppText>
+                <TouchableOpacity onPress={() => router.replace("/signup")}>
+                  <AppText style={styles.signUp}>Sign Up</AppText>
                 </TouchableOpacity>
               </View>
             </View>
@@ -124,27 +132,6 @@ export default function login() {
   );
 }
 const styles = StyleSheet.create({
-  logoContainer: {
-    alignItems: "center",
-  },
-  image: {
-    height: hp(30),
-    width: wp(100),
-    alignSelf: "center",
-  },
-  title: {
-    fontSize: hp(3),
-    fontWeight: theme.fonts.bold,
-    color: theme.colors.dark,
-  },
-  headline: {
-    fontSize: hp(1.8),
-    fontWeight: theme.fonts.medium,
-    marginTop: hp(0.5),
-    marginBottom: hp(2),
-    color: theme.colors.textDark,
-    textAlign: "center",
-  },
   btn: {
     marginTop: hp(3),
   },
@@ -156,9 +143,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
   },
-  signIn: {
+  signUp: {
     marginLeft: 5,
-    fontWeight: theme.fonts.medium,
+    fontWeight: theme.fonts.bold,
     color: theme.colors.primary,
   },
 
