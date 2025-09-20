@@ -22,29 +22,27 @@ const MainLayout = () => {
     supabase.auth.onAuthStateChange((_event, session) => {
       if (session) {
         setAuth(session?.user);
-        updateUserData(session?.user);
-        router.replace("/home");
+        updateUserData(session?.user, session?.user?.email);
+        router.replace("(authenticated)/(tabs)/home");
       } else {
         setAuth(null);
-        router.replace("/welcome");
+        router.replace("(auth)/welcome");
       }
     });
   }, []);
 
-  const updateUserData = async (user) => {
+  const updateUserData = async (user, email) => {
     let res = await getUserData(user?.id);
-    console.log("User data: ", res.data);
-    // if (res.success) setUserData(res.data);
+    if (res.success) setUserData({ ...res.data, email });
   };
 
   return (
-    <Stack screenOptions={{ headerShown: false }} />
-    //    <Stack.Screen name="index" />
-    //   <Stack.Screen name="welcome" />
-    //   <Stack.Screen name="login" />
-    //   <Stack.Screen name="signup" />
-    //   <Stack.Screen name="+not-found" />
-    // </Stack>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="+not-found" />
+      <Stack.Screen name="(auth)" />
+      <Stack.Screen name="(authenticated)" />
+    </Stack>
   );
 };
 

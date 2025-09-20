@@ -1,18 +1,18 @@
 import { useRouter } from "expo-router";
 import { StyleSheet, View } from "react-native";
 
-import AppButton from "../components/AppButton";
-import HeaderPunchLine from "../components/HeaderPunchLine";
-import Illustration from "../components/Illustration";
-import { theme } from "../constants/theme";
-import { hp, wp } from "../helpers/common";
+import AppButton from "../../components/AppButton";
+import HeaderPunchLine from "../../components/HeaderPunchLine";
+import Illustration from "../../components/Illustration";
+import { theme } from "../../constants/theme";
+import { hp, wp } from "../../helpers/common";
 
 const Welcome = () => {
   const router = useRouter();
   return (
     <View style={styles.container}>
       <View>
-        <Illustration source={require("../assets/images/welcome.png")} />
+        <Illustration source={require("../../assets/images/welcome.png")} />
         <HeaderPunchLine
           title={"ReadVine"}
           punchLine={"More Than Books—A Community"}
@@ -22,14 +22,14 @@ const Welcome = () => {
         <AppButton
           title="Sign Up"
           textStyle={styles.btnTitle}
-          onPress={() => router.replace("./signup")}
+          onPress={() => router.replace("(auth)/signup")}
         />
         <AppButton
           title="Sign In"
           hasShadow={true}
           containerStyle={{ backgroundColor: theme.colors.white }}
           textStyle={[styles.btnTitle, { color: theme.colors.dark }]}
-          onPress={() => router.replace("./login")}
+          onPress={() => router.replace("(auth)/login")}
         />
       </View>
     </View>

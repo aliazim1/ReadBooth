@@ -1,11 +1,11 @@
 import { Text, View } from "react-native";
 
-const Profile = () => {
+const Inbox = () => {
   return (
     <View>
-      <Text>Profile</Text>
+      <Text>Inbox</Text>
     </View>
   );
 };
 
-export default Profile;
+export default Inbox;

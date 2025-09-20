@@ -2,7 +2,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { theme } from "../constants/theme";
 
-export default function AppMaterialIcon({
+export default function AppMaterialCommunityIcon({
   name,
   size = 24,
   color = theme.colors.dark,

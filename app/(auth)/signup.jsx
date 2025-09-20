@@ -10,53 +10,67 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import AppButton from "../components/AppButton";
-import AppText from "../components/AppText";
-import CustomInput from "../components/CustomInput";
-import HeaderPunchLine from "../components/HeaderPunchLine";
-import Illustration from "../components/Illustration";
-import SafeScreen from "../components/SafeScreen";
-import { theme } from "../constants/theme";
-import { hp } from "../helpers/common";
-import { supabase } from "../lib/supabase";
+import AppButton from "../../components/AppButton";
+import AppText from "../../components/AppText";
+import CustomInput from "../../components/CustomInput";
+import HeaderPunchLine from "../../components/HeaderPunchLine";
+import Illustration from "../../components/Illustration";
+import SafeScreen from "../../components/SafeScreen";
+import { theme } from "../../constants/theme";
+import { hp } from "../../helpers/common";
+import { supabase } from "../../lib/supabase";
 
-export default function login() {
+export default function signup() {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
+  const [loadingverify, setLoadingVerify] = useState(false);
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [pendingVerification, setPendingVerification] = useState(false);
+  const [code, setCode] = useState("");
   const [error, setError] = useState("");
 
   const onSubmit = async () => {
-    // --- Validation ---
-    if (!email || !password) {
-      setError("Please enter your email and password.");
-      return;
-    }
-
-    if (!email.includes("@") || !email.includes(".")) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-
-    // --- Clean inputs ---
+    const trimmedName = fullName.trim();
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
 
-    try {
-      setLoading(true);
+    // Validation
+    if (trimmedName.length < 2) {
+      setError("Name must be at least 2 characters.");
+      return;
+    }
 
-      const { error } = await supabase.auth.signInWithPassword({
+    if (!trimmedEmail.includes("@") || !trimmedEmail.includes(".")) {
+      setError("Please enter a valid email.");
+      return;
+    }
+
+    if (trimmedPassword.length < 8) {
+      setError("Password must be at least 8 characters.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.signUp({
         email: trimmedEmail,
         password: trimmedPassword,
+        options: {
+          data: { name: trimmedName, username: trimmedName },
+        },
       });
 
       if (error) {
         setError(error.message);
       } else {
         setError("");
-        router.replace("/home");
       }
     } catch (err) {
       setError("Something went wrong. Please try again.");
@@ -64,6 +78,7 @@ export default function login() {
       setLoading(false);
     }
   };
+
   return (
     <SafeScreen bg={theme.colors.white}>
       <KeyboardAwareScrollView
@@ -77,15 +92,19 @@ export default function login() {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{ flex: 1 }}>
-            <Illustration source={require("../assets/images/read.png")} />
+            <Illustration source={require("../../assets/images/bgImage.png")} />
 
             <HeaderPunchLine
-              title={"Welcome Back"}
-              punchLine={"Your ReadVine community awaits"}
+              title={"Join ReadVine"}
+              punchLine={"Discover. Share. Connect"}
             />
-
             <CustomInput
-              searchBox={true}
+              placeholder="Your full name"
+              style={{ marginTop: 10 }}
+              value={fullName}
+              onChangeText={setFullName}
+            />
+            <CustomInput
               placeholder="Email address"
               keyboardType="email-address"
               style={{ marginTop: 10 }}
@@ -94,7 +113,6 @@ export default function login() {
             />
 
             <CustomInput
-              searchBox={true}
               placeholder="Password"
               secureTextEntry={true}
               style={{ marginTop: 10 }}
@@ -111,17 +129,18 @@ export default function login() {
 
             <View style={styles.btn}>
               <AppButton
-                title={"Sign In"}
+                title={"Continue"}
                 onPress={onSubmit}
                 isLoading={loading}
               />
             </View>
-
             <View style={styles.noAccountContainer}>
               <View style={styles.noAccountContainerRow}>
-                <AppText>Not a member of ReadVine?</AppText>
-                <TouchableOpacity onPress={() => router.replace("/signup")}>
-                  <AppText style={styles.signUp}>Sign Up</AppText>
+                <AppText>Already a member of ReadVine?</AppText>
+                <TouchableOpacity
+                  onPress={() => router.replace("(auth)/login")}
+                >
+                  <AppText style={styles.signIn}>Sign In</AppText>
                 </TouchableOpacity>
               </View>
             </View>
@@ -135,6 +154,18 @@ const styles = StyleSheet.create({
   btn: {
     marginTop: hp(3),
   },
+
+  btnContainer: {
+    marginBottom: hp(3),
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  loginOptionBtns: {
+    backgroundColor: theme.colors.primary,
+  },
+  text: {
+    color: theme.colors.white,
+  },
   noAccountContainer: {
     flex: 1,
     justifyContent: "flex-end",
@@ -143,10 +174,43 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
   },
-  signUp: {
+  signIn: {
     marginLeft: 5,
     fontWeight: theme.fonts.bold,
     color: theme.colors.primary,
+  },
+
+  // email verification section
+  imgContainer: {
+    paddingTop: 40,
+    alignItems: "center",
+  },
+  img: {
+    width: 150,
+    height: 150,
+    alignSelf: "center",
+  },
+
+  email: {
+    fontWeight: "bold",
+  },
+  verificationContainer: {
+    marginTop: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  codeInput: {
+    width: "60%",
+    height: 50,
+    borderWidth: 1,
+    borderColor: theme.colors.primary,
+    borderRadius: 10,
+    textAlign: "center",
+    fontSize: 20,
+    color: theme.colors.dark,
+  },
+  verificationBtn: {
+    marginTop: 25,
   },
 
   // display error message

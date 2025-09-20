@@ -5,20 +5,26 @@ import { theme } from "../constants/theme";
 import { hp } from "../helpers/common";
 import AppText from "./AppText";
 const CustomInput = ({
-  placeholder = "Enter text",
   value,
-  onChangeText,
   label,
-  searchBox = false,
+  onChangeText,
   secureTextEntry = false,
   keyboardType = "default",
+  placeholder = "Enter text",
   style,
+  ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <View style={style}>
-      {label && <AppText style={{ marginTop: 20 }}>{label}</AppText>}
+    <View
+    // style={style}
+    >
+      {label && (
+        <AppText style={{ marginTop: 20, fontWeight: theme.fonts.bold }}>
+          {label}
+        </AppText>
+      )}
       <TextInput
         clearButtonMode="while-editing"
         autoCapitalize="none"
@@ -30,22 +36,16 @@ const CustomInput = ({
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         placeholder={placeholder}
-        placeholderTextColor={theme.colors.dark}
+        placeholderTextColor={theme.colors.mediumGrey}
         className="input"
         style={[
-          searchBox ? styles.searchBox : styles.inputField,
-          searchBox
-            ? {
-                borderColor: isFocused
-                  ? theme.colors.primary
-                  : theme.colors.dark,
-              }
-            : {
-                borderBottomColor: isFocused
-                  ? theme.colors.primary
-                  : theme.colors.dark,
-              },
+          styles.searchBox,
+
+          { borderColor: isFocused ? theme.colors.primary : theme.colors.dark },
+          ,
+          style,
         ]}
+        {...props}
       />
     </View>
   );

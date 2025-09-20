@@ -1,11 +1,14 @@
 export const theme = {
   colors: {
-    primary: "#8D6E63",
-    secondary: "#FFB74D",
+    primary: "#C65D3B",
+    secondary: "#F3C6A3",
     dark: "#3E3E3E",
     darkLight: "#E1E1E1",
     gray: "#e3e3e3",
     white: "#ffffff",
+    bottomTabIcon: "#999999",
+    mediumGrey: "#6e6969",
+    success: "#4B8B3B",
 
     text: "#494949",
     textLight: "#7C7C7C",
