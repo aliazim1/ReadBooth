@@ -1,5 +1,6 @@
+import { Ionicons } from "@expo/vector-icons";
 import { Stack, useRouter } from "expo-router";
-import { theme } from "../../../constants/theme";
+import { Pressable } from "react-native";
 
 const ScreensLayout = () => {
   const router = useRouter();
@@ -7,9 +8,12 @@ const ScreensLayout = () => {
   return (
     <Stack
       screenOptions={{
-        headerTintColor: theme.colors.dark,
-        headerBackTitleVisible: false,
         headerShadowVisible: false,
+        headerLeft: () => (
+          <Pressable onPress={() => router.back()}>
+            <Ionicons name="chevron-back" size={30} color={"black"} />
+          </Pressable>
+        ),
       }}
     >
       <Stack.Screen
@@ -21,14 +25,12 @@ const ScreensLayout = () => {
       <Stack.Screen
         name="password"
         options={{
-          presentation: "modal",
-          headerTitle: "Change password",
+          headerTitle: "Change Password",
         }}
       />
       <Stack.Screen
         name="edit-profile-details"
         options={{
-          presentation: "modal",
           headerTitle: "Account",
         }}
       />

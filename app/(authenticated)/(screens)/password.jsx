@@ -1,26 +1,24 @@
 import { useNavigation, useRouter } from "expo-router";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Keyboard,
   StyleSheet,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
-import AppText from "../../../components/AppText";
+import AppButton from "../../../components/AppButton";
 import CustomInput from "../../../components/CustomInput";
 import SafeScreen from "../../../components/SafeScreen";
 import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
 import { hp, wp } from "../../../helpers/common";
-import { getUserImageSrc } from "../../../services/imageService";
 
 const ChangePassword = () => {
   const router = useRouter();
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
   const { user: currentUser, setAuth } = useAuth();
 
   const [user, setUser] = useState({
@@ -37,31 +35,22 @@ const ChangePassword = () => {
     }
   }, [currentUser]);
 
-  let imageSource = getUserImageSrc(currentUser?.image);
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <AppIoniconTouchable
-          name="close"
-          size={28}
-          onPress={() => router.back()}
-        />
-      ),
-      headerRight: () => (
-        <TouchableOpacity disabled={false}>
-          <AppText
-            style={{
-              color: theme.colors.primary,
-              fontWeight: theme.fonts.bold,
-            }}
-          >
-            Save
-          </AppText>
-        </TouchableOpacity>
-      ),
-    });
-  }, [navigation, router]);
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => (
+  //       <TouchableOpacity disabled={false}>
+  //         <AppText
+  //           style={{
+  //             color: theme.colors.primary,
+  //             fontWeight: theme.fonts.bold,
+  //           }}
+  //         >
+  //           Save
+  //         </AppText>
+  //       </TouchableOpacity>
+  //     ),
+  //   });
+  // }, [navigation, router]);
 
   return (
     <SafeScreen bg={theme.colors.white}>
@@ -93,6 +82,13 @@ const ChangePassword = () => {
               label={"Confirm new password"}
               value={user.email}
               onChangeText={(value) => setUser({ ...user, email: value })}
+            />
+
+            <AppButton
+              title="Save"
+              // onPress={onSave}
+              isLoading={loading}
+              containerStyle={{ marginTop: 30 }}
             />
           </View>
         </TouchableWithoutFeedback>

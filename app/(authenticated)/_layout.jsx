@@ -1,14 +1,16 @@
-import { Stack, useRouter } from "expo-router";
+import { Stack } from "expo-router";
 
 const AuthenticatedLayout = () => {
-  const router = useRouter();
-
   return (
-    <Stack screenOptions={{}}>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="(screens)" options={{ headerShown: false }} />
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        headerBackButtonDisplayMode: "minimal",
+      }}
+    >
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="(screens)" />
     </Stack>
   );
 };
-
 export default AuthenticatedLayout;

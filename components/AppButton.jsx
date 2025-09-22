@@ -22,7 +22,7 @@ const AppButton = ({
       <View
         style={[styles.button, containerStyle, { backgroundColor: "white" }]}
       >
-        <Loading />
+        <Loading size="small" />
       </View>
     );
   }

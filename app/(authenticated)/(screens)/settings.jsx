@@ -1,8 +1,6 @@
-import { useNavigation, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { Alert, ScrollView, View } from "react-native";
 
-import { useLayoutEffect } from "react";
-import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
 import AppText from "../../../components/AppText";
 import CustomAlert from "../../../components/CustomAlert";
 import SafeScreen from "../../../components/SafeScreen";
@@ -11,28 +9,14 @@ import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
 import { hp } from "../../../helpers/common";
 import { supabase } from "../../../lib/supabase";
-
 const Settings = () => {
   const router = useRouter();
-  const navigation = useNavigation();
   const { user, setAuth } = useAuth();
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <AppIoniconTouchable
-          name="chevron-back"
-          size={28}
-          color="white"
-          onPress={() => router.back()}
-        />
-      ),
-    });
-  }, [navigation, router]);
 
   const onLogout = async () => {
     try {
       setAuth(null);
+      w;
       const { error } = await supabase.auth.signOut();
       if (error) {
         Alert.alert("Sign Out", "Error signing out");

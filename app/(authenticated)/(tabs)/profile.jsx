@@ -33,7 +33,7 @@ const Profile = () => {
           name="menu"
           size={24}
           style={{ marginRight: 10 }}
-          onPress={() => router.push("/(authenticated)/(screens)/settings")}
+          onPress={() => router.push("/settings")}
         />
       ),
     });
@@ -57,21 +57,17 @@ const Profile = () => {
                 <View style={{ width: wp(61) }}>
                   <AppText style={styles.value}>{user?.name}</AppText>
                   <AppText>@{user?.username}</AppText>
-                  <AppText>{user?.address}</AppText>
+                  {user?.address && <AppText>{user?.address}</AppText>}
                 </View>
                 <View>
                   <TouchableOpacity
-                    onPress={() =>
-                      router.push(
-                        "/(authenticated)/(screens)/edit-profile-details"
-                      )
-                    }
+                    onPress={() => router.push("/edit-profile-details")}
                   >
                     <AppMaterialCommunityIcon name="square-edit-outline" />
                   </TouchableOpacity>
                 </View>
               </View>
-              <AppText>{user?.bio}</AppText>
+              {user?.bio && <AppText>{user?.bio}</AppText>}
             </HorizontalPadding>
 
             <HorizontalPadding>

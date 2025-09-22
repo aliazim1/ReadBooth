@@ -1,6 +1,7 @@
+import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
-import { useNavigation, useRouter } from "expo-router";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import {
   Alert,
   Keyboard,
@@ -11,21 +12,18 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import { Image } from "expo-image";
+import AppButton from "../../../components/AppButton";
 import AppIonicon from "../../../components/AppIonicon";
-import AppText from "../../../components/AppText";
 import CustomInput from "../../../components/CustomInput";
-import Loading from "../../../components/Loading";
 import SafeScreen from "../../../components/SafeScreen";
 import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
 import { hp, wp } from "../../../helpers/common";
-import { getUserImageSrc } from "../../../services/imageService";
+import { getUserImageSrc, uploadFile } from "../../../services/imageService";
 import { updateUserData } from "../../../services/userService";
 
 const EditProfileDetails = () => {
   const router = useRouter();
-  const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const { user: currentUser, setUserData } = useAuth();
 
@@ -54,39 +52,28 @@ const EditProfileDetails = () => {
 
   const onSave = async () => {
     let userData = { ...user };
-
     let { name, username, phone, email, address, image, bio } = userData;
-
     if (!name || !username || !email) {
       Alert.alert("Required Fields", "Name, username, and email are required.");
       return;
     }
 
     setLoading(true);
+
+    if (typeof image == "object") {
+      let imageRes = await uploadFile("profiles", image?.uri, true);
+
+      if (imageRes.success) userData.image = imageRes.data;
+      else userData.image = null;
+    }
     const res = await updateUserData(currentUser?.id, userData);
     setLoading(false);
-    if (res.success) setUserData({ ...currentUser, ...userData });
-    router.back();
-  };
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <TouchableOpacity onPress={() => router.back()}>
-          <AppText style={{ color: theme.colors.rose }}>Cancel</AppText>
-        </TouchableOpacity>
-      ),
-      headerRight: () => (
-        <TouchableOpacity onPress={onSave}>
-          {loading ? (
-            <Loading size="small" />
-          ) : (
-            <AppText style={styles.saveBtn}>Save</AppText>
-          )}
-        </TouchableOpacity>
-      ),
-    });
-  }, [navigation, router, onSave, loading]);
+    if (res.success) {
+      setUserData({ ...currentUser, ...userData });
+      router.back();
+    }
+  };
 
   const addProfilePic = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -97,15 +84,14 @@ const EditProfileDetails = () => {
     });
 
     if (!result.canceled) {
-      setUser({ ...user, image: result.assets[0].uri });
+      setUser({ ...user, image: { uri: result.assets[0].uri } });
     }
   };
 
-  let imageSource = user.image
-    ? { uri: user.image }
-    : currentUser?.image
-    ? { uri: getUserImageSrc(currentUser.image) }
-    : require("../../../assets/images/user.png");
+  let imageSource =
+    user.image && typeof user.image == "object"
+      ? user.image.uri
+      : getUserImageSrc(user.image);
 
   return (
     <SafeScreen bg={theme.colors.white}>
@@ -123,8 +109,11 @@ const EditProfileDetails = () => {
           <View style={{ flex: 1 }}>
             <View style={styles.profileDetails}>
               <View>
-                {/* <Avatar uri={imageSource} size={100} /> */}
-                <Image source={imageSource} style={styles.avatar} />
+                {imageSource ? (
+                  <Image source={imageSource} style={styles.avatar} />
+                ) : (
+                  <AppIonicon name={"user"} />
+                )}
                 <TouchableOpacity onPress={addProfilePic} style={styles.add}>
                   <AppIonicon
                     name="camera"
@@ -176,7 +165,12 @@ const EditProfileDetails = () => {
               onChangeText={(value) => setUser({ ...user, bio: value })}
             />
 
-            {/* <AppButton title="Submit" onPress={onSave} /> */}
+            <AppButton
+              title="Save"
+              onPress={onSave}
+              isLoading={loading}
+              containerStyle={{ marginTop: 30 }}
+            />
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAwareScrollView>

@@ -7,7 +7,12 @@ import { getUserImageSrc } from "../services/imageService";
 
 const Avatar = ({ uri, size = 90, rounded = 50, style = {} }) => {
   return (
-    <View style={[styles.container, { width: size, height: size }]}>
+    <View
+      style={[
+        styles.container,
+        { width: size, height: size, borderRadius: size / 2 },
+      ]}
+    >
       <Image
         source={getUserImageSrc(uri)}
         transition={100}
@@ -26,7 +31,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.gray,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: "50%",
     marginBottom: hp(1),
     overflow: "hidden",
   },

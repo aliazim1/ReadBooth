@@ -1,14 +1,15 @@
 import { Stack, useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import "react-native-reanimated";
 
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
 import { supabase } from "../lib/supabase";
 import { getUserData } from "../services/userService";
 
-const _layout = () => {
+const RootLayout = () => {
   return (
     <AuthProvider>
+      <StatusBar style="dark" />
       <MainLayout />
     </AuthProvider>
   );
@@ -23,7 +24,8 @@ const MainLayout = () => {
       if (session) {
         setAuth(session?.user);
         updateUserData(session?.user, session?.user?.email);
-        router.replace("(authenticated)/(tabs)/home");
+        router.replace("/home");
+        // router.replace("(authenticated)/(tabs)/home");
       } else {
         setAuth(null);
         router.replace("(auth)/welcome");
@@ -46,4 +48,4 @@ const MainLayout = () => {
   );
 };
 
-export default _layout;
+export default RootLayout;
