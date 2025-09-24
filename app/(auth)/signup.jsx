@@ -137,9 +137,7 @@ export default function signup() {
             <View style={styles.noAccountContainer}>
               <View style={styles.noAccountContainerRow}>
                 <AppText>Already a member of ReadVine?</AppText>
-                <TouchableOpacity
-                  onPress={() => router.replace("(auth)/login")}
-                >
+                <TouchableOpacity onPress={() => router.replace("/login")}>
                   <AppText style={styles.signIn}>Sign In</AppText>
                 </TouchableOpacity>
               </View>

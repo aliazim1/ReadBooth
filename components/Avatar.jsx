@@ -2,7 +2,6 @@ import { Image } from "expo-image";
 import { StyleSheet, View } from "react-native";
 
 import { theme } from "../constants/theme";
-import { hp } from "../helpers/common";
 import { getUserImageSrc } from "../services/imageService";
 
 const Avatar = ({ uri, size = 90, rounded = 50, style = {} }) => {
@@ -31,7 +30,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.gray,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: hp(1),
     overflow: "hidden",
   },
   avatar: {

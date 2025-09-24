@@ -56,7 +56,7 @@ export default function login() {
         setError(error.message);
       } else {
         setError("");
-        router.replace("(authenticated)/(tabs)/home");
+        router.replace("/home");
       }
     } catch (err) {
       setError("Something went wrong. Please try again.");

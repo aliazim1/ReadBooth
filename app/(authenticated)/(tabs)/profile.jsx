@@ -15,7 +15,7 @@ import { hp, wp } from "../../../helpers/common";
 const StatsItem = ({ title, value }) => {
   return (
     <TouchableOpacity style={styles.column}>
-      <AppText>{title}</AppText>
+      <AppText style={{ fontSize: 14 }}>{title}</AppText>
       <AppText style={styles.value}>{value}</AppText>
     </TouchableOpacity>
   );

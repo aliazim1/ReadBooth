@@ -180,7 +180,7 @@ const EditProfileDetails = () => {
 
 const styles = StyleSheet.create({
   profileDetails: {
-    marginTop: hp(5),
+    marginTop: hp(1),
     alignItems: "center",
     justifyContent: "center",
   },

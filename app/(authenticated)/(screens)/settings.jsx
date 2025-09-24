@@ -41,15 +41,13 @@ const Settings = () => {
           icon={"account"}
           label={"Account information"}
           style={{ paddingVertical: 16 }}
-          onPress={() =>
-            router.push("/(authenticated)/(screens)/edit-profile-details")
-          }
+          onPress={() => router.push("/edit-profile-details")}
         />
         <SettingListItem
           icon={"lock"}
           label={"Password"}
           style={{ paddingVertical: 16 }}
-          onPress={() => router.push("/(authenticated)/(screens)/password")}
+          onPress={() => router.push("/password")}
         />
         <SettingListItem
           icon={"shield"}

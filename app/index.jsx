@@ -3,6 +3,7 @@ import { View } from "react-native";
 
 import Loading from "../components/Loading";
 import { theme } from "../constants/theme";
+
 const Index = () => {
   const router = useRouter();
 

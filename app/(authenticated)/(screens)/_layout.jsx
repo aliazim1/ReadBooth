@@ -1,6 +1,6 @@
-import { Ionicons } from "@expo/vector-icons";
 import { Stack, useRouter } from "expo-router";
-import { Pressable } from "react-native";
+
+import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
 
 const ScreensLayout = () => {
   const router = useRouter();
@@ -10,12 +10,19 @@ const ScreensLayout = () => {
       screenOptions={{
         headerShadowVisible: false,
         headerLeft: () => (
-          <Pressable onPress={() => router.back()}>
-            <Ionicons name="chevron-back" size={30} color={"black"} />
-          </Pressable>
+          <AppIoniconTouchable
+            name="chevron-back"
+            onPress={() => router.back()}
+          />
         ),
       }}
     >
+      <Stack.Screen
+        name="createPost"
+        options={{
+          headerTitle: "Create Post",
+        }}
+      />
       <Stack.Screen
         name="settings"
         options={{

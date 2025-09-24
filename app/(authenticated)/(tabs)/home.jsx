@@ -30,7 +30,7 @@ const Home = () => {
           <AppIoniconTouchable
             name="add"
             size={22}
-            // onPress={() => router.push("/")}
+            onPress={() => router.push("/createPost")}
           />
         </View>
       ),

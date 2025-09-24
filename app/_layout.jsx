@@ -28,7 +28,7 @@ const MainLayout = () => {
         // router.replace("(authenticated)/(tabs)/home");
       } else {
         setAuth(null);
-        router.replace("(auth)/welcome");
+        router.replace("/welcome");
       }
     });
   }, []);
@@ -42,7 +42,6 @@ const MainLayout = () => {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
       <Stack.Screen name="+not-found" />
-      <Stack.Screen name="(auth)" />
       <Stack.Screen name="(authenticated)" />
     </Stack>
   );

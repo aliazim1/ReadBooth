@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderCurve: "continuous",
-    borderRadius: theme.radius.xl,
+    borderRadius: theme.radius.xl * 20,
     flexDirection: "row",
   },
   shadowBtn: {
@@ -66,8 +66,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   text: {
-    fontSize: hp(2.3),
+    fontSize: hp(2.2),
     color: "white",
+    fontWeight: theme.fonts.bold,
   },
   image: {
     height: 25,

@@ -22,14 +22,14 @@ const Welcome = () => {
         <AppButton
           title="Sign Up"
           textStyle={styles.btnTitle}
-          onPress={() => router.replace("(auth)/signup")}
+          onPress={() => router.replace("/signup")}
         />
         <AppButton
           title="Sign In"
           hasShadow={true}
           containerStyle={{ backgroundColor: theme.colors.white }}
           textStyle={[styles.btnTitle, { color: theme.colors.dark }]}
-          onPress={() => router.replace("(auth)/login")}
+          onPress={() => router.replace("/login")}
         />
       </View>
     </View>

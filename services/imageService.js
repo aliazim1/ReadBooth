@@ -5,22 +5,13 @@ import { supabase } from "../lib/supabase";
 
 export const getUserImageSrc = (imagePath) => {
   if (imagePath) {
-    return { uri: getSupabaseUrl(imagePath) };
+    return { uri: getSupabaseFileUrl(imagePath) };
   } else {
     return require("../assets/images/user.png");
   }
 };
 
-// export const getSupabaseUrl = (filePath) => {
-//   if (filePath) {
-//     return {
-//       uri: `${supabaseUrl}/storage/v1/object/public/uploads/${filePath}`,
-//     };
-//   }
-//   return null;
-// };
-
-export const getSupabaseUrl = (filePath) => {
+export const getSupabaseFileUrl = (filePath) => {
   if (filePath) {
     return `${supabaseUrl}/storage/v1/object/public/uploads/${filePath}`;
   }

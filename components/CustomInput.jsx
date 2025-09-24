@@ -17,9 +17,7 @@ const CustomInput = ({
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <View
-    // style={style}
-    >
+    <View>
       {label && (
         <AppText style={{ marginTop: 20, fontWeight: theme.fonts.bold }}>
           {label}
@@ -58,7 +56,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.7,
   },
   searchBox: {
-    borderRadius: 12,
+    borderRadius: 15,
     padding: hp(1.5),
     borderWidth: 0.7,
   },
