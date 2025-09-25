@@ -12,13 +12,7 @@ const RichTextEditor = ({ editorRef, onChange }) => {
   return (
     <View style={{ minHeight: 285 }}>
       <RichToolbar
-        actions={[
-          actions.setBold,
-          actions.setItalic,
-          actions.insertBulletsList,
-          actions.insertOrderedList,
-          actions.insertLink,
-        ]}
+        actions={[actions.setBold, actions.setItalic, actions.insertLink]}
         style={styles.richBar}
         editor={editorRef}
         disabled={false}

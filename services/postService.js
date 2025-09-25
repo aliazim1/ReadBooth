@@ -1,6 +1,7 @@
 import { supabase } from "../lib/supabase";
 import { uploadFile } from "./imageService";
 
+// function to create a new post including (image/video, caption )
 export const createOrUpdatePost = async (post) => {
   try {
     // if there’s a file, upload it first
@@ -35,5 +36,30 @@ export const createOrUpdatePost = async (post) => {
   } catch (error) {
     console.log("Create Post: ", error);
     return { success: false, msg: "Could not create your post" };
+  }
+};
+
+// function to fetch all the posts with a limit of 10 posts first
+export const fetchPosts = async (limit = 10) => {
+  try {
+    const { data, error } = await supabase
+      .from("posts")
+      .select(
+        `
+        *,
+        user: users (id, name, username, image )
+        `
+      )
+      .order("created_at", { ascending: false })
+      .limit(limit);
+
+    if (error) {
+      console.log("fetchPosts error: ", error);
+      return { success: false, msg: "Could not fetch the posts" };
+    }
+    return { success: true, data: data };
+  } catch (error) {
+    console.log("fetchPosts error: ", error);
+    return { success: false, msg: "Could not fetch the posts" };
   }
 };

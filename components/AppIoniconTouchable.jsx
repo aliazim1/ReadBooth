@@ -7,6 +7,7 @@ import { theme } from "../constants/theme";
 const AppIoniconTouchable = ({
   name = "chevron-back",
   size = 28,
+  strokeWidth = 3,
   color = theme.colors.dark,
   onPress,
   style,
@@ -17,6 +18,7 @@ const AppIoniconTouchable = ({
         name={name}
         color={color}
         size={size}
+        strokeWidth={strokeWidth}
         style={{ alignSelf: "center" }}
       />
     </TouchableOpacity>

@@ -1,14 +1,35 @@
 import { useNavigation, useRouter } from "expo-router";
-import { useLayoutEffect } from "react";
-import { Text, View } from "react-native";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 
 import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
+import PostCard from "../../../components/PostCard";
+import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
+import { fetchPosts } from "../../../services/postService";
+
+// global variable for the number of posts (limit)
+var limit = 0;
 
 const Home = () => {
   const router = useRouter();
   const navigation = useNavigation();
   const { user, setAuth } = useAuth();
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    getPosts();
+  }, []);
+
+  const getPosts = async () => {
+    limit = limit + 3;
+
+    // call the API here
+    let res = await fetchPosts(limit);
+    if (res.success) {
+      setPosts(res.data);
+    }
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -22,14 +43,14 @@ const Home = () => {
           }}
         >
           <AppIoniconTouchable
-            name="search-outline"
-            size={24}
+            name="search"
+            size={22}
             style={{ marginRight: 30 }}
             // onPress={() => router.push("/")}
           />
           <AppIoniconTouchable
             name="add"
-            size={22}
+            size={28}
             onPress={() => router.push("/createPost")}
           />
         </View>
@@ -38,10 +59,33 @@ const Home = () => {
   }, [navigation, router]);
 
   return (
-    <View style={{ flex: 1 }}>
-      <Text>Hello, {user?.name}</Text>
-    </View>
+    <SafeScreen>
+      <FlatList
+        data={posts}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.listStyle}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <PostCard item={item} currentUser={user} router={router} />
+        )}
+        ItemSeparatorComponent={() => (
+          <View
+            style={{
+              height: 2,
+              backgroundColor: "#e0e0e0",
+              marginVertical: 10,
+            }}
+          />
+        )}
+      />
+    </SafeScreen>
   );
 };
+
+const styles = StyleSheet.create({
+  listStyle: {
+    paddingTop: 20,
+  },
+});
 
 export default Home;
