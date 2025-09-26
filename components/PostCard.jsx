@@ -1,10 +1,11 @@
 import { Image } from "expo-image";
 import moment from "moment";
-import { Alert, StyleSheet, Text, View } from "react-native";
-
 import { useEffect, useState } from "react";
+import { Alert, Linking, Share, StyleSheet, Text, View } from "react-native";
+import ParsedText from "react-native-parsed-text";
+
 import { theme } from "../constants/theme";
-import { hp, wp } from "../helpers/common";
+import { hp, stripHtmlTags, wp } from "../helpers/common";
 import { getSupabaseFileUrl } from "../services/imageService";
 import { createPostLike, removePostLike } from "../services/postService";
 import AppIoniconTouchable from "./AppIoniconTouchable";
@@ -40,13 +41,27 @@ const PostCard = ({ item, currentUser, router }) => {
     }
   };
 
+  // function to open the post details
+  const openPostDetails = () => {
+    router.push({
+      pathname: "postDetails",
+      params: { posdId: item?.id },
+    });
+  };
+
+  // function to share the post
+  const onShare = async () => {
+    let content = { message: stripHtmlTags(item?.body) }; // only shares the caption here
+    Share.share(content);
+  };
+
+  // opens the link if the body is as link
+  const handleUrlPress = (url) => {
+    Linking.openURL(url);
+  };
+
   // formats the created_at time as (min/hr ago)
   const createdAt = moment(item?.created_at).fromNow();
-
-  // function to oepn the psot details
-  const openPostDetails = () => {
-    // implement later
-  };
 
   const liked = likes.filter((like) => like.userId == currentUser?.id)[0]
     ? true
@@ -84,14 +99,14 @@ const PostCard = ({ item, currentUser, router }) => {
       {/* container: post's caption */}
       {item?.body && (
         <View style={styles.captionContainer}>
-          <Text>
-            {item?.body.split("\n").map((line, index) => (
-              <Text key={index}>
-                {line}
-                {"\n"}
-              </Text>
-            ))}
-          </Text>
+          <ParsedText
+            style={styles.text}
+            parse={[
+              { type: "url", style: styles.link, onPress: handleUrlPress },
+            ]}
+          >
+            {item?.body}
+          </ParsedText>
         </View>
       )}
 
@@ -133,6 +148,7 @@ const PostCard = ({ item, currentUser, router }) => {
             size={24}
             color={theme.colors.dark}
             style={{ marginLeft: 0 }}
+            onPress={onShare}
           />
           <AppText style={styles.footerLabel}>143.54M</AppText>
         </View>
@@ -167,7 +183,6 @@ const styles = StyleSheet.create({
   },
   postHeader: {
     paddingHorizontal: wp(3),
-    marginBottom: hp(1),
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "space-between",
@@ -194,9 +209,19 @@ const styles = StyleSheet.create({
   },
   captionContainer: {
     paddingHorizontal: wp(4),
+    marginTop: hp(1),
+  },
+  text: {
+    fontSize: 16,
+    color: theme.colors.dark,
+  },
+  link: {
+    color: "blue",
+    textDecorationLine: "underline",
   },
   postMedia: {
     height: hp(35),
+    marginTop: hp(1),
     width: "100%",
     borderCurve: "continuous",
   },

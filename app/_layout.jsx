@@ -25,7 +25,6 @@ const MainLayout = () => {
         setAuth(session?.user);
         updateUserData(session?.user, session?.user?.email);
         router.replace("/home");
-        // router.replace("(authenticated)/(tabs)/home");
       } else {
         setAuth(null);
         router.replace("/welcome");
