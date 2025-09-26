@@ -1,9 +1,10 @@
 import Octicons from "@expo/vector-icons/Octicons";
 import { Tabs } from "expo-router";
-import { Image } from "react-native";
 
 import AppIonicon from "../../../components/AppIonicon";
+import AppText from "../../../components/AppText";
 import { theme } from "../../../constants/theme";
+import { hp } from "../../../helpers/common";
 
 export default function TabLayout() {
   return (
@@ -21,11 +22,20 @@ export default function TabLayout() {
           title: "Home",
           headerTitle: "",
           headerLeft: () => (
-            <Image
-              tintColor={"#C65D3B"}
-              source={require("../../../assets/images/logo2.png")}
-              style={{ width: 60, height: 60 }}
-            />
+            <AppText
+              style={{
+                fontSize: hp(2),
+                marginLeft: 12,
+                fontWeight: theme.fonts.extraBold,
+              }}
+            >
+              ReadVine
+            </AppText>
+            // <Image
+            //   tintColor={"#C65D3B"}
+            //   source={require("../../../assets/images/logo2.png")}
+            //   style={{ width: 60, height: 60 }}
+            // />
           ),
           tabBarIcon: ({ focused }) => (
             <Octicons

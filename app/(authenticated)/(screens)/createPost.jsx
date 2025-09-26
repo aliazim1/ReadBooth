@@ -119,7 +119,7 @@ const CreatePost = () => {
       setTimeout(() => {
         setShowSuccess(false);
         router.back();
-      }, 4000); // show for 4s which is the animation duration,
+      }, 2000); // show for 4s which is the animation duration,
     } else {
       Alert.alert("Post", res.msg);
     }
@@ -174,12 +174,12 @@ const CreatePost = () => {
             <AppIoniconTouchable
               name="image"
               size={26}
-              color={theme.colors.primary}
+              color={theme.colors.text}
               onPress={() => onPick(true)}
             />
             <AppIoniconTouchable
               name="videocam"
-              color={theme.colors.primary}
+              color={theme.colors.text}
               size={32}
               onPress={() => onPick(false)}
             />

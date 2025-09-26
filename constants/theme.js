@@ -1,8 +1,8 @@
 export const theme = {
   colors: {
-    primary: "#C65D3B",
-    secondary: "#F3C6A3",
-    dark: "#1D1D1D",
+    primary: "#09A603",
+    dark: "#0D0D0D",
+    // dark: "#1D1D1D",
     darkLight: "#E1E1E1",
     gray: "#e3e3e3",
     white: "#ffffff",
@@ -13,7 +13,6 @@ export const theme = {
     text: "#494949",
     textLight: "#7C7C7C",
     textDark: "#1D1D1D",
-
     rose: "#ef4444",
     roseLight: "#f87171",
   },

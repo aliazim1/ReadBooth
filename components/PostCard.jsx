@@ -1,36 +1,71 @@
 import { Image } from "expo-image";
 import moment from "moment";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import RenderHTML from "react-native-render-html";
 
+import { useEffect, useState } from "react";
 import { theme } from "../constants/theme";
 import { hp, wp } from "../helpers/common";
 import { getSupabaseFileUrl } from "../services/imageService";
+import { createPostLike, removePostLike } from "../services/postService";
 import AppIoniconTouchable from "./AppIoniconTouchable";
 import AppText from "./AppText";
 import Avatar from "./Avatar";
 import ExpoVideoPlayer from "./ExpoVideoPlayer";
 
-// styles for each of the RichText (bold, link, italic, p)
-const textStyle = {
-  color: theme.colors.dark,
-  fontSize: hp(1.6),
-};
-
-const tagStyles = {
-  div: textStyle,
-  p: textStyle,
-  strong: { fontWeight: "bold", color: theme.colors.dark },
-  em: { fontStyle: "italic", color: theme.colors.dark },
-  a: { color: theme.colors.blue },
-};
-
 const PostCard = ({ item, currentUser, router }) => {
+  const [likes, setLikes] = useState([]);
+
+  // styles for each of the RichText (bold, link, italic, p)
+  const textStyle = {
+    color: theme.colors.dark,
+    fontSize: hp(1.6),
+  };
+
+  const tagStyles = {
+    div: textStyle,
+    p: textStyle,
+    strong: { fontWeight: "bold", color: theme.colors.dark },
+    em: { fontStyle: "italic", color: theme.colors.dark },
+    a: { color: theme.colors.blue },
+  };
+
+  useEffect(() => {
+    setLikes(item?.postLikes);
+  }, []);
+
+  // funtion for liking a post
+  const onLike = async () => {
+    if (liked) {
+      // remove the like
+      let updatedLikes = likes.filter((like) => like.userId != currentUser?.id);
+      setLikes([...updatedLikes]);
+      let res = await removePostLike(item?.id, currentUser?.id);
+      if (!res.success) Alert.alert("Like", "Something went wrong.");
+    } else {
+      // add the like
+      let data = {
+        userId: currentUser?.id,
+        postId: item?.id,
+      };
+
+      setLikes([...likes, data]);
+      let res = await createPostLike(data);
+      if (!res.success) Alert.alert("Dislike", "Something went wrong.");
+    }
+  };
+
   // formats the created_at time as (min/hr ago)
   const createdAt = moment(item?.created_at).fromNow();
 
   // function to oepn the psot details
-  const openPostDetails = () => {};
+  const openPostDetails = () => {
+    // implement later
+  };
+
+  const liked = likes.filter((like) => like.userId == currentUser?.id)[0]
+    ? true
+    : false;
 
   return (
     // column container: for post
@@ -85,13 +120,55 @@ const PostCard = ({ item, currentUser, router }) => {
       {/* container: if post's media is video */}
       {item?.file && item?.file?.includes("postVideos") && (
         <ExpoVideoPlayer
-          videoUri={getSupabaseFileUrl(item?.file)?.uri}
+          videoUri={getSupabaseFileUrl(item?.file)}
           style={styles.postMedia}
         />
       )}
 
       {/* row container: post's footer (interactions: like, comment, save, share) */}
-      <View style={styles.postFooterContainer}></View>
+      <View style={styles.postFooterContainer}>
+        <View style={{ flexDirection: "row" }}>
+          <View style={styles.footerBtn}>
+            <AppIoniconTouchable
+              name="bookmark-outline"
+              size={22}
+              color={theme.colors.dark}
+              style={{ marginLeft: 0 }}
+            />
+            <AppText style={styles.footerLabel}>143.54M</AppText>
+          </View>
+        </View>
+
+        <View style={styles.footerBtn}>
+          <AppIoniconTouchable
+            name="share-outline"
+            size={24}
+            color={theme.colors.dark}
+            style={{ marginLeft: 0 }}
+          />
+          <AppText style={styles.footerLabel}>143.54M</AppText>
+        </View>
+
+        <View style={styles.footerBtn}>
+          <AppIoniconTouchable
+            name="chatbubble-outline"
+            size={23}
+            color={theme.colors.dark}
+            style={{ marginLeft: 0 }}
+          />
+          <AppText style={styles.footerLabel}>42K</AppText>
+        </View>
+        <View style={styles.footerBtn}>
+          <AppIoniconTouchable
+            name={liked ? "heart" : "heart-outline"}
+            color={liked ? theme.colors.rose : theme.colors.dark}
+            size={26}
+            onPress={onLike}
+            style={{ marginLeft: 0 }}
+          />
+          <AppText style={styles.footerLabel}>{likes?.length}</AppText>
+        </View>
+      </View>
     </View>
   );
 };
@@ -132,7 +209,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(4),
   },
   postMedia: {
-    height: hp(30),
+    height: hp(35),
     width: "100%",
     marginTop: hp(1),
     borderCurve: "continuous",
@@ -140,7 +217,20 @@ const styles = StyleSheet.create({
   postFooterContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 15,
+    justifyContent: "flex-start",
+    gap: 10,
+    marginTop: hp(1),
+    paddingHorizontal: wp(5),
+  },
+  footerBtn: {
+    gap: 2,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  footerLabel: {
+    fontSize: hp(1),
   },
 });
+
 export default PostCard;
