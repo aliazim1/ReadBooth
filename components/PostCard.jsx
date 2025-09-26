@@ -1,7 +1,6 @@
 import { Image } from "expo-image";
 import moment from "moment";
 import { Alert, StyleSheet, Text, View } from "react-native";
-import RenderHTML from "react-native-render-html";
 
 import { useEffect, useState } from "react";
 import { theme } from "../constants/theme";
@@ -15,20 +14,6 @@ import ExpoVideoPlayer from "./ExpoVideoPlayer";
 
 const PostCard = ({ item, currentUser, router }) => {
   const [likes, setLikes] = useState([]);
-
-  // styles for each of the RichText (bold, link, italic, p)
-  const textStyle = {
-    color: theme.colors.dark,
-    fontSize: hp(1.6),
-  };
-
-  const tagStyles = {
-    div: textStyle,
-    p: textStyle,
-    strong: { fontWeight: "bold", color: theme.colors.dark },
-    em: { fontStyle: "italic", color: theme.colors.dark },
-    a: { color: theme.colors.blue },
-  };
 
   useEffect(() => {
     setLikes(item?.postLikes);
@@ -99,11 +84,14 @@ const PostCard = ({ item, currentUser, router }) => {
       {/* container: post's caption */}
       {item?.body && (
         <View style={styles.captionContainer}>
-          <RenderHTML
-            contentWidth={wp(100)}
-            source={{ html: item?.body }}
-            tagsStyles={tagStyles}
-          />
+          <Text>
+            {item?.body.split("\n").map((line, index) => (
+              <Text key={index}>
+                {line}
+                {"\n"}
+              </Text>
+            ))}
+          </Text>
         </View>
       )}
 
@@ -176,10 +164,10 @@ const PostCard = ({ item, currentUser, router }) => {
 const styles = StyleSheet.create({
   container: {
     marginVertical: hp(1.2),
-    // borderWidth: 1.5,
   },
   postHeader: {
     paddingHorizontal: wp(3),
+    marginBottom: hp(1),
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "space-between",
@@ -205,13 +193,11 @@ const styles = StyleSheet.create({
     marginTop: -14,
   },
   captionContainer: {
-    marginTop: hp(1),
     paddingHorizontal: wp(4),
   },
   postMedia: {
     height: hp(35),
     width: "100%",
-    marginTop: hp(1),
     borderCurve: "continuous",
   },
   postFooterContainer: {

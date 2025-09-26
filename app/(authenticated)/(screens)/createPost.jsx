@@ -3,14 +3,22 @@ import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
-import { useRef, useState } from "react";
-import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import {
+  Alert,
+  Keyboard,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import AppButton from "../../../components/AppButton";
 import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
 import AppText from "../../../components/AppText";
 import Avatar from "../../../components/Avatar";
-import RichTextEditor from "../../../components/RichTextEditor";
+import CustomInput from "../../../components/CustomInput";
 import SafeScreen from "../../../components/SafeScreen";
 import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -20,11 +28,10 @@ import { createOrUpdatePost } from "../../../services/postService";
 
 const CreatePost = () => {
   const { user } = useAuth();
-  const bodyRef = useRef("");
-  const editorRef = useRef(null);
   const router = useRouter();
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [bodyContent, setBodyContent] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
 
   const onPick = async (isImage) => {
@@ -85,21 +92,20 @@ const CreatePost = () => {
     if (isLocalFile(file)) {
       return file.uri;
     }
-
     return getSupabaseFileUrl(file)?.uri;
   };
 
   // function to publish the post
   const onSubmit = async () => {
     // if user tries to post an empty post
-    if (!bodyRef.current && !file) {
+    if (bodyContent.trim() === "" && !file) {
       Alert.alert("Empty Post", "Your post can’t be empty.");
       return;
     }
 
     let data = {
       file,
-      body: bodyRef.current,
+      body: bodyContent,
       userId: user?.id,
     };
 
@@ -109,17 +115,13 @@ const CreatePost = () => {
     setLoading(false);
     if (res.success) {
       setFile(null);
-      bodyRef.current = "";
-      editorRef.current?.setContentHTML("");
-
-      // show animation
-      setShowSuccess(true);
-
+      setBodyContent("");
+      setShowSuccess(true); // show the animation
       // wait for animation, then navigate
       setTimeout(() => {
         setShowSuccess(false);
         router.back();
-      }, 2000); // show for 4s which is the animation duration,
+      }, 2000);
     } else {
       Alert.alert("Post", res.msg);
     }
@@ -127,67 +129,84 @@ const CreatePost = () => {
 
   return (
     <SafeScreen style={{ paddingHorizontal: wp(4) }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* the profile details  */}
-        <View style={styles.header}>
-          <Avatar uri={user?.image} size={hp(6.5)} />
-          <View>
-            <Text style={styles.name}>{user?.name}</Text>
-            <Text style={styles.publicText}>Public</Text>
-          </View>
-        </View>
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        extraScrollHeight={20}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          flexGrow: 1,
+        }}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View style={{ flex: 1 }}>
+            {/* the profile details  */}
+            <View style={styles.header}>
+              <Avatar uri={user?.image} size={hp(6.5)} />
+              <View>
+                <Text style={styles.name}>{user?.name}</Text>
+                <Text style={styles.publicText}>Public</Text>
+              </View>
+            </View>
 
-        {/* the rich-text-field with actions */}
-        <RichTextEditor
-          editorRef={editorRef}
-          onChange={(body) => (bodyRef.current = body)}
-        />
+            {/* the text-field with actions */}
+            <CustomInput
+              placeholder="What’s on your bookshelf today?"
+              value={bodyContent}
+              onChangeText={setBodyContent}
+              multiline
+              numberOfLines={5}
+              style={styles.bodyContent}
+            />
 
-        {/* media will display here once selected */}
-        {file && (
-          <View style={styles.file}>
-            {getFileType(file) == "video" ? (
-              <Video
-                style={{ flex: 1 }}
-                source={{ uri: getFileUri(file) }}
-                useNativeControls
-                resizeMode="cover"
-                isLooping
-              />
-            ) : (
-              <Image source={{ uri: getFileUri(file) }} style={{ flex: 1 }} />
+            {/* media will display here once selected */}
+            {file && (
+              <View style={styles.file}>
+                {getFileType(file) == "video" ? (
+                  <Video
+                    style={{ flex: 1 }}
+                    source={{ uri: getFileUri(file) }}
+                    useNativeControls
+                    resizeMode="cover"
+                    isLooping
+                  />
+                ) : (
+                  <Image
+                    source={{ uri: getFileUri(file) }}
+                    style={{ flex: 1 }}
+                  />
+                )}
+                <AppIoniconTouchable
+                  name="close"
+                  size={20}
+                  color={theme.colors.white}
+                  style={styles.deleteIcon}
+                  onPress={() => setFile(null)}
+                />
+              </View>
             )}
-            <AppIoniconTouchable
-              name="close"
-              size={20}
-              color={theme.colors.white}
-              style={styles.deleteIcon}
-              onPress={() => setFile(null)}
-            />
-          </View>
-        )}
 
-        {/* attach media label & icons */}
-        <View style={styles.mediaContainer}>
-          <AppText style={styles.addMediaText}>Photo/Video </AppText>
-          <View style={styles.mediaIcon}>
-            <AppIoniconTouchable
-              name="image"
-              size={26}
-              color={theme.colors.text}
-              onPress={() => onPick(true)}
-            />
-            <AppIoniconTouchable
-              name="videocam"
-              color={theme.colors.text}
-              size={32}
-              onPress={() => onPick(false)}
-            />
+            {/* attach media label & icons */}
+            <View style={styles.mediaContainer}>
+              <AppText style={styles.addMediaText}>Photo/Video </AppText>
+              <View style={styles.mediaIcon}>
+                <AppIoniconTouchable
+                  name="image"
+                  size={26}
+                  color={theme.colors.text}
+                  onPress={() => onPick(true)}
+                />
+                <AppIoniconTouchable
+                  name="videocam"
+                  color={theme.colors.text}
+                  size={32}
+                  onPress={() => onPick(false)}
+                />
+              </View>
+            </View>
           </View>
-        </View>
-      </ScrollView>
-      {/* publish button won't be scrollable  */}
-      <AppButton title="Publish" onPress={onSubmit} isLoading={loading} />
+        </TouchableWithoutFeedback>
+      </KeyboardAwareScrollView>
 
       {/* the success animation  */}
       {showSuccess && (
@@ -207,6 +226,8 @@ const CreatePost = () => {
           </View>
         </View>
       )}
+      {/* publish button won't be scrollable  */}
+      <AppButton title="Publish" onPress={onSubmit} isLoading={loading} />
     </SafeScreen>
   );
 };
@@ -228,6 +249,15 @@ const styles = StyleSheet.create({
     color: theme.colors.textLight,
     fontWeight: theme.fonts.medium,
   },
+  bodyContent: {
+    maxHeight: 5 * 20,
+    lineHeight: 20,
+    paddingVertical: 8,
+    textAlignVertical: "top",
+    width: "100%",
+    borderWidth: 0,
+    marginVertical: hp(2),
+  },
   file: {
     width: "100%",
     height: hp(30),
@@ -238,14 +268,14 @@ const styles = StyleSheet.create({
   },
   mediaContainer: {
     padding: 10,
-    borderWidth: 1.5,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 14,
-    borderCurve: "continuous",
-    borderRadius: theme.radius.xl,
-    borderColor: theme.colors.gray,
     justifyContent: "space-between",
+    // borderWidth: 1.5,
+    // borderCurve: "continuous",
+    // borderRadius: theme.radius.xl,
+    // borderColor: theme.colors.gray,
   },
   mediaIcon: {
     gap: 25,
@@ -270,8 +300,7 @@ const styles = StyleSheet.create({
   successContainer: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: theme.colors.white, // dim background behind the box
-    // backgroundColor: "rgba(0,0,0,0.3)", // dim background behind the box
+    backgroundColor: theme.colors.white,
     zIndex: 999,
   },
   animationContainer: {
