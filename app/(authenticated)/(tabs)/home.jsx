@@ -34,6 +34,14 @@ const Home = () => {
   };
 
   useEffect(() => {
+    getPosts(); // fetch posts once on mount
+
+    // refresh posts when the screen is focused
+    const unsubscribeFocus = navigation.addListener("focus", () => {
+      getPosts();
+    });
+
+    // setup supabase subscription once
     let postChannel = supabase
       .channel("posts")
       .on(
@@ -43,21 +51,20 @@ const Home = () => {
       )
       .subscribe();
 
+    // cleanup on unmount
     return () => {
-      supabase.removeChannel(postChannel);
+      unsubscribeFocus(); // remove navigation focus listener
+      supabase.removeChannel(postChannel); // remove subscription
     };
-  }, []);
+  }, [navigation]);
 
   // function: fetching the posts
   const getPosts = async () => {
     // if no more post, do not call the API
     if (!hasMorePosts) return null;
-
     // increase the number of posts to fetch
     limit = limit + 3;
-
-    // call the API here
-    let res = await fetchPosts(limit);
+    let res = await fetchPosts(limit); // call the API here
     if (res.success) {
       if (posts.length == res.data.length) setHasMorePosts(false);
       setPosts(res.data);
@@ -80,7 +87,8 @@ const Home = () => {
             name="search"
             size={22}
             style={{ marginRight: 30 }}
-            // onPress={() => router.push("/")}
+            // TODO: add the search functionality
+            // onPress={() => router.push("postDetails")}
           />
           <AppIoniconTouchable
             name="add"
@@ -92,7 +100,6 @@ const Home = () => {
     });
   }, [navigation, router]);
 
-  // displaying the posts using FlatList
   return (
     <SafeScreen>
       <FlatList
@@ -113,7 +120,7 @@ const Home = () => {
         ListFooterComponent={
           <View style={styles.container}>
             {hasMorePosts ? (
-              <Loading size="small" style={styles.loading} />
+              <Loading style={styles.loading} />
             ) : (
               <AppText style={styles.noMorePost}>No more posts</AppText>
             )}

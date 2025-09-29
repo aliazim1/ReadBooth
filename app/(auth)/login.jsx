@@ -1,6 +1,5 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
-
 import {
   Keyboard,
   StyleSheet,
@@ -83,22 +82,25 @@ export default function login() {
               title={"Welcome Back"}
               punchLine={"Your ReadVine community awaits"}
             />
+            <View>
+              <CustomInput
+                label={"Email"}
+                placeholder="Enter your email address"
+                keyboardType="email-address"
+                style={{ marginTop: 10 }}
+                value={email}
+                onChangeText={setEmail}
+              />
 
-            <CustomInput
-              placeholder="Email address"
-              keyboardType="email-address"
-              style={{ marginTop: 10 }}
-              value={email}
-              onChangeText={setEmail}
-            />
-
-            <CustomInput
-              placeholder="Password"
-              secureTextEntry={true}
-              style={{ marginTop: 10 }}
-              value={password}
-              onChangeText={setPassword}
-            />
+              <CustomInput
+                label={"Password"}
+                placeholder="Enter your password"
+                secureTextEntry={true}
+                style={{ marginTop: 10 }}
+                value={password}
+                onChangeText={setPassword}
+              />
+            </View>
 
             {/* display the error occurs during signing up */}
             {error ? (

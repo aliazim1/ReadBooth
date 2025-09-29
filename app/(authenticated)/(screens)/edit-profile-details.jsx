@@ -53,7 +53,11 @@ const EditProfileDetails = () => {
   const onSave = async () => {
     let userData = { ...user };
     let { name, username, phone, email, address, image, bio } = userData;
-    if (!name || !username || !email) {
+    if (
+      name.trim().length < 2 ||
+      username.trim().length < 3 ||
+      email.trim() === ""
+    ) {
       Alert.alert("Required Fields", "Name, username, and email are required.");
       return;
     }

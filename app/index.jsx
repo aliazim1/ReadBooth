@@ -16,7 +16,7 @@ const Index = () => {
         backgroundColor: theme.colors.white,
       }}
     >
-      <Loading size="small" />
+      <Loading />
     </View>
   );
 };

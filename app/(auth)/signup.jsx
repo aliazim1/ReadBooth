@@ -98,27 +98,33 @@ export default function signup() {
               title={"Join ReadVine"}
               punchLine={"Discover. Share. Connect"}
             />
-            <CustomInput
-              placeholder="Your full name"
-              style={{ marginTop: 10 }}
-              value={fullName}
-              onChangeText={setFullName}
-            />
-            <CustomInput
-              placeholder="Email address"
-              keyboardType="email-address"
-              style={{ marginTop: 10 }}
-              value={email}
-              onChangeText={setEmail}
-            />
 
-            <CustomInput
-              placeholder="Password"
-              secureTextEntry={true}
-              style={{ marginTop: 10 }}
-              value={password}
-              onChangeText={setPassword}
-            />
+            <View>
+              <CustomInput
+                label={"Full Name"}
+                placeholder="Enter your full name"
+                style={{ marginTop: 10 }}
+                value={fullName}
+                onChangeText={setFullName}
+              />
+              <CustomInput
+                label={"email Address"}
+                placeholder="Enter your email address"
+                keyboardType="email-address"
+                style={{ marginTop: 10 }}
+                value={email}
+                onChangeText={setEmail}
+              />
+
+              <CustomInput
+                label={"Password"}
+                placeholder="Create a password"
+                secureTextEntry={true}
+                style={{ marginTop: 10 }}
+                value={password}
+                onChangeText={setPassword}
+              />
+            </View>
 
             {/* display the error occurs during signing up */}
             {error ? (

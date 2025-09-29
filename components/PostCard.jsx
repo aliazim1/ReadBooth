@@ -13,7 +13,13 @@ import AppText from "./AppText";
 import Avatar from "./Avatar";
 import ExpoVideoPlayer from "./ExpoVideoPlayer";
 
-const PostCard = ({ item, currentUser, router }) => {
+const PostCard = ({
+  item,
+  currentUser,
+  router,
+  showMoreIcons = true,
+  onPress,
+}) => {
   const [likes, setLikes] = useState([]);
 
   useEffect(() => {
@@ -45,7 +51,7 @@ const PostCard = ({ item, currentUser, router }) => {
   const openPostDetails = () => {
     router.push({
       pathname: "postDetails",
-      params: { posdId: item?.id },
+      params: { postId: item?.id },
     });
   };
 
@@ -87,13 +93,19 @@ const PostCard = ({ item, currentUser, router }) => {
             <AppText style={styles.createdAt}>{createdAt}</AppText>
           </View>
         </View>
-
-        {/* 3-dots on the right */}
-        <AppIoniconTouchable
-          name="ellipsis-horizontal"
-          size={hp(2.2)}
-          onPress={openPostDetails}
-        />
+        <View
+          style={{
+            alignItems: "flex-end",
+            flexDirection: "row",
+            justifyContent: "flex-end",
+          }}
+        >
+          <AppIoniconTouchable
+            name={"ellipsis-horizontal"}
+            size={hp(2)}
+            onPress={showMoreIcons ? openPostDetails : onPress}
+          />
+        </View>
       </View>
 
       {/* container: post's caption */}
@@ -130,47 +142,65 @@ const PostCard = ({ item, currentUser, router }) => {
 
       {/* row container: post's footer (interactions: like, comment, save, share) */}
       <View style={styles.postFooterContainer}>
-        <View style={{ flexDirection: "row" }}>
-          <View style={styles.footerBtn}>
-            <AppIoniconTouchable
-              name="bookmark-outline"
-              size={22}
-              color={theme.colors.dark}
-              style={{ marginLeft: 0 }}
-            />
-            <AppText style={styles.footerLabel}>143.54M</AppText>
-          </View>
+        <View style={styles.footerBtnContainer}>
+          <AppIoniconTouchable
+            name={liked ? "leaf" : "leaf-outline"}
+            color={liked ? theme.colors.success : theme.colors.dark}
+            size={21}
+            onPress={onLike}
+            style={{ marginLeft: 0 }}
+          />
+
+          <AppText style={styles.footerLabel}>{likes?.length}</AppText>
+        </View>
+        <View style={styles.footerBtnContainer}>
+          <AppIoniconTouchable
+            name="chatbubble-outline"
+            size={19}
+            color={theme.colors.dark}
+            style={{ marginLeft: 0 }}
+            onPress={showMoreIcons ? openPostDetails : null}
+          />
+          <AppText style={styles.footerLabel}>
+            {item?.comments[0]?.count}
+          </AppText>
         </View>
 
-        <View style={styles.footerBtn}>
+        <View style={styles.footerBtnContainer}>
           <AppIoniconTouchable
-            name="share-outline"
-            size={24}
+            name="arrow-redo-outline"
+            size={20}
             color={theme.colors.dark}
             style={{ marginLeft: 0 }}
             onPress={onShare}
           />
-          <AppText style={styles.footerLabel}>143.54M</AppText>
+          <AppText style={styles.footerLabel}>Share post</AppText>
         </View>
 
-        <View style={styles.footerBtn}>
-          <AppIoniconTouchable
-            name="chatbubble-outline"
-            size={23}
-            color={theme.colors.dark}
-            style={{ marginLeft: 0 }}
-          />
-          <AppText style={styles.footerLabel}>42K</AppText>
+        <View style={{ flexDirection: "row" }}>
+          <View style={styles.footerBtnContainer}>
+            <AppIoniconTouchable
+              name="bookmark-outline"
+              size={19}
+              color={theme.colors.dark}
+              style={{ marginLeft: 0 }}
+            />
+
+            <AppText style={styles.footerLabel}>Save post</AppText>
+          </View>
         </View>
-        <View style={styles.footerBtn}>
-          <AppIoniconTouchable
-            name={liked ? "heart" : "heart-outline"}
-            color={liked ? theme.colors.rose : theme.colors.dark}
-            size={26}
-            onPress={onLike}
-            style={{ marginLeft: 0 }}
-          />
-          <AppText style={styles.footerLabel}>{likes?.length}</AppText>
+
+        <View style={{ flexDirection: "row" }}>
+          <View style={styles.footerBtnContainer}>
+            <AppIoniconTouchable
+              name="ban-outline"
+              size={20}
+              color={theme.colors.dark}
+              style={{ marginLeft: 0 }}
+            />
+
+            <AppText style={styles.footerLabel}>Hide post</AppText>
+          </View>
         </View>
       </View>
     </View>
@@ -228,16 +258,14 @@ const styles = StyleSheet.create({
   postFooterContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-start",
-    gap: 10,
+    justifyContent: "space-between",
     marginTop: hp(1),
-    paddingHorizontal: wp(5),
+    paddingHorizontal: wp(6),
   },
-  footerBtn: {
+  footerBtnContainer: {
     gap: 2,
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end",
+    alignItems: "flex-end",
   },
   footerLabel: {
     fontSize: hp(1),

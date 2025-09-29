@@ -9,7 +9,7 @@ export const theme = {
     bottomTabIcon: "#999999",
     mediumGrey: "#6e6969",
     success: "#4B8B3B",
-    blue: "#0000EE",
+    blue: "#007AFF",
     text: "#494949",
     textLight: "#7C7C7C",
     textDark: "#1D1D1D",

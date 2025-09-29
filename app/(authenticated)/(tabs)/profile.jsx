@@ -56,7 +56,7 @@ const Profile = () => {
 
                 <View style={{ width: wp(61) }}>
                   <AppText style={styles.value}>{user?.name}</AppText>
-                  <AppText>@{user?.username}</AppText>
+                  {user?.username && <AppText>@{user?.username}</AppText>}
                   {user?.address && <AppText>{user?.address}</AppText>}
                 </View>
                 <View>
@@ -67,7 +67,7 @@ const Profile = () => {
                   </TouchableOpacity>
                 </View>
               </View>
-              {user?.bio && <AppText>{user?.bio}</AppText>}
+              {user?.bio && <AppText style={styles.bio}>{user?.bio}</AppText>}
             </HorizontalPadding>
 
             <HorizontalPadding>
@@ -132,6 +132,9 @@ const styles = StyleSheet.create({
   },
   value: {
     fontWeight: theme.fonts.bold,
+  },
+  bio: {
+    marginLeft: wp(24.5),
   },
 });
 

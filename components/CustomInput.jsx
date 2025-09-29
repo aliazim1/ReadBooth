@@ -17,13 +17,14 @@ const CustomInput = ({
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <View>
+    <View style={styles.container}>
       {label && (
         <AppText style={{ marginTop: 20, fontWeight: theme.fonts.bold }}>
           {label}
         </AppText>
       )}
       <TextInput
+        {...props}
         clearButtonMode="while-editing"
         autoCapitalize="none"
         autoCorrect={false}
@@ -37,28 +38,28 @@ const CustomInput = ({
         placeholderTextColor={theme.colors.mediumGrey}
         className="input"
         style={[
-          styles.searchBox,
-
-          { borderColor: isFocused ? theme.colors.primary : theme.colors.dark },
-          ,
+          styles.textInput,
+          {
+            borderColor: isFocused
+              ? theme.colors.primary
+              : theme.colors.darkLight,
+          },
           style,
         ]}
-        {...props}
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  inputField: {
-    paddingVertical: hp(2),
-    paddingHorizontal: 2,
-    borderBottomWidth: 0.7,
+  container: {
+    flex: 1,
+    // paddingHorizontal: 1,
   },
-  searchBox: {
-    borderRadius: 15,
-    padding: hp(1.5),
+  textInput: {
+    padding: hp(1.3),
     borderWidth: 0.7,
+    borderRadius: theme.radius.md,
   },
 });
 export default CustomInput;

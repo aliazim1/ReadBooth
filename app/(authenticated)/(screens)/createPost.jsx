@@ -128,7 +128,7 @@ const CreatePost = () => {
   };
 
   return (
-    <SafeScreen style={{ paddingHorizontal: wp(4) }}>
+    <SafeScreen style={{ paddingHorizontal: wp(3.9) }}>
       <KeyboardAwareScrollView
         enableOnAndroid={true}
         extraScrollHeight={20}
@@ -139,7 +139,7 @@ const CreatePost = () => {
         }}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{ flex: 1 }}>
+          <View>
             {/* the profile details  */}
             <View style={styles.header}>
               <Avatar uri={user?.image} size={hp(6.5)} />
@@ -154,7 +154,7 @@ const CreatePost = () => {
               placeholder="What’s on your bookshelf today?"
               value={bodyContent}
               onChangeText={setBodyContent}
-              multiline
+              multiline={true}
               numberOfLines={5}
               style={styles.bodyContent}
             />
@@ -188,7 +188,7 @@ const CreatePost = () => {
 
             {/* attach media label & icons */}
             <View style={styles.mediaContainer}>
-              <AppText style={styles.addMediaText}>Photo/Video </AppText>
+              <AppText style={styles.addMediaText}> Add Photo/Video </AppText>
               <View style={styles.mediaIcon}>
                 <AppIoniconTouchable
                   name="image"
@@ -250,13 +250,9 @@ const styles = StyleSheet.create({
     fontWeight: theme.fonts.medium,
   },
   bodyContent: {
-    maxHeight: 5 * 20,
-    lineHeight: 20,
-    paddingVertical: 8,
-    textAlignVertical: "top",
-    width: "100%",
-    borderWidth: 0,
+    height: hp(15),
     marginVertical: hp(2),
+    textAlignVertical: "top",
   },
   file: {
     width: "100%",
@@ -268,14 +264,14 @@ const styles = StyleSheet.create({
   },
   mediaContainer: {
     padding: 10,
+    borderWidth: 0.7,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 14,
+    borderCurve: "continuous",
+    borderRadius: theme.radius.xl,
     justifyContent: "space-between",
-    // borderWidth: 1.5,
-    // borderCurve: "continuous",
-    // borderRadius: theme.radius.xl,
-    // borderColor: theme.colors.gray,
+    borderColor: theme.colors.darkLight,
   },
   mediaIcon: {
     gap: 25,
@@ -298,16 +294,16 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255, 0, 0, 0.6)",
   },
   successContainer: {
+    zIndex: 999,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: theme.colors.white,
-    zIndex: 999,
   },
   animationContainer: {
     width: wp(55),
     height: wp(55),
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
   },
   lottie: {
     width: 300,

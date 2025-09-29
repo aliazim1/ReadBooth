@@ -1,4 +1,3 @@
-import { useNavigation, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   Keyboard,
@@ -16,8 +15,6 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { hp, wp } from "../../../helpers/common";
 
 const ChangePassword = () => {
-  const router = useRouter();
-  const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const { user: currentUser, setAuth } = useAuth();
 
@@ -35,23 +32,6 @@ const ChangePassword = () => {
     }
   }, [currentUser]);
 
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => (
-  //       <TouchableOpacity disabled={false}>
-  //         <AppText
-  //           style={{
-  //             color: theme.colors.primary,
-  //             fontWeight: theme.fonts.bold,
-  //           }}
-  //         >
-  //           Save
-  //         </AppText>
-  //       </TouchableOpacity>
-  //     ),
-  //   });
-  // }, [navigation, router]);
-
   return (
     <SafeScreen bg={theme.colors.white}>
       <KeyboardAwareScrollView
@@ -64,21 +44,21 @@ const ChangePassword = () => {
         }}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={{ flex: 1 }}>
+          <View>
             <CustomInput
-              placeholder={""}
+              placeholder={"Type your current password"}
               label={"Current password"}
               value={user.passwrod}
               onChangeText={(value) => setUser({ ...user, passwrod: value })}
             />
             <CustomInput
-              placeholder={""}
+              placeholder={"Type your new password"}
               label={"New password"}
               value={user.newPassword}
               onChangeText={(value) => setUser({ ...user, phone: value })}
             />
             <CustomInput
-              placeholder={""}
+              placeholder={"Confirm your new password"}
               label={"Confirm new password"}
               value={user.email}
               onChangeText={(value) => setUser({ ...user, email: value })}
