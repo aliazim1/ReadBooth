@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import {
   Alert,
   Keyboard,
+  Pressable,
   StyleSheet,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -118,13 +118,13 @@ const EditProfileDetails = () => {
                 ) : (
                   <AppIonicon name={"user"} />
                 )}
-                <TouchableOpacity onPress={addProfilePic} style={styles.add}>
+                <Pressable onPress={addProfilePic} style={styles.add}>
                   <AppIonicon
                     name="camera"
-                    color={theme.colors.primary}
+                    color={theme.colors.dark}
                     size={20}
                   />
-                </TouchableOpacity>
+                </Pressable>
               </View>
             </View>
             <CustomInput
@@ -190,10 +190,11 @@ const styles = StyleSheet.create({
   },
   add: {
     position: "absolute",
-    bottom: 10,
-    right: 0,
+    bottom: -10,
+    left: wp(8.5),
     borderRadius: 50,
-    padding: 4,
+    paddingVertical: 1,
+    paddingHorizontal: 8,
     backgroundColor: theme.colors.white,
     shadowColor: "#0000006b",
     shadowOffset: { width: 0, height: 3 },

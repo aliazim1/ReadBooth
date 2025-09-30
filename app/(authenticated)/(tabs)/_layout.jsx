@@ -79,12 +79,12 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="inbox"
+        name="notifications"
         options={{
-          title: "Inbox",
+          title: "Notifications",
           tabBarIcon: ({ focused }) => (
             <AppIonicon
-              name={"chatbubbles"}
+              name={"notifications"}
               size={25}
               color={
                 focused ? theme.colors.primary : theme.colors.bottomTabIcon

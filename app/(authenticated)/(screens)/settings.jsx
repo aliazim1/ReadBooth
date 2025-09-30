@@ -63,8 +63,8 @@ const Settings = () => {
           icon={"logout"}
           label={"Log out"}
           chevron={false}
-          iconColor={theme.colors.rose}
-          labelColor={theme.colors.rose}
+          iconColor={theme.colors.danger}
+          labelColor={theme.colors.danger}
           style={{ paddingVertical: 16 }}
           onPress={() => handleLogOutBtn()}
         />

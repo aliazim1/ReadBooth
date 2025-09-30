@@ -24,13 +24,6 @@ const ScreensLayout = () => {
         }}
       />
       <Stack.Screen
-        name="comments"
-        options={{
-          headerTitle: "Comments",
-          presentation: "modal",
-        }}
-      />
-      <Stack.Screen
         name="settings"
         options={{
           headerTitle: "Settings and Privacy",

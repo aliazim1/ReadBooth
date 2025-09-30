@@ -15,20 +15,18 @@ import AppText from "../../components/AppText";
 import CommentItem from "../../components/CommentItem";
 import CustomInput from "../../components/CustomInput";
 import Loading from "../../components/Loading";
-import PostCard from "../../components/PostCard";
 import { theme } from "../../constants/theme";
 import { useAuth } from "../../contexts/AuthContext";
 import { hp, wp } from "../../helpers/common";
 import { supabase } from "../../lib/supabase";
 import {
   createComment,
-  deletePost,
   fetchPostDetails,
   removePostComment,
 } from "../../services/postService";
 import { getUserData } from "../../services/userService";
 
-const PostDetails = () => {
+const Comments = () => {
   const { user } = useAuth();
   const router = useRouter();
   const navigation = useNavigation();
@@ -122,7 +120,7 @@ const PostDetails = () => {
   };
 
   // function to delet the comment (only for comment and post owner)
-  const onDeleteComment = async (comment) => {
+  const onDelete = async (comment) => {
     let res = await removePostComment(comment?.id);
     if (res.success) {
       setPost((prevPost) => {
@@ -137,22 +135,9 @@ const PostDetails = () => {
     }
   };
 
-  const onDeletePost = async () => {
-    // delete post here
-    let res = await deletePost(postId);
-    if (res.success) {
-      router.back();
-    } else {
-      Alert.alert("Post", res.msg);
-    }
-  };
-
   // used for header + icons
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: post?.user?.name
-        ? `${post.user.name}'s post`
-        : "Post details",
       headerRight: () => (
         <AppIoniconTouchable
           style={{ marginLeft: 3.5 }}
@@ -191,14 +176,6 @@ const PostDetails = () => {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{ flex: 1 }}>
-            <PostCard
-              item={{ ...post, comments: [{ count: post.comments.length }] }}
-              currentUser={user}
-              router={router}
-              showMoreIcons={false}
-              onDelete={onDeletePost}
-            />
-
             {/* comments & text-input to add comment */}
             <View style={styles.inputContainer}>
               <CustomInput
@@ -225,10 +202,21 @@ const PostDetails = () => {
 
             {/* all comments list */}
             <View style={styles.commentsListContainer}>
-              {post?.comments?.length == 0 && (
-                <AppText style={{ fontSize: hp(1.4), marginLeft: 5 }}>
+              {post?.comments?.length == 0 ? (
+                <AppText style={styles.beFirst}>
                   Be the first to comment!
                 </AppText>
+              ) : (
+                <View style={styles.commentCountContainer}>
+                  <AppText style={styles.commentCount}>Comments</AppText>
+                  <AppText
+                    style={{
+                      fontSize: hp(1.4),
+                    }}
+                  >
+                    {post?.comments?.length}
+                  </AppText>
+                </View>
               )}
               {post?.comments?.map((comment) => (
                 <CommentItem
@@ -237,7 +225,7 @@ const PostDetails = () => {
                   canDelete={
                     user.id == comment.userId || user.id == post.userId
                   }
-                  onDelete={() => onDeleteComment(comment)}
+                  onDelete={() => onDelete(comment)}
                 />
               ))}
             </View>
@@ -284,5 +272,17 @@ const styles = StyleSheet.create({
     marginVertical: 16,
     gap: 17,
   },
+  commentCountContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  beFirst: {
+    fontSize: hp(1.4),
+  },
+  commentCount: {
+    fontSize: hp(1.4),
+    marginRight: 5,
+    fontWeight: theme.fonts.bold,
+  },
 });
-export default PostDetails;
+export default Comments;

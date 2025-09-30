@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     fontWeight: theme.fonts.medium,
     marginTop: hp(0.5),
     marginBottom: hp(2),
-    color: theme.colors.textDark,
+    color: theme.colors.dark,
     textAlign: "center",
   },
 });

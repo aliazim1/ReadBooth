@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
   errorText: {
-    color: theme.colors.rose,
+    color: theme.colors.danger,
     fontSize: 13,
   },
 });

@@ -52,7 +52,7 @@ const CommentItem = ({ item, canDelete = false, onDelete = () => {} }) => {
             <AppIoniconTouchable
               name="trash"
               size={16}
-              color={theme.colors.text}
+              color={theme.colors.dark}
               onPress={handleDelete}
             />
           )}
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: hp(1.5),
-    color: theme.colors.textDark,
+    color: theme.colors.dark,
     fontWeight: theme.fonts.semibold,
   },
   lightText: {

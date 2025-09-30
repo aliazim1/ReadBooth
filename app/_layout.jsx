@@ -39,7 +39,7 @@ const MainLayout = () => {
   };
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack screenOptions={{ headerShown: false, headerShadowVisible: false }}>
       <Stack.Screen name="index" />
       <Stack.Screen name="+not-found" />
       <Stack.Screen name="(authenticated)" />
@@ -48,7 +48,15 @@ const MainLayout = () => {
         options={{
           headerTitle: "",
           presentation: "modal",
-          headerShadowVisible: false,
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="(modals)/comments"
+        options={{
+          headerTitle: "Comments",
+          presentation: "modal",
+
           headerShown: true,
         }}
       />

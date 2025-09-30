@@ -7,6 +7,7 @@ import AppText from "../../../components/AppText";
 import Loading from "../../../components/Loading";
 import PostCard from "../../../components/PostCard";
 import SafeScreen from "../../../components/SafeScreen";
+import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
 import { hp } from "../../../helpers/common";
 import { supabase } from "../../../lib/supabase";
@@ -63,7 +64,7 @@ const Home = () => {
     // if no more post, do not call the API
     if (!hasMorePosts) return null;
     // increase the number of posts to fetch
-    limit = limit + 3;
+    limit = limit + 10;
     let res = await fetchPosts(limit); // call the API here
     if (res.success) {
       if (posts.length == res.data.length) setHasMorePosts(false);
@@ -108,7 +109,12 @@ const Home = () => {
         contentContainerStyle={{ paddingTop: 20 }}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <PostCard item={item} currentUser={user} router={router} />
+          <PostCard
+            item={item}
+            currentUser={user}
+            router={router}
+            showMoreIcons={true}
+          />
         )}
         ItemSeparatorComponent={() => (
           <View style={styles.ItemSeparatorComponent} />
@@ -139,19 +145,19 @@ const Home = () => {
 const styles = StyleSheet.create({
   ItemSeparatorComponent: {
     height: 1,
-    backgroundColor: "#e0e0e0",
     marginVertical: 10,
+    backgroundColor: theme.colors.itemSeparator,
   },
   container: {
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
   },
   loading: {
     marginVertical: 20,
   },
   noMorePost: {
-    marginVertical: 20,
     fontSize: hp(1.3),
+    marginVertical: 20,
   },
 });
 

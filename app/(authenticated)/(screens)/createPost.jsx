@@ -193,12 +193,12 @@ const CreatePost = () => {
                 <AppIoniconTouchable
                   name="image"
                   size={26}
-                  color={theme.colors.text}
+                  color={theme.colors.dark}
                   onPress={() => onPick(true)}
                 />
                 <AppIoniconTouchable
                   name="videocam"
-                  color={theme.colors.text}
+                  color={theme.colors.dark}
                   size={32}
                   onPress={() => onPick(false)}
                 />
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: hp(2.2),
-    color: theme.colors.textDark,
+    color: theme.colors.dark,
     fontWeight: theme.fonts.semibold,
   },
   publicText: {

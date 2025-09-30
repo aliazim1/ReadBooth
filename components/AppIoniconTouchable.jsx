@@ -1,7 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { memo } from "react";
-import { TouchableOpacity } from "react-native";
-
+import { Pressable } from "react-native";
 import { theme } from "../constants/theme";
 
 const AppIoniconTouchable = ({
@@ -13,7 +12,7 @@ const AppIoniconTouchable = ({
   style,
 }) => {
   return (
-    <TouchableOpacity onPress={onPress} style={[{ marginLeft: -12 }, style]}>
+    <Pressable onPress={onPress} style={style}>
       <Ionicons
         name={name}
         color={color}
@@ -21,7 +20,7 @@ const AppIoniconTouchable = ({
         strokeWidth={strokeWidth}
         style={{ alignSelf: "center" }}
       />
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

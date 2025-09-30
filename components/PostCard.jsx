@@ -1,24 +1,40 @@
+import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { Alert, Linking, Share, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  Linking,
+  Pressable,
+  Share,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import ParsedText from "react-native-parsed-text";
 
 import { theme } from "../constants/theme";
 import { hp, stripHtmlTags, wp } from "../helpers/common";
 import { getSupabaseFileUrl } from "../services/imageService";
 import { createPostLike, removePostLike } from "../services/postService";
-import AppIoniconTouchable from "./AppIoniconTouchable";
 import AppText from "./AppText";
 import Avatar from "./Avatar";
+import CustomAlert from "./CustomAlert";
 import ExpoVideoPlayer from "./ExpoVideoPlayer";
+
+//
+//
+// TODO:
+// 1. MAKE THE POST CARD SWIPABLE: swipe from right to left == navigate to postdetails screen
+//
+//
 
 const PostCard = ({
   item,
   currentUser,
   router,
   showMoreIcons = true,
-  onPress,
+  onDelete = () => {},
 }) => {
   const [likes, setLikes] = useState([]);
 
@@ -55,13 +71,30 @@ const PostCard = ({
     });
   };
 
+  // function to alert the user about deleting post
+  const handleDeletePost = () => {
+    CustomAlert({
+      title: "Delete post",
+      message: "Are you sure you want to delete this post?",
+      onConfirm: onDelete,
+    });
+  };
+
+  // function to open the post comments only
+  const openPostComments = () => {
+    router.push({
+      pathname: "comments",
+      params: { postId: item?.id },
+    });
+  };
+
   // function to share the post
   const onShare = async () => {
     let content = { message: stripHtmlTags(item?.body) }; // only shares the caption here
     Share.share(content);
   };
 
-  // opens the link if the body is as link
+  // function to open the link if the body is as link
   const handleUrlPress = (url) => {
     Linking.openURL(url);
   };
@@ -93,19 +126,30 @@ const PostCard = ({
             <AppText style={styles.createdAt}>{createdAt}</AppText>
           </View>
         </View>
-        <View
-          style={{
-            alignItems: "flex-end",
-            flexDirection: "row",
-            justifyContent: "flex-end",
-          }}
+        <Pressable
+          style={styles.actions}
+          onPress={
+            !showMoreIcons && currentUser?.id == item?.user?.id
+              ? handleDeletePost
+              : openPostDetails
+          }
         >
-          <AppIoniconTouchable
-            name={"ellipsis-horizontal"}
-            size={hp(2)}
-            onPress={showMoreIcons ? openPostDetails : onPress}
+          <Ionicons
+            name={
+              !showMoreIcons && currentUser?.id == item?.user?.id
+                ? "trash"
+                : showMoreIcons
+                ? "chevron-forward"
+                : ""
+            }
+            color={
+              !showMoreIcons && currentUser?.id == item?.user?.id
+                ? theme.colors.danger
+                : theme.colors.dark
+            }
+            size={hp(1.8)}
           />
-        </View>
+        </Pressable>
       </View>
 
       {/* container: post's caption */}
@@ -142,16 +186,145 @@ const PostCard = ({
 
       {/* row container: post's footer (interactions: like, comment, save, share) */}
       <View style={styles.postFooterContainer}>
-        <View style={styles.footerBtnContainer}>
+        <Pressable onPress={onLike} style={styles.footerBtnContainer}>
+          <Ionicons
+            name={liked ? "heart" : "heart-outline"}
+            color={liked ? theme.colors.danger : theme.colors.dark}
+            size={21}
+          />
+          <AppText style={styles.footerLabel}>{likes?.length}</AppText>
+        </Pressable>
+        <Pressable
+          onPress={showMoreIcons ? openPostComments : null}
+          style={styles.footerBtnContainer}
+        >
+          <Ionicons
+            name="chatbubble-outline"
+            size={19}
+            color={theme.colors.dark}
+          />
+          <AppText style={styles.footerLabel}>
+            {item?.comments[0]?.count}
+          </AppText>
+        </Pressable>
+        <Pressable onPress={onShare} style={styles.footerBtnContainer}>
+          <Ionicons
+            name="arrow-redo-outline"
+            size={20}
+            color={theme.colors.dark}
+          />
+          <AppText style={styles.footerLabel}>Share</AppText>
+        </Pressable>
+        <Pressable style={styles.footerBtnContainer}>
+          <Ionicons
+            name="bookmark-outline"
+            size={19}
+            color={theme.colors.dark}
+          />
+          <AppText style={styles.footerLabel}>Save</AppText>
+        </Pressable>
+        <Pressable style={styles.footerBtnContainer}>
+          <Ionicons
+            name="eye-off-outline"
+            size={20}
+            color={theme.colors.dark}
+          />
+          <AppText style={styles.footerLabel}>Hide</AppText>
+        </Pressable>
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    marginVertical: hp(1.2),
+  },
+  postHeader: {
+    paddingHorizontal: wp(3),
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+  },
+  actions: {
+    flexDirection: "row",
+    height: "100%",
+    width: 20,
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  headerFirstRow: {
+    gap: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  name: {
+    fontSize: hp(1.8),
+    color: theme.colors.dark,
+    fontWeight: theme.fonts.semibold,
+  },
+  username: {
+    fontSize: hp(1.5),
+    color: theme.colors.textLight,
+    fontWeight: theme.fonts.medium,
+  },
+  createdAt: {
+    fontSize: hp(1.2),
+    marginTop: -14,
+  },
+  captionContainer: {
+    paddingHorizontal: wp(4),
+    marginTop: hp(1),
+  },
+  text: {
+    fontSize: 16,
+    color: theme.colors.dark,
+  },
+  link: {
+    color: "blue",
+    textDecorationLine: "underline",
+  },
+  postMedia: {
+    height: hp(35),
+    marginTop: hp(1),
+    width: "100%",
+    borderCurve: "continuous",
+  },
+  postFooterContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: hp(1),
+    paddingHorizontal: wp(4),
+  },
+  footerBtnContainer: {
+    gap: 2,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+  },
+  footerLabel: {
+    fontSize: hp(1),
+  },
+});
+
+export default PostCard;
+
+// the old footer icons...
+{
+  /* <View style={styles.footerBtnContainer}>
           <AppIoniconTouchable
-            name={liked ? "leaf" : "leaf-outline"}
-            color={liked ? theme.colors.success : theme.colors.dark}
+            name={liked ? "heart" : "heart-outline"}
+            color={liked ? theme.colors.rose : theme.colors.dark}
             size={21}
             onPress={onLike}
             style={{ marginLeft: 0 }}
           />
 
-          <AppText style={styles.footerLabel}>{likes?.length}</AppText>
+          <AppText style={styles.footerLabel}>
+            {likes?.length} 
+          </AppText>
         </View>
         <View style={styles.footerBtnContainer}>
           <AppIoniconTouchable
@@ -201,75 +374,5 @@ const PostCard = ({
 
             <AppText style={styles.footerLabel}>Hide post</AppText>
           </View>
-        </View>
-      </View>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    marginVertical: hp(1.2),
-  },
-  postHeader: {
-    paddingHorizontal: wp(3),
-    flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-  },
-  headerFirstRow: {
-    gap: 8,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  name: {
-    fontSize: hp(1.8),
-    color: theme.colors.textDark,
-    fontWeight: theme.fonts.semibold,
-  },
-  username: {
-    fontSize: hp(1.5),
-    color: theme.colors.textLight,
-    fontWeight: theme.fonts.medium,
-  },
-  createdAt: {
-    fontSize: hp(1.2),
-    marginTop: -14,
-  },
-  captionContainer: {
-    paddingHorizontal: wp(4),
-    marginTop: hp(1),
-  },
-  text: {
-    fontSize: 16,
-    color: theme.colors.dark,
-  },
-  link: {
-    color: "blue",
-    textDecorationLine: "underline",
-  },
-  postMedia: {
-    height: hp(35),
-    marginTop: hp(1),
-    width: "100%",
-    borderCurve: "continuous",
-  },
-  postFooterContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginTop: hp(1),
-    paddingHorizontal: wp(6),
-  },
-  footerBtnContainer: {
-    gap: 2,
-    flexDirection: "row",
-    alignItems: "flex-end",
-  },
-  footerLabel: {
-    fontSize: hp(1),
-  },
-});
-
-export default PostCard;
+        </View> */
+}
