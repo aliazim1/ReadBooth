@@ -31,11 +31,6 @@ export default function TabLayout() {
             >
               ReadVine
             </AppText>
-            // <Image
-            //   tintColor={"#C65D3B"}
-            //   source={require("../../../assets/images/logo2.png")}
-            //   style={{ width: 60, height: 60 }}
-            // />
           ),
           tabBarIcon: ({ focused }) => (
             <Octicons

@@ -80,15 +80,17 @@ const Home = () => {
           style={{
             marginRight: 10,
             flexDirection: "row",
-            justifyContent: "space-between",
             alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
           <AppIoniconTouchable
             name="search"
             size={22}
             style={{ marginRight: 30 }}
+            //
             // TODO: add the search functionality
+            //
             // onPress={() => router.push("postDetails")}
           />
           <AppIoniconTouchable
@@ -126,7 +128,7 @@ const Home = () => {
         ListFooterComponent={
           <View style={styles.container}>
             {hasMorePosts ? (
-              <Loading style={styles.loading} />
+              <Loading style={{ marginVertical: 20 }} />
             ) : (
               <AppText style={styles.noMorePost}>No more posts</AppText>
             )}
@@ -151,9 +153,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
-  },
-  loading: {
-    marginVertical: 20,
   },
   noMorePost: {
     fontSize: hp(1.3),

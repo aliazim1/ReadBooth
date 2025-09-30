@@ -117,7 +117,6 @@ const CreatePost = () => {
       setFile(null);
       setBodyContent("");
       setShowSuccess(true); // show the animation
-      // wait for animation, then navigate
       setTimeout(() => {
         setShowSuccess(false);
         router.back();

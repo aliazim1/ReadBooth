@@ -139,7 +139,7 @@ const PostCard = ({
               !showMoreIcons && currentUser?.id == item?.user?.id
                 ? "trash"
                 : showMoreIcons
-                ? "chevron-forward"
+                ? "ellipsis-horizontal"
                 : ""
             }
             color={
@@ -286,9 +286,9 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
   postMedia: {
-    height: hp(35),
-    marginTop: hp(1),
     width: "100%",
+    aspectRatio: 1,
+    marginTop: hp(1),
     borderCurve: "continuous",
   },
   postFooterContainer: {

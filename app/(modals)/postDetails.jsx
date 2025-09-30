@@ -29,14 +29,14 @@ import {
 import { getUserData } from "../../services/userService";
 
 const PostDetails = () => {
-  const { user } = useAuth();
   const router = useRouter();
   const navigation = useNavigation();
-  const { postId } = useLocalSearchParams();
+  const { user } = useAuth();
   const [post, setPost] = useState(null);
+  const { postId } = useLocalSearchParams();
+  const [comment, setComment] = useState("");
   const [startLoading, setStartLoading] = useState(true);
   const [loadingSend, setLoadingSend] = useState(false);
-  const [comment, setComment] = useState("");
 
   const handleNewComment = async (payload) => {
     if (payload.new) {
@@ -73,7 +73,6 @@ const PostDetails = () => {
       .subscribe();
     getPostDetails();
 
-    // cleanup on unmount & remove subscription
     return () => {
       supabase.removeChannel(commentChannel);
     };
@@ -81,7 +80,6 @@ const PostDetails = () => {
 
   // function to get the post's details
   const getPostDetails = async () => {
-    // fetch post details here
     let res = await fetchPostDetails(postId);
     if (res.success) setPost(res.data);
     setStartLoading(false);
@@ -121,7 +119,7 @@ const PostDetails = () => {
     }
   };
 
-  // function to delet the comment (only for comment and post owner)
+  // function to delet the comment (by ownership)
   const onDeleteComment = async (comment) => {
     let res = await removePostComment(comment?.id);
     if (res.success) {
@@ -137,8 +135,8 @@ const PostDetails = () => {
     }
   };
 
+  // function to delete the post (by ownership)
   const onDeletePost = async () => {
-    // delete post here
     let res = await deletePost(postId);
     if (res.success) {
       router.back();
@@ -223,7 +221,7 @@ const PostDetails = () => {
               )}
             </View>
 
-            {/* all comments list */}
+            {/* all the comments */}
             <View style={styles.commentsListContainer}>
               {post?.comments?.length == 0 && (
                 <AppText style={{ fontSize: hp(1.4), marginLeft: 5 }}>
@@ -251,26 +249,26 @@ const PostDetails = () => {
 const styles = StyleSheet.create({
   notFound: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
   },
   inputContainer: {
     gap: 10,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: wp(4),
     paddingVertical: hp(1),
+    paddingHorizontal: wp(4),
     backgroundColor: "#fff",
   },
 
   input: {
-    maxHeight: 5 * 20,
-    lineHeight: 20,
-    paddingVertical: 8,
-    textAlignVertical: "top",
     width: "100%",
     borderWidth: 0,
+    lineHeight: 20,
+    maxHeight: 5 * 20,
+    paddingVertical: 8,
     marginVertical: hp(2),
+    textAlignVertical: "top",
   },
   sendBtn: {
     padding: 8,
@@ -280,9 +278,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.primary,
   },
   commentsListContainer: {
-    paddingHorizontal: wp(4),
-    marginVertical: 16,
     gap: 17,
+    marginVertical: 16,
+    paddingHorizontal: wp(4),
   },
 });
 export default PostDetails;
