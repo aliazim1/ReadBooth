@@ -2,7 +2,7 @@ import { supabase } from "../lib/supabase";
 import { uploadFile } from "./imageService";
 
 // function to create a new post including (image/video, caption )
-export const createOrUpdatePost = async (post) => {
+export const createPost = async (post) => {
   try {
     // if there’s a file, upload it first
     if (post.file && typeof post.file === "object") {
@@ -39,27 +39,75 @@ export const createOrUpdatePost = async (post) => {
   }
 };
 
-// function to fetch all the posts with a limit of 10 posts first
-export const fetchPosts = async (limit = 10) => {
+// function to edit the post
+export const updatePost = async ({ id, body }) => {
   try {
     const { data, error } = await supabase
       .from("posts")
-      .select(
-        `
+      .update({ body })
+      .eq("id", Number(id)) // 👈 ensure it's a number if your DB column is int
+      .select()
+      .maybeSingle(); // 👈 use maybeSingle to avoid crash if no rows
+
+    if (error) {
+      console.log("updatePost: ", error);
+      return { success: false, msg: "Could not update the post" };
+    }
+
+    if (!data) {
+      return { success: false, msg: "No post found with that id" };
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.log("updatePost: ", error);
+    return { success: false, msg: "Could not update the post" };
+  }
+};
+
+// function to fetch all the posts with a limit of 10 posts first
+export const fetchPosts = async (limit = 10, userId) => {
+  try {
+    if (userId) {
+      const { data, error } = await supabase
+        .from("posts")
+        .select(
+          `
         *,
         user: users (id, name, username, image ),
         postLikes(*),
         comments(count)
         `
-      )
-      .order("created_at", { ascending: false })
-      .limit(limit);
+        )
+        .order("created_at", { ascending: false })
+        .eq("userId", userId)
+        .limit(limit);
 
-    if (error) {
-      console.log("fetchPosts error: ", error);
-      return { success: false, msg: "Could not fetch the posts" };
+      if (error) {
+        console.log("fetchPosts error: ", error);
+        return { success: false, msg: "Could not fetch the posts" };
+      }
+      return { success: true, data: data };
+    } else {
+      const { data, error } = await supabase
+        .from("posts")
+        .select(
+          `
+        *,
+        user: users (id, name, username, image ),
+        postLikes(*),
+        comments(count)
+        `
+        )
+        .order("created_at", { ascending: false })
+        .limit(limit);
+
+      if (error) {
+        console.log("fetchPosts error: ", error);
+        return { success: false, msg: "Could not fetch the posts" };
+      }
+      return { success: true, data: data };
     }
-    return { success: true, data: data };
   } catch (error) {
     console.log("fetchPosts error: ", error);
     return { success: false, msg: "Could not fetch the posts" };

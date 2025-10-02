@@ -32,6 +32,25 @@ const Home = () => {
       newPost.user = res.success ? res.data : {};
       setPosts((prev) => [newPost, ...prev]);
     }
+
+    if (payload.eventType == "DELETE" && payload.old.id) {
+      setPosts((prev) => {
+        let updatedPosts = prev.filter((post) => post.id != payload.old.id);
+        return updatedPosts;
+      });
+    }
+
+    if (payload.eventType == "UPDATE" && payload?.new?.id) {
+      setPosts((prev) => {
+        let updatedPosts = prev.map((post) => {
+          if (post.id == payload.new.id) {
+            post.body = payload.new.body;
+            post.file = payload.new.file;
+          }
+          return updatedPosts;
+        });
+      });
+    }
   };
 
   useEffect(() => {
@@ -88,10 +107,7 @@ const Home = () => {
             name="search"
             size={22}
             style={{ marginRight: 30 }}
-            //
             // TODO: add the search functionality
-            //
-            // onPress={() => router.push("postDetails")}
           />
           <AppIoniconTouchable
             name="add"
@@ -115,7 +131,7 @@ const Home = () => {
             item={item}
             currentUser={user}
             router={router}
-            showMoreIcons={true}
+            homeScreen={true}
           />
         )}
         ItemSeparatorComponent={() => (

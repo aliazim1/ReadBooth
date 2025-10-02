@@ -16,27 +16,20 @@ import ParsedText from "react-native-parsed-text";
 import { theme } from "../constants/theme";
 import { hp, stripHtmlTags, wp } from "../helpers/common";
 import { getSupabaseFileUrl } from "../services/imageService";
-import { createPostLike, removePostLike } from "../services/postService";
+import {
+  createPostLike,
+  deletePost,
+  removePostLike,
+} from "../services/postService";
 import AppText from "./AppText";
 import Avatar from "./Avatar";
 import CustomAlert from "./CustomAlert";
 import ExpoVideoPlayer from "./ExpoVideoPlayer";
+import PostOptionsModal from "./PostOptionasModal";
 
-//
-//
-// TODO:
-// 1. MAKE THE POST CARD SWIPABLE: swipe from right to left == navigate to postdetails screen
-//
-//
-
-const PostCard = ({
-  item,
-  currentUser,
-  router,
-  showMoreIcons = true,
-  onDelete = () => {},
-}) => {
+const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
   const [likes, setLikes] = useState([]);
+  const [menuVisible, setMenuVisible] = useState(false);
 
   useEffect(() => {
     setLikes(item?.postLikes);
@@ -71,15 +64,6 @@ const PostCard = ({
     });
   };
 
-  // function to alert the user about deleting post
-  const handleDeletePost = () => {
-    CustomAlert({
-      title: "Delete post",
-      message: "Are you sure you want to delete this post?",
-      onConfirm: onDelete,
-    });
-  };
-
   // function to open the post comments only
   const openPostComments = () => {
     router.push({
@@ -92,6 +76,35 @@ const PostCard = ({
   const onShare = async () => {
     let content = { message: stripHtmlTags(item?.body) }; // only shares the caption here
     Share.share(content);
+  };
+
+  // function to delete the post (by ownership)
+  const onDeletePost = async () => {
+    let res = await deletePost(item?.id);
+    if (res.success) {
+      setMenuVisible(false);
+      router.back();
+    } else {
+      Alert.alert("Post", res.msg);
+    }
+  };
+
+  // alert to ensure the user want to delete the post
+  const handleDeletePost = () => {
+    CustomAlert({
+      title: "Delete Post",
+      message: "Are you sure you want to delete this post?",
+      onConfirm: onDeletePost,
+    });
+  };
+
+  // function to navigate to the EditPost
+  const onEditPost = async () => {
+    if (!homeScreen) {
+      router.back();
+    }
+
+    router.push({ pathname: "editPost", params: { ...item } });
   };
 
   // function to open the link if the body is as link
@@ -107,46 +120,24 @@ const PostCard = ({
     : false;
 
   return (
-    // column container: for post
     <View style={styles.container}>
-      {/* row container: user's avatar, name, username, post created_at, 3-dots */}
+      {/* user's avatar, name, username, post created_at, 3-dots */}
       <View style={styles.postHeader}>
         {/* avatar */}
         <View style={styles.headerFirstRow}>
           <Avatar size={hp(5)} uri={item?.user?.image} />
-
-          {/* name & user name as column */}
           <View>
             <Text style={styles.name}>{item?.user?.name}</Text>
             <AppText style={styles.username}>@{item?.user?.username}</AppText>
           </View>
-
-          {/* created_at  */}
           <View style={styles.createdAtContainer}>
             <AppText style={styles.createdAt}>{createdAt}</AppText>
           </View>
         </View>
-        <Pressable
-          style={styles.actions}
-          onPress={
-            !showMoreIcons && currentUser?.id == item?.user?.id
-              ? handleDeletePost
-              : openPostDetails
-          }
-        >
+        <Pressable style={styles.actions} onPress={() => setMenuVisible(true)}>
           <Ionicons
-            name={
-              !showMoreIcons && currentUser?.id == item?.user?.id
-                ? "trash"
-                : showMoreIcons
-                ? "ellipsis-horizontal"
-                : ""
-            }
-            color={
-              !showMoreIcons && currentUser?.id == item?.user?.id
-                ? theme.colors.danger
-                : theme.colors.dark
-            }
+            name={"ellipsis-horizontal"}
+            color={theme.colors.dark}
             size={hp(1.8)}
           />
         </Pressable>
@@ -155,25 +146,29 @@ const PostCard = ({
       {/* container: post's caption */}
       {item?.body && (
         <View style={styles.captionContainer}>
-          <ParsedText
-            style={styles.text}
-            parse={[
-              { type: "url", style: styles.link, onPress: handleUrlPress },
-            ]}
-          >
-            {item?.body}
-          </ParsedText>
+          <Pressable onPress={homeScreen ? openPostDetails : () => {}}>
+            <ParsedText
+              style={styles.text}
+              parse={[
+                { type: "url", style: styles.link, onPress: handleUrlPress },
+              ]}
+            >
+              {item?.body}
+            </ParsedText>
+          </Pressable>
         </View>
       )}
 
       {/* container: if post's media is image */}
       {item?.file && item?.file?.includes("postImages") && (
-        <Image
-          source={getSupabaseFileUrl(item?.file)}
-          transition={100}
-          contentFit="cover"
-          style={styles.postMedia}
-        />
+        <Pressable onPress={homeScreen ? openPostDetails : () => {}}>
+          <Image
+            source={getSupabaseFileUrl(item?.file)}
+            transition={100}
+            contentFit="cover"
+            style={styles.postMedia}
+          />
+        </Pressable>
       )}
 
       {/* container: if post's media is video */}
@@ -186,6 +181,17 @@ const PostCard = ({
 
       {/* row container: post's footer (interactions: like, comment, save, share) */}
       <View style={styles.postFooterContainer}>
+        {/* <View style={{ flexDirection: "row" }}> */}
+
+        {/* </View> */}
+        <Pressable style={styles.footerBtnContainer} onPress={onShare}>
+          <Ionicons
+            name="arrow-redo-outline"
+            size={19}
+            color={theme.colors.dark}
+          />
+          <AppText style={styles.footerLabel}>Save</AppText>
+        </Pressable>
         <Pressable onPress={onLike} style={styles.footerBtnContainer}>
           <Ionicons
             name={liked ? "heart" : "heart-outline"}
@@ -195,7 +201,7 @@ const PostCard = ({
           <AppText style={styles.footerLabel}>{likes?.length}</AppText>
         </Pressable>
         <Pressable
-          onPress={showMoreIcons ? openPostComments : null}
+          onPress={homeScreen ? openPostComments : null}
           style={styles.footerBtnContainer}
         >
           <Ionicons
@@ -207,14 +213,6 @@ const PostCard = ({
             {item?.comments[0]?.count}
           </AppText>
         </Pressable>
-        <Pressable onPress={onShare} style={styles.footerBtnContainer}>
-          <Ionicons
-            name="arrow-redo-outline"
-            size={20}
-            color={theme.colors.dark}
-          />
-          <AppText style={styles.footerLabel}>Share</AppText>
-        </Pressable>
         <Pressable style={styles.footerBtnContainer}>
           <Ionicons
             name="bookmark-outline"
@@ -223,15 +221,20 @@ const PostCard = ({
           />
           <AppText style={styles.footerLabel}>Save</AppText>
         </Pressable>
-        <Pressable style={styles.footerBtnContainer}>
-          <Ionicons
-            name="eye-off-outline"
-            size={20}
-            color={theme.colors.dark}
-          />
-          <AppText style={styles.footerLabel}>Hide</AppText>
-        </Pressable>
       </View>
+      <PostOptionsModal
+        visible={menuVisible}
+        homeScreen={homeScreen}
+        owner={item?.user?.id == currentUser?.id}
+        onClose={() => setMenuVisible(false)}
+        onShare={onShare}
+        onEdit={onEditPost}
+        onSave={() => {}}
+        onHide={() => {}}
+        onReport={() => {}}
+        onDelete={handleDeletePost}
+        item={item}
+      />
     </View>
   );
 };

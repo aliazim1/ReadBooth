@@ -56,7 +56,14 @@ const MainLayout = () => {
         options={{
           headerTitle: "Comments",
           presentation: "modal",
-
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="(modals)/editPost"
+        options={{
+          headerTitle: "Edit Post",
+          presentation: "modal",
           headerShown: true,
         }}
       />

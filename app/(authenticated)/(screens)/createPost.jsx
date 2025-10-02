@@ -24,7 +24,7 @@ import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
 import { hp, wp } from "../../../helpers/common";
 import { getSupabaseFileUrl } from "../../../services/imageService";
-import { createOrUpdatePost } from "../../../services/postService";
+import { createPost } from "../../../services/postService";
 
 const CreatePost = () => {
   const { user } = useAuth();
@@ -111,7 +111,7 @@ const CreatePost = () => {
 
     // create post
     setLoading(true);
-    let res = await createOrUpdatePost(data);
+    let res = await createPost(data);
     setLoading(false);
     if (res.success) {
       setFile(null);

@@ -1,21 +1,20 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { memo } from "react";
 import { StyleSheet, Switch, TouchableOpacity, View } from "react-native";
 
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { theme } from "../constants/theme";
+import { wp } from "../helpers/common";
 import AppText from "./AppText";
 
 const SettingListItem = ({
   label,
   icon,
-  iconColor = theme.colors.mediumGrey,
+  iconColor = theme.colors.dark,
   labelColor = theme.colors.dark,
   iconBgColor = theme.colors.lightGrey,
   chevron = true,
-  labelCenter = false,
   notification = false,
-  bgColor = "red",
-  toggle = false,
+  toggle = false, // for dark mode toggle
   description,
   value,
   onValueChange,
@@ -136,7 +135,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: theme.colors.white,
-    paddingHorizontal: 16,
+    paddingHorizontal: wp(4),
     justifyContent: "space-between",
   },
   left: {

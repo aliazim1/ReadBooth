@@ -1,5 +1,5 @@
 import { useNavigation, useRouter } from "expo-router";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
@@ -7,10 +7,13 @@ import AppMaterialCommunityIcon from "../../../components/AppMaterialCommunityIc
 import AppText from "../../../components/AppText";
 import Avatar from "../../../components/Avatar";
 import HorizontalPadding from "../../../components/HorizontalPadding";
+import Loading from "../../../components/Loading";
+import PostCard from "../../../components/PostCard";
 import SafeScreen from "../../../components/SafeScreen";
 import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
 import { hp, wp } from "../../../helpers/common";
+import { fetchPosts } from "../../../services/postService";
 
 const StatsItem = ({ title, value }) => {
   return (
@@ -21,10 +24,29 @@ const StatsItem = ({ title, value }) => {
   );
 };
 
+// global variable for the number of posts (limit)
+var limit = 0;
+
 const Profile = () => {
   const { user, setAuth } = useAuth();
   const router = useRouter();
   const navigation = useNavigation();
+  const [posts, setPosts] = useState([]);
+  const [hasMorePosts, setHasMorePosts] = useState(true);
+
+  // function: fetching the posts
+  const getPosts = async () => {
+    // if no more post, do not call the API
+    if (!hasMorePosts) return null;
+    // increase the number of posts to fetch
+    limit = limit + 10;
+    let res = await fetchPosts(limit, user.id); // call the API here
+    if (res.success) {
+      if (posts.length == res.data.length) setHasMorePosts(false);
+      setPosts(res.data);
+    }
+  };
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: user?.name ? user.name : "Profile",
@@ -39,15 +61,13 @@ const Profile = () => {
     });
   }, [navigation, router]);
 
-  const renderTabContent = () => {
-    return <AppText>The Footer contents</AppText>;
-  };
-
   return (
     <SafeScreen>
       <FlatList
-        data={[1]} // just a single item
-        keyExtractor={(item, index) => index.toString()}
+        data={posts}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingTop: 20 }}
+        keyExtractor={(item) => item.id.toString()}
         ListHeaderComponent={
           <View style={styles.profileDetails}>
             <HorizontalPadding>
@@ -71,23 +91,48 @@ const Profile = () => {
             </HorizontalPadding>
 
             <HorizontalPadding>
-              <View style={styles.row}>
+              <View style={styles.statRow}>
                 <StatsItem title="Followers" value="23" />
                 <StatsItem title="Following" value="31" />
-                <StatsItem title="Posts" value="93" />
-                <StatsItem title="Community" value="5" />
+                <StatsItem title="Posts" value={posts.length} />
+                <StatsItem title="Books" value="5" />
               </View>
             </HorizontalPadding>
+
+            {/* <ScrollView horizontal contentContainerStyle={{ flex: 1, gap: 20 }}>
+              <AppIoniconTouchable name="send" />
+              <AppIoniconTouchable name="send" />
+              <AppIoniconTouchable name="send" />
+              <AppIoniconTouchable name="send" />
+              <AppIoniconTouchable name="send" />
+              <AppIoniconTouchable name="send" />
+              <AppIoniconTouchable name="send" />
+              <AppIoniconTouchable name="send" />
+              <AppIoniconTouchable name="send" />
+              <AppIoniconTouchable name="send" />
+            </ScrollView> */}
           </View>
         }
-        renderItem={() => (
-          <HorizontalPadding>
-            <AppText>The renderItem contents </AppText>
-            <View style={{ paddingBottom: 50 }}>{renderTabContent()}</View>
-          </HorizontalPadding>
+        renderItem={({ item }) => (
+          <PostCard
+            item={item}
+            currentUser={user}
+            router={router}
+            homeScreen={true}
+          />
         )}
-        scrollEnabled
-        showsVerticalScrollIndicator={false}
+        ItemSeparatorComponent={() => (
+          <View style={styles.ItemSeparatorComponent} />
+        )}
+        onEndReached={() => {
+          getPosts();
+        }}
+        onEndReachedThreshold={0}
+        ListFooterComponent={
+          <View style={styles.container}>
+            {hasMorePosts ? <Loading style={{ marginVertical: 20 }} /> : <></>}
+          </View>
+        }
       />
     </SafeScreen>
   );
@@ -100,31 +145,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   profileColumn: {
-    // backgroundColor: "red",
     width: "100%",
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
     gap: 10,
   },
-  add: {
-    position: "absolute",
-    bottom: 8,
-    right: 0,
-    borderRadius: 50,
-    padding: 5,
-    backgroundColor: theme.colors.white,
-    shadowColor: "#0000006b",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 1,
-    shadowRadius: 5,
-    elevation: 5,
-  },
-  row: {
+
+  statRow: {
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    marginTop: hp(2),
+    marginVertical: hp(2),
   },
   column: {
     alignItems: "center",
@@ -134,7 +166,21 @@ const styles = StyleSheet.create({
     fontWeight: theme.fonts.bold,
   },
   bio: {
-    marginLeft: wp(24.5),
+    marginTop: 15,
+    marginLeft: wp(2),
+  },
+  ItemSeparatorComponent: {
+    height: 1,
+    marginVertical: 10,
+    backgroundColor: theme.colors.itemSeparator,
+  },
+  container: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  noMorePost: {
+    fontSize: hp(1.3),
+    marginVertical: 20,
   },
 });
 

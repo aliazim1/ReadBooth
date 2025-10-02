@@ -22,7 +22,6 @@ import { hp, wp } from "../../helpers/common";
 import { supabase } from "../../lib/supabase";
 import {
   createComment,
-  deletePost,
   fetchPostDetails,
   removePostComment,
 } from "../../services/postService";
@@ -135,16 +134,6 @@ const PostDetails = () => {
     }
   };
 
-  // function to delete the post (by ownership)
-  const onDeletePost = async () => {
-    let res = await deletePost(postId);
-    if (res.success) {
-      router.back();
-    } else {
-      Alert.alert("Post", res.msg);
-    }
-  };
-
   // used for header + icons
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -193,8 +182,7 @@ const PostDetails = () => {
               item={{ ...post, comments: [{ count: post.comments.length }] }}
               currentUser={user}
               router={router}
-              showMoreIcons={false}
-              onDelete={onDeletePost}
+              homeScreen={false}
             />
 
             {/* comments & text-input to add comment */}
