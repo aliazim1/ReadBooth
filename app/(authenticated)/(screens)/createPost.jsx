@@ -1,4 +1,3 @@
-import { Video } from "expo-av";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
@@ -14,6 +13,7 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+import { Video } from "expo-av";
 import AppButton from "../../../components/AppButton";
 import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
 import AppText from "../../../components/AppText";
@@ -50,9 +50,10 @@ const CreatePost = () => {
       if (!result.canceled) {
         if (result.assets && result.assets.length > 0) {
           file = result.assets[0];
+          if (!file.type) file.type = isImage ? "image" : "video";
         } else if (result.uri) {
           // fallback for single file (trimmed video)
-          file = { uri: result.uri };
+          file = { uri: result.uri, type: isImage ? "image" : "video" };
         }
       }
 
@@ -78,12 +79,14 @@ const CreatePost = () => {
 
     // check for local files
     if (isLocalFile(file)) {
-      return file.type;
+      return file.type || (file.uri?.endsWith(".mp4") ? "video" : "image");
     }
 
     // check for remote file if image/video
     if (file.includes("postImages")) return "image";
-    return "video";
+    if (file.includes("postVideos")) return "video";
+
+    return null;
   };
 
   const getFileUri = (file) => {
@@ -162,11 +165,23 @@ const CreatePost = () => {
             {file && (
               <View style={styles.file}>
                 {getFileType(file) == "video" ? (
+                  // <ExpoVideoPlayer
+                  //   source={{ uri: getFileUri(file) }}
+                  //   useNativeControls
+                  //   resizeMode="cover"
+                  //   shouldPlay
+                  //   isLooping
+                  //   style={{
+                  //     width: "100%",
+                  //     height: "100%",
+                  //   }}
+                  // />
                   <Video
                     style={{ flex: 1 }}
                     source={{ uri: getFileUri(file) }}
                     useNativeControls
                     resizeMode="cover"
+                    shouldPlay
                     isLooping
                   />
                 ) : (

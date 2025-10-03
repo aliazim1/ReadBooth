@@ -20,6 +20,7 @@ import { theme } from "../../constants/theme";
 import { useAuth } from "../../contexts/AuthContext";
 import { hp, wp } from "../../helpers/common";
 import { supabase } from "../../lib/supabase";
+import { createNotification } from "../../services/notificationService";
 import {
   createComment,
   fetchPostDetails,
@@ -32,7 +33,7 @@ const PostDetails = () => {
   const navigation = useNavigation();
   const { user } = useAuth();
   const [post, setPost] = useState(null);
-  const { postId } = useLocalSearchParams();
+  const { postId, commentId } = useLocalSearchParams();
   const [comment, setComment] = useState("");
   const [startLoading, setStartLoading] = useState(true);
   const [loadingSend, setLoadingSend] = useState(false);
@@ -93,12 +94,22 @@ const PostDetails = () => {
       text: comment,
     };
 
-    setLoadingSend(true); // create the comment
+    setLoadingSend(true);
     let res = await createComment(data);
     setLoadingSend(false);
     setComment("");
 
     if (res.success) {
+      if (user.id != post.userId) {
+        // send notification
+        let notify = {
+          senderId: user.id,
+          receiverId: post.userId,
+          title: "commented on your post",
+          data: JSON.stringify({ postId: post.id, commentId: res?.data?.id }),
+        };
+        createNotification(notify);
+      }
       let userRes = await getUserData(res.data.userId);
       let newComment = {
         ...res.data,
@@ -211,15 +222,27 @@ const PostDetails = () => {
 
             {/* all the comments */}
             <View style={styles.commentsListContainer}>
-              {post?.comments?.length == 0 && (
-                <AppText style={{ fontSize: hp(1.4), marginLeft: 5 }}>
+              {post?.comments?.length == 0 ? (
+                <AppText style={styles.beFirst}>
                   Be the first to comment!
                 </AppText>
+              ) : (
+                <View style={styles.commentCountContainer}>
+                  <AppText style={styles.commentCount}>Comments</AppText>
+                  <AppText
+                    style={{
+                      fontSize: hp(1.4),
+                    }}
+                  >
+                    {post?.comments?.length}
+                  </AppText>
+                </View>
               )}
               {post?.comments?.map((comment) => (
                 <CommentItem
                   key={comment?.id?.toString()}
                   item={comment}
+                  highlight={comment.id == commentId}
                   canDelete={
                     user.id == comment.userId || user.id == post.userId
                   }
@@ -266,9 +289,23 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.primary,
   },
   commentsListContainer: {
-    gap: 17,
+    gap: 12,
     marginVertical: 16,
-    paddingHorizontal: wp(4),
+  },
+
+  commentCountContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  beFirst: {
+    fontSize: hp(1.4),
+    paddingLeft: wp(4),
+  },
+  commentCount: {
+    fontSize: hp(1.4),
+    marginRight: 5,
+    paddingLeft: wp(4),
+    fontWeight: theme.fonts.bold,
   },
 });
 export default PostDetails;

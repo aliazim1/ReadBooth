@@ -19,6 +19,7 @@ import { theme } from "../../constants/theme";
 import { useAuth } from "../../contexts/AuthContext";
 import { hp, wp } from "../../helpers/common";
 import { supabase } from "../../lib/supabase";
+import { createNotification } from "../../services/notificationService";
 import {
   createComment,
   fetchPostDetails,
@@ -100,6 +101,16 @@ const Comments = () => {
     setComment("");
 
     if (res.success) {
+      if (user.id != post.userId) {
+        // send notification if now my own post
+        let notify = {
+          senderId: user.id,
+          receiverId: post.userId,
+          title: "commented on your post",
+          data: JSON.stringify({ postId: post.id, commentId: res?.data?.id }),
+        };
+        createNotification(notify);
+      }
       let userRes = await getUserData(res.data.userId);
       let newComment = {
         ...res.data,
@@ -268,9 +279,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.primary,
   },
   commentsListContainer: {
-    paddingHorizontal: wp(4),
-    marginVertical: 16,
     gap: 17,
+    marginVertical: 16,
   },
   commentCountContainer: {
     flexDirection: "row",
@@ -278,10 +288,12 @@ const styles = StyleSheet.create({
   },
   beFirst: {
     fontSize: hp(1.4),
+    paddingLeft: wp(4),
   },
   commentCount: {
     fontSize: hp(1.4),
     marginRight: 5,
+    paddingLeft: wp(4),
     fontWeight: theme.fonts.bold,
   },
 });

@@ -8,7 +8,12 @@ import AppIoniconTouchable from "./AppIoniconTouchable";
 import AppText from "./AppText";
 import Avatar from "./Avatar";
 
-const CommentItem = ({ item, canDelete = false, onDelete = () => {} }) => {
+const CommentItem = ({
+  item,
+  highlight = false,
+  canDelete = false,
+  onDelete = () => {},
+}) => {
   // formats the created_at time as (min/hr ago)
   const createdAt = moment(item?.created_at).fromNow();
 
@@ -22,8 +27,8 @@ const CommentItem = ({ item, canDelete = false, onDelete = () => {} }) => {
   };
 
   return (
-    <View>
-      <View style={styles.commentHeader}>
+    <View style={highlight && styles.hightlight}>
+      <View style={[styles.commentHeader]}>
         <View style={styles.imgNameTime}>
           <Avatar uri={item?.user?.image} size={40} />
           <View>
@@ -67,6 +72,8 @@ const CommentItem = ({ item, canDelete = false, onDelete = () => {} }) => {
 const styles = StyleSheet.create({
   commentHeader: {
     flex: 1,
+    paddingHorizontal: wp(4),
+    paddingVertical: 5,
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -97,6 +104,9 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     borderBottomColor: theme.colors.darkLight,
     borderBottomWidth: 0.7,
+  },
+  hightlight: {
+    backgroundColor: theme.colors.veryLightGrey,
   },
 });
 export default CommentItem;

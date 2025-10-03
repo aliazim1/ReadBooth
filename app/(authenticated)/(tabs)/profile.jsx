@@ -130,7 +130,11 @@ const Profile = () => {
         onEndReachedThreshold={0}
         ListFooterComponent={
           <View style={styles.container}>
-            {hasMorePosts ? <Loading style={{ marginVertical: 20 }} /> : <></>}
+            {hasMorePosts ? (
+              <Loading style={{ marginVertical: 20 }} />
+            ) : (
+              <AppText style={styles.noMorePost}>No more posts</AppText>
+            )}
           </View>
         }
       />
