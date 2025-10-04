@@ -95,7 +95,7 @@ export default function signup() {
             <Illustration source={require("../../assets/images/bgImage.png")} />
 
             <HeaderPunchLine
-              title={"Join ReadVine"}
+              title={"Join ReadBooth"}
               punchLine={"Discover. Share. Connect"}
             />
 
@@ -105,6 +105,7 @@ export default function signup() {
                 placeholder="Enter your full name"
                 style={{ marginTop: 10 }}
                 value={fullName}
+                autoCapitalize="words"
                 onChangeText={setFullName}
               />
               <CustomInput
@@ -112,6 +113,7 @@ export default function signup() {
                 placeholder="Enter your email address"
                 keyboardType="email-address"
                 style={{ marginTop: 10 }}
+                autoCapitalize=""
                 value={email}
                 onChangeText={setEmail}
               />

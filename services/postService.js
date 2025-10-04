@@ -6,9 +6,8 @@ export const createPost = async (post) => {
   try {
     // if there’s a file, upload it first
     if (post.file && typeof post.file === "object") {
-      let isImage = post?.file?.type === "image";
-      let folderName = isImage ? "postImages" : "postVideos";
-      let fileResult = await uploadFile(folderName, post?.file?.uri, isImage);
+      let folderName = "postImages";
+      let fileResult = await uploadFile(folderName, post?.file?.uri);
 
       if (fileResult.success) {
         post.file = fileResult.data; // replace with uploaded file path
@@ -76,6 +75,7 @@ export const fetchPosts = async (limit = 10, userId) => {
         *,
         user: users (id, name, username, image ),
         postLikes(*),
+        savedPosts(*),
         comments(count)
         `
         )
@@ -96,6 +96,7 @@ export const fetchPosts = async (limit = 10, userId) => {
         *,
         user: users (id, name, username, image ),
         postLikes(*),
+        savedPosts(*),
         comments(count)
         `
         )
@@ -154,6 +155,46 @@ export const removePostLike = async (postId, userId) => {
   }
 };
 
+// function to save the post
+export const createSavePost = async (savePost) => {
+  try {
+    const { data, error } = await supabase
+      .from("savedPosts")
+      .insert(savePost)
+      .select()
+      .single();
+
+    if (error) {
+      console.log("savePost error: ", error);
+      return { success: false, msg: "Could save the post" };
+    }
+    return { success: true, data: data };
+  } catch (error) {
+    console.log("savePost error: ", error);
+    return { success: false, msg: "Could save the post" };
+  }
+};
+
+// function to unsave the post
+export const removeSavePost = async (postId, userId) => {
+  try {
+    const { error } = await supabase
+      .from("savedPosts")
+      .delete()
+      .eq("userId", userId)
+      .eq("postId", postId);
+
+    if (error) {
+      console.log("unsavePost error: ", error);
+      return { success: false, msg: "Could not unsave the post" };
+    }
+    return { success: true };
+  } catch (error) {
+    console.log("unsavePost error: ", error);
+    return { success: false, msg: "Could not unsave the post" };
+  }
+};
+
 // function to fetch the posts details
 export const fetchPostDetails = async (postId) => {
   try {
@@ -164,6 +205,7 @@ export const fetchPostDetails = async (postId) => {
         *,
         user: users (id, name, username, image ),
         postLikes(*),
+        savedPosts(*),
         comments(*, user: users(id, name, username, image))
         `
       )

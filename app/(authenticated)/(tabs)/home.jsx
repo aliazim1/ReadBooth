@@ -1,8 +1,9 @@
+import Feather from "@expo/vector-icons/Feather";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useNavigation, useRouter } from "expo-router";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, Pressable, StyleSheet, View } from "react-native";
 
-import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
 import AppText from "../../../components/AppText";
 import Loading from "../../../components/Loading";
 import PostCard from "../../../components/PostCard";
@@ -95,25 +96,17 @@ const Home = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <View
-          style={{
-            marginRight: 10,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <AppIoniconTouchable
-            name="search"
-            size={22}
-            style={{ marginRight: 30 }}
-            // TODO: add the search functionality
-          />
-          <AppIoniconTouchable
-            name="add"
-            size={28}
-            onPress={() => router.push("/createPost")}
-          />
+        <View style={styles.headerIconsContainer}>
+          <Pressable onPress={() => {}}>
+            <Feather name="search" size={24} color={theme.colors.dark} />
+          </Pressable>
+          <Pressable onPress={() => router.push("/createPost")}>
+            <FontAwesome
+              name="plus-square-o"
+              size={24}
+              color={theme.colors.dark}
+            />
+          </Pressable>
         </View>
       ),
     });
@@ -161,6 +154,13 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
+  headerIconsContainer: {
+    gap: 12,
+    marginRight: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
   ItemSeparatorComponent: {
     height: 1,
     marginVertical: 10,

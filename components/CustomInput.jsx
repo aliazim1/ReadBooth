@@ -4,13 +4,11 @@ import { StyleSheet, TextInput, View } from "react-native";
 import { theme } from "../constants/theme";
 import { hp } from "../helpers/common";
 import AppText from "./AppText";
+
 const CustomInput = ({
   value,
   label,
   onChangeText,
-  autoCapitalize = "",
-  secureTextEntry = false,
-  keyboardType = "default",
   placeholder = "Enter text",
   style,
   ...props
@@ -27,12 +25,12 @@ const CustomInput = ({
       <TextInput
         {...props}
         clearButtonMode="while-editing"
-        autoCapitalize={autoCapitalize}
-        autoCorrect={false}
+        autoCapitalize={props.autoCapitalize}
+        autoCorrect={props.autoCorrect}
         value={value}
         onChangeText={onChangeText}
-        secureTextEntry={secureTextEntry}
-        keyboardType={keyboardType}
+        secureTextEntry={props.secureTextEntry}
+        keyboardType={props.keyboardType}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         placeholder={placeholder}
@@ -55,7 +53,6 @@ const CustomInput = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // paddingHorizontal: 1,
   },
   textInput: {
     padding: hp(1.3),

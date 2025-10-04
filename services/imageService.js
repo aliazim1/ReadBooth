@@ -18,9 +18,9 @@ export const getSupabaseFileUrl = (filePath) => {
   return null;
 };
 
-export const uploadFile = async (folderName, fileUri, isImage = true) => {
+export const uploadFile = async (folderName, fileUri) => {
   try {
-    let fileName = getFilePath(folderName, isImage);
+    let fileName = getFilePath(folderName);
 
     const fileBase64 = await FileSystem.readAsStringAsync(fileUri, {
       encoding: FileSystem.EncodingType.Base64,
@@ -34,7 +34,7 @@ export const uploadFile = async (folderName, fileUri, isImage = true) => {
       .upload(fileName, fileBytes, {
         cacheControl: "3600",
         upsert: false,
-        contentType: isImage ? "image/png" : "video/mp4",
+        contentType: "image/png",
       });
 
     if (error) {
@@ -50,5 +50,5 @@ export const uploadFile = async (folderName, fileUri, isImage = true) => {
 };
 
 export const getFilePath = (folderName, isImage) => {
-  return `${folderName}/${new Date().getTime()}${isImage ? ".png" : ".mp4"}`;
+  return `${folderName}/${new Date().getTime()}${".png"}`;
 };

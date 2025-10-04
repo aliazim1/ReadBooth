@@ -14,7 +14,7 @@ const Welcome = () => {
       <View>
         <Illustration source={require("../../assets/images/welcome.png")} />
         <HeaderPunchLine
-          title={"ReadVine"}
+          title={"ReadBooth"}
           punchLine={"More Than Books—A Community"}
         />
       </View>

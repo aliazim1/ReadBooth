@@ -1,24 +1,38 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useNavigation, useRouter } from "expo-router";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+
+import { Ionicons } from "@expo/vector-icons";
 import CustomAlert from "../../../components/CustomAlert";
 import NotificationItem from "../../../components/NotificationItem";
 import SafeScreen from "../../../components/SafeScreen";
 import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useNotifications } from "../../../contexts/NotificationsContext";
 import { wp } from "../../../helpers/common";
-import { fetchNotifications } from "../../../services/notificationService";
 
 const Notifications = () => {
   const { user } = useAuth();
   const router = useRouter();
   const navigation = useNavigation();
-  const [notifications, setNotifications] = useState([]);
+  // const [notifications, setNotifications] = useState([]);
+  const { notifications, clearBadge, loadNotifications } = useNotifications();
+
+  // useEffect(() => {
+  //   getNotifications();
+  // }, []);
 
   useEffect(() => {
-    getNotifications();
-  }, []);
+    if (user?.id) loadNotifications(user.id);
+  }, [user]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      clearBadge();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -39,27 +53,31 @@ const Notifications = () => {
     });
   }, [notifications, navigation, router]);
 
-  const getNotifications = async () => {
-    let res = await fetchNotifications(user.id);
-    if (res.success) setNotifications(res.data);
-  };
+  // const getNotifications = async () => {
+  //   let res = await fetchNotifications(user.id);
+  //   if (res.success) setNotifications(res.data);
+  // };
 
   return (
     <SafeScreen>
       <View style={styles.container}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.listStyle}
-        >
+        <ScrollView showsVerticalScrollIndicator={false}>
           {notifications.map((item) => {
             return (
               <NotificationItem item={item} key={item?.id} router={router} />
             );
           })}
         </ScrollView>
-        {/* display a message if no notificaitons to display */}
+        {/* display a message if No-Notificaitons */}
         {notifications.length == 0 && (
-          <Text style={styles.noNofitications}>No notifications yet.</Text>
+          <View style={styles.noNofiticationsContainer}>
+            <Ionicons
+              size={24}
+              color={theme.colors.dark}
+              name="notifications-outline"
+            />
+            <Text style={styles.noNofitications}>No notifications yet.</Text>
+          </View>
         )}
       </View>
     </SafeScreen>
@@ -71,8 +89,12 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: wp(4),
   },
-  listStyle: {
-    // flex: 1,
+
+  noNofiticationsContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+    gap: 10,
   },
   noNofitications: {
     flex: 1,

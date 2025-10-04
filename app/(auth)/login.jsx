@@ -28,7 +28,6 @@ export default function login() {
   const [error, setError] = useState("");
 
   const onSubmit = async () => {
-    // --- Validation ---
     if (!email || !password) {
       setError("Please enter your email and password.");
       return;
@@ -39,13 +38,12 @@ export default function login() {
       return;
     }
 
-    // --- Clean inputs ---
+    // clean the inputs
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
 
     try {
       setLoading(true);
-
       const { error } = await supabase.auth.signInWithPassword({
         email: trimmedEmail,
         password: trimmedPassword,
@@ -80,7 +78,7 @@ export default function login() {
 
             <HeaderPunchLine
               title={"Welcome Back"}
-              punchLine={"Your ReadVine community awaits"}
+              punchLine={"Your ReadBooth community awaits"}
             />
             <View>
               <CustomInput
@@ -89,6 +87,8 @@ export default function login() {
                 keyboardType="email-address"
                 style={{ marginTop: 10 }}
                 value={email}
+                autoCapitalize=""
+                autoCorrect={false}
                 onChangeText={setEmail}
               />
 

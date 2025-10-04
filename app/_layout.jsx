@@ -2,16 +2,18 @@ import { Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 
-// import AppIoniconTouchable from "../components/AppIoniconTouchable";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
+import { NotificationsProvider } from "../contexts/NotificationsContext";
 import { supabase } from "../lib/supabase";
 import { getUserData } from "../services/userService";
 
 const RootLayout = () => {
   return (
     <AuthProvider>
-      <StatusBar style="dark" />
-      <MainLayout />
+      <NotificationsProvider>
+        <StatusBar style="dark" />
+        <MainLayout />
+      </NotificationsProvider>
     </AuthProvider>
   );
 };

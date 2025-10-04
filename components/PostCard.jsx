@@ -18,22 +18,25 @@ import { hp, stripHtmlTags, wp } from "../helpers/common";
 import { getSupabaseFileUrl } from "../services/imageService";
 import {
   createPostLike,
+  createSavePost,
   deletePost,
   removePostLike,
+  removeSavePost,
 } from "../services/postService";
 import AppText from "./AppText";
 import Avatar from "./Avatar";
 import CustomAlert from "./CustomAlert";
-import ExpoVideoPlayer from "./ExpoVideoPlayer";
 import PostOptionsModal from "./PostOptionasModal";
 
 const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
   const [likes, setLikes] = useState([]);
+  const [saves, setSaves] = useState([]);
   const [menuVisible, setMenuVisible] = useState(false);
 
   useEffect(() => {
     setLikes(item?.postLikes);
-  }, []);
+    setSaves(item?.savedPosts);
+  }, [item]);
 
   // funtion for liking a post
   const onLike = async () => {
@@ -53,6 +56,26 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
       setLikes([...likes, data]);
       let res = await createPostLike(data);
       if (!res.success) Alert.alert("Dislike", "Something went wrong.");
+    }
+  };
+
+  // funtion for saving the post(s)
+  const onSavePost = async () => {
+    if (saved) {
+      // remove the like
+      let updatedSaves = saves.filter((save) => save.userId != currentUser?.id);
+      setSaves([...updatedSaves]);
+      let res = await removeSavePost(item?.id, currentUser?.id);
+      if (!res.success) Alert.alert("Save", "Something went wrong.");
+    } else {
+      let data = {
+        userId: currentUser?.id,
+        postId: item?.id,
+      };
+
+      setSaves([...saves, data]);
+      let res = await createSavePost(data);
+      if (!res.success) Alert.alert("Unsave", "Something went wrong.");
     }
   };
 
@@ -115,7 +138,13 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
   // formats the created_at time as (min/hr ago)
   const createdAt = moment(item?.created_at).fromNow();
 
+  // toggle the like icon
   const liked = likes.filter((like) => like.userId == currentUser?.id)[0]
+    ? true
+    : false;
+
+  // toggle the save icon
+  const saved = saves.filter((save) => save.userId == currentUser?.id)[0]
     ? true
     : false;
 
@@ -143,25 +172,6 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
         </Pressable>
       </View>
 
-      {/* container: if post's media is image */}
-      {item?.file && item?.file?.includes("postImages") && (
-        <Pressable onPress={homeScreen ? openPostDetails : () => {}}>
-          <Image
-            source={getSupabaseFileUrl(item?.file)}
-            transition={100}
-            contentFit="cover"
-            style={styles.postMedia}
-          />
-        </Pressable>
-      )}
-      {/* container: if post's media is video */}
-      {item?.file && item?.file?.includes("postVideos") && (
-        <ExpoVideoPlayer
-          videoUri={getSupabaseFileUrl(item?.file)}
-          style={styles.postMedia}
-        />
-      )}
-
       {/* container: post's caption */}
       {item?.body && (
         <View style={styles.captionContainer}>
@@ -176,6 +186,18 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
             </ParsedText>
           </Pressable>
         </View>
+      )}
+
+      {/* container: if post's media is image */}
+      {item?.file && item?.file?.includes("postImages") && (
+        <Pressable onPress={homeScreen ? openPostDetails : () => {}}>
+          <Image
+            source={getSupabaseFileUrl(item?.file)}
+            transition={100}
+            contentFit="cover"
+            style={styles.postMedia}
+          />
+        </Pressable>
       )}
 
       {/* row container: post's footer (interactions: like, comment, save, share) */}
@@ -210,13 +232,15 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
             {item?.comments[0]?.count}
           </AppText>
         </Pressable>
-        <Pressable style={styles.footerBtnContainer}>
+        <Pressable onPress={onSavePost} style={styles.footerBtnContainer}>
           <Ionicons
-            name="bookmark-outline"
-            size={19}
+            name={saved ? "bookmark" : "bookmark-outline"}
             color={theme.colors.dark}
+            size={19}
           />
-          <AppText style={styles.footerLabel}>Save</AppText>
+          <AppText style={styles.footerLabel}>
+            {saved ? "Saved" : "Save"}
+          </AppText>
         </Pressable>
       </View>
       <PostOptionsModal

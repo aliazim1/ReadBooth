@@ -13,7 +13,6 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import { Video } from "expo-av";
 import AppButton from "../../../components/AppButton";
 import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
 import AppText from "../../../components/AppText";
@@ -34,12 +33,12 @@ const CreatePost = () => {
   const [bodyContent, setBodyContent] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const onPick = async (isImage) => {
+  const onPick = async () => {
     try {
       const mediaConfig = {
-        mediaTypes: isImage ? "images" : "videos",
-        allowsEditing: isImage ? true : false, // trimming for videos on iOS
-        aspect: isImage ? [4, 3] : undefined,
+        mediaTypes: "images",
+        allowsEditing: true,
+        aspect: [4, 3],
         quality: 0.7,
       };
 
@@ -50,10 +49,10 @@ const CreatePost = () => {
       if (!result.canceled) {
         if (result.assets && result.assets.length > 0) {
           file = result.assets[0];
-          if (!file.type) file.type = isImage ? "image" : "video";
+          if (!file.type) file.type = "image";
         } else if (result.uri) {
           // fallback for single file (trimmed video)
-          file = { uri: result.uri, type: isImage ? "image" : "video" };
+          file = { uri: result.uri, type: "image" };
         }
       }
 
@@ -79,13 +78,11 @@ const CreatePost = () => {
 
     // check for local files
     if (isLocalFile(file)) {
-      return file.type || (file.uri?.endsWith(".mp4") ? "video" : "image");
+      return file.type;
     }
 
     // check for remote file if image/video
     if (file.includes("postImages")) return "image";
-    if (file.includes("postVideos")) return "video";
-
     return null;
   };
 
@@ -157,7 +154,6 @@ const CreatePost = () => {
               value={bodyContent}
               onChangeText={setBodyContent}
               multiline={true}
-              autoCapitalize={true}
               autoCorrect={true}
               numberOfLines={5}
               style={styles.bodyContent}
@@ -166,31 +162,24 @@ const CreatePost = () => {
             {/* media will display here once selected */}
             {file && (
               <View style={styles.file}>
-                {getFileType(file) == "video" ? (
-                  // <ExpoVideoPlayer
-                  //   source={{ uri: getFileUri(file) }}
-                  //   useNativeControls
-                  //   resizeMode="cover"
-                  //   shouldPlay
-                  //   isLooping
-                  //   style={{
-                  //     width: "100%",
-                  //     height: "100%",
-                  //   }}
-                  // />
-                  <Video
-                    style={{ flex: 1 }}
-                    source={{ uri: getFileUri(file) }}
-                    useNativeControls
-                    resizeMode="cover"
-                    shouldPlay
-                    isLooping
-                  />
-                ) : (
+                {getFileType(file) == "image" && (
                   <Image
                     source={{ uri: getFileUri(file) }}
                     style={{ flex: 1 }}
                   />
+                  // <Video
+                  //   style={{ flex: 1 }}
+                  //   source={{ uri: getFileUri(file) }}
+                  //   useNativeControls
+                  //   resizeMode="cover"
+                  //   shouldPlay
+                  //   // isLooping
+                  // />
+                  // ) : (
+                  //   <Image
+                  //     source={{ uri: getFileUri(file) }}
+                  //     style={{ flex: 1 }}
+                  //   />
                 )}
                 <AppIoniconTouchable
                   name="close"
@@ -204,20 +193,24 @@ const CreatePost = () => {
 
             {/* attach media label & icons */}
             <View style={styles.mediaContainer}>
-              <AppText style={styles.addMediaText}> Add Photo/Video </AppText>
-              <View style={styles.mediaIcon}>
+              <AppText style={styles.addMediaText}> Add Image </AppText>
+              <View style={styles.mediaIconContainer}>
                 <AppIoniconTouchable
                   name="image"
-                  size={26}
+                  size={20}
                   color={theme.colors.dark}
-                  onPress={() => onPick(true)}
+                  onPress={() => onPick()}
+                  style={styles.mediaIcon}
                 />
-                <AppIoniconTouchable
+
+                {/* No Video option available at the moment. */}
+                {/* <AppIoniconTouchable
                   name="videocam"
                   color={theme.colors.dark}
-                  size={32}
+                  size={20}
                   onPress={() => onPick(false)}
-                />
+                  style={styles.mediaIcon}
+                /> */}
               </View>
             </View>
           </View>
@@ -289,10 +282,20 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     borderColor: theme.colors.darkLight,
   },
-  mediaIcon: {
+  mediaIconContainer: {
     gap: 25,
     alignItems: "center",
     flexDirection: "row",
+  },
+  mediaIcon: {
+    backgroundColor: theme.colors.white,
+    padding: 5,
+    borderRadius: theme.radius.xxl,
+    shadowColor: "hsla(0, 0.00%, 0.00%, 0.30)",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.7,
+    shadowRadius: 3,
+    elevation: 5,
   },
   addMediaText: {
     fontSize: hp(1.6),

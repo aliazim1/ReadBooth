@@ -4,9 +4,12 @@ import { Tabs } from "expo-router";
 import AppIonicon from "../../../components/AppIonicon";
 import AppText from "../../../components/AppText";
 import { theme } from "../../../constants/theme";
+import { useNotifications } from "../../../contexts/NotificationsContext";
 import { hp } from "../../../helpers/common";
 
 export default function TabLayout() {
+  const { badgeCount } = useNotifications();
+
   return (
     <Tabs
       initialRouteName="home"
@@ -32,7 +35,7 @@ export default function TabLayout() {
                 fontWeight: theme.fonts.extraBold,
               }}
             >
-              ReadVine
+              ReadBooth
             </AppText>
           ),
           tabBarIcon: ({ focused }) => (
@@ -67,6 +70,11 @@ export default function TabLayout() {
         name="notifications"
         options={{
           title: "Notifications",
+          tabBarBadge: badgeCount > 0 ? badgeCount : undefined,
+          tabBarBadgeStyle: {
+            backgroundColor: theme.colors.danger,
+            color: "white",
+          },
           tabBarIcon: ({ focused }) => (
             <AppIonicon
               name={"notifications"}

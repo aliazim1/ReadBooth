@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ReadVine",
-    "slug": "ReadVine",
+    "name": "ReadBooth",
+    "slug": "ReadBooth",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -45,7 +45,8 @@
           "supportsBackgroundPlayback": true,
           "supportsPictureInPicture": true
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
