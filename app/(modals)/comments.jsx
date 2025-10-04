@@ -195,6 +195,8 @@ const Comments = () => {
                 onChangeText={setComment}
                 multiline
                 numberOfLines={5}
+                autoCapitalize="sentences"
+                autoCorrect={true}
               />
               {loadingSend ? (
                 <View style={styles.sendBtn}>

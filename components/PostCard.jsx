@@ -143,6 +143,25 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
         </Pressable>
       </View>
 
+      {/* container: if post's media is image */}
+      {item?.file && item?.file?.includes("postImages") && (
+        <Pressable onPress={homeScreen ? openPostDetails : () => {}}>
+          <Image
+            source={getSupabaseFileUrl(item?.file)}
+            transition={100}
+            contentFit="cover"
+            style={styles.postMedia}
+          />
+        </Pressable>
+      )}
+      {/* container: if post's media is video */}
+      {item?.file && item?.file?.includes("postVideos") && (
+        <ExpoVideoPlayer
+          videoUri={getSupabaseFileUrl(item?.file)}
+          style={styles.postMedia}
+        />
+      )}
+
       {/* container: post's caption */}
       {item?.body && (
         <View style={styles.captionContainer}>
@@ -159,30 +178,8 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
         </View>
       )}
 
-      {/* container: if post's media is image */}
-      {item?.file && item?.file?.includes("postImages") && (
-        <Pressable onPress={homeScreen ? openPostDetails : () => {}}>
-          <Image
-            source={getSupabaseFileUrl(item?.file)}
-            transition={100}
-            contentFit="cover"
-            style={styles.postMedia}
-          />
-        </Pressable>
-      )}
-
-      {/* container: if post's media is video */}
-      {item?.file && item?.file?.includes("postVideos") && (
-        <ExpoVideoPlayer
-          videoUri={getSupabaseFileUrl(item?.file)}
-          style={styles.postMedia}
-        />
-      )}
-
       {/* row container: post's footer (interactions: like, comment, save, share) */}
       <View style={styles.postFooterContainer}>
-        {/* <View style={{ flexDirection: "row" }}> */}
-
         {/* </View> */}
         <Pressable style={styles.footerBtnContainer} onPress={onShare}>
           <Ionicons

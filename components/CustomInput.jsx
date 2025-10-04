@@ -8,6 +8,7 @@ const CustomInput = ({
   value,
   label,
   onChangeText,
+  autoCapitalize = "",
   secureTextEntry = false,
   keyboardType = "default",
   placeholder = "Enter text",
@@ -26,7 +27,7 @@ const CustomInput = ({
       <TextInput
         {...props}
         clearButtonMode="while-editing"
-        autoCapitalize="none"
+        autoCapitalize={autoCapitalize}
         autoCorrect={false}
         value={value}
         onChangeText={onChangeText}

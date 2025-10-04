@@ -26,7 +26,6 @@ const EditProfileDetails = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { user: currentUser, setUserData } = useAuth();
-
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -51,8 +50,17 @@ const EditProfileDetails = () => {
   }, [currentUser]);
 
   const onSave = async () => {
-    let userData = { ...user };
-    let { name, username, phone, email, address, image, bio } = userData;
+    let userData = {
+      ...user,
+      name: user.name.trim(),
+      username: user.username.trim(),
+      phone: user.phone.trim(),
+      email: user.email.trim(),
+      address: user.address.trim(),
+      bio: user.bio.trim(),
+    };
+
+    let { name, username, email, phone, image, address, bio } = userData;
     if (
       name.trim().length < 2 ||
       username.trim().length < 3 ||

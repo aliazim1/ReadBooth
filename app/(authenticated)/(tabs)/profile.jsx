@@ -1,6 +1,12 @@
 import { useNavigation, useRouter } from "expo-router";
 import { useLayoutEffect, useState } from "react";
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  FlatList,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
 import AppMaterialCommunityIcon from "../../../components/AppMaterialCommunityIcon";
@@ -17,10 +23,10 @@ import { fetchPosts } from "../../../services/postService";
 
 const StatsItem = ({ title, value }) => {
   return (
-    <TouchableOpacity style={styles.column}>
+    <Pressable style={styles.column}>
       <AppText style={{ fontSize: 14 }}>{title}</AppText>
       <AppText style={styles.value}>{value}</AppText>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
@@ -99,17 +105,22 @@ const Profile = () => {
               </View>
             </HorizontalPadding>
 
-            {/* <ScrollView horizontal contentContainerStyle={{ flex: 1, gap: 20 }}>
-              <AppIoniconTouchable name="send" />
-              <AppIoniconTouchable name="send" />
-              <AppIoniconTouchable name="send" />
-              <AppIoniconTouchable name="send" />
-              <AppIoniconTouchable name="send" />
-              <AppIoniconTouchable name="send" />
-              <AppIoniconTouchable name="send" />
-              <AppIoniconTouchable name="send" />
-              <AppIoniconTouchable name="send" />
-              <AppIoniconTouchable name="send" />
+            {/* <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                gap: 30,
+                paddingLeft: wp(4),
+                paddingVertical: 10,
+                backgroundColor: "red",
+              }}
+            >
+              <AppIoniconTouchable name="image" />
+              <AppIoniconTouchable name="image" />
+              <AppIoniconTouchable name="image" />
+              <AppIoniconTouchable name="image" />
+              <AppIoniconTouchable name="image" />
+              <AppIoniconTouchable name="image" />
             </ScrollView> */}
           </View>
         }
@@ -160,18 +171,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    marginVertical: hp(2),
+    marginVertical: hp(1.5),
   },
   column: {
     alignItems: "center",
     width: "25%",
   },
   value: {
-    fontWeight: theme.fonts.bold,
+    fontWeight: theme.fonts.extraBold,
   },
   bio: {
-    marginTop: 15,
-    marginLeft: wp(2),
+    marginTop: 8,
   },
   ItemSeparatorComponent: {
     height: 1,

@@ -14,6 +14,9 @@ export default function TabLayout() {
         headerShadowVisible: false,
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: theme.colors.bottomTabIcon,
+        tabBarStyle: {
+          backgroundColor: theme.colors.white,
+        },
       }}
     >
       <Tabs.Screen
@@ -43,21 +46,7 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="community"
-        options={{
-          title: "Community",
-          tabBarIcon: ({ focused }) => (
-            <AppIonicon
-              name={"people"}
-              size={25}
-              color={
-                focused ? theme.colors.primary : theme.colors.bottomTabIcon
-              }
-            />
-          ),
-        }}
-      />
+
       <Tabs.Screen
         name="books"
         options={{
@@ -73,6 +62,7 @@ export default function TabLayout() {
           ),
         }}
       />
+
       <Tabs.Screen
         name="notifications"
         options={{

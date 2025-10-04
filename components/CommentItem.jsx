@@ -14,6 +14,7 @@ const CommentItem = ({
   canDelete = false,
   onDelete = () => {},
 }) => {
+  //
   // formats the created_at time as (min/hr ago)
   const createdAt = moment(item?.created_at).fromNow();
 
@@ -27,7 +28,7 @@ const CommentItem = ({
   };
 
   return (
-    <View style={highlight && styles.hightlight}>
+    <View style={highlight && styles.highlight}>
       <View style={[styles.commentHeader]}>
         <View style={styles.imgNameTime}>
           <Avatar uri={item?.user?.image} size={40} />
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
   commentHeader: {
     flex: 1,
     paddingHorizontal: wp(4),
-    paddingVertical: 5,
+    paddingTop: 5,
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -98,14 +99,14 @@ const styles = StyleSheet.create({
     fontWeight: theme.fonts.medium,
   },
   body: {
-    marginLeft: wp(11),
+    marginLeft: wp(15),
     fontSize: hp(1.5),
-    marginTop: 5,
+    color: theme.colors.dark,
     paddingBottom: 10,
     borderBottomColor: theme.colors.darkLight,
     borderBottomWidth: 0.7,
   },
-  hightlight: {
+  highlight: {
     backgroundColor: theme.colors.veryLightGrey,
   },
 });

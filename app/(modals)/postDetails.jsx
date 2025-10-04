@@ -177,7 +177,12 @@ const PostDetails = () => {
     );
   }
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.white }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: theme.colors.white,
+      }}
+    >
       <KeyboardAwareScrollView
         enableOnAndroid={true}
         extraScrollHeight={20}
@@ -204,6 +209,8 @@ const PostDetails = () => {
                 onChangeText={setComment}
                 multiline
                 numberOfLines={5}
+                autoCapitalize="sentences"
+                autoCorrect={true}
               />
               {loadingSend ? (
                 <View style={styles.sendBtn}>
@@ -289,8 +296,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.primary,
   },
   commentsListContainer: {
-    gap: 12,
+    gap: 10,
     marginVertical: 16,
+    paddingBottom: hp(5),
   },
 
   commentCountContainer: {

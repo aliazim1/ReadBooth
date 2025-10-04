@@ -157,6 +157,8 @@ const CreatePost = () => {
               value={bodyContent}
               onChangeText={setBodyContent}
               multiline={true}
+              autoCapitalize={true}
+              autoCorrect={true}
               numberOfLines={5}
               style={styles.bodyContent}
             />
