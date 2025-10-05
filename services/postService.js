@@ -65,7 +65,7 @@ export const updatePost = async ({ id, body }) => {
 };
 
 // function to fetch all the posts with a limit of 10 posts first
-export const fetchPosts = async (limit = 10, userId) => {
+export const fetchPosts = async (limit = 9, userId) => {
   try {
     if (userId) {
       const { data, error } = await supabase
@@ -112,6 +112,46 @@ export const fetchPosts = async (limit = 10, userId) => {
   } catch (error) {
     console.log("fetchPosts error: ", error);
     return { success: false, msg: "Could not fetch the posts" };
+  }
+};
+
+// function to fetch all the posts with a limit of 10 posts first
+export const fetchSavedPosts = async (limit = 9, userId) => {
+  try {
+    const query = supabase
+      .from("savedPosts")
+      .select(
+        `
+        id,
+        created_at,
+        post: posts (
+          id,
+          body,
+          file,
+          created_at,
+          user: users (id, name, username, image),
+          postLikes (*),
+          savedPosts (*),
+          comments (count)
+        )
+      `
+      )
+      .order("created_at", { ascending: false })
+      .limit(limit);
+
+    if (userId) query.eq("userId", userId);
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.log("fetchSavedPosts error:", error);
+      return { success: false, msg: "Could not fetch saved posts" };
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.log("fetchSavedPosts error:", error);
+    return { success: false, msg: "Could not fetch saved posts" };
   }
 };
 

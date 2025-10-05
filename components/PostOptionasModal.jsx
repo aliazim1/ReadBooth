@@ -12,7 +12,6 @@ const PostOptionsModal = ({
   onClose,
   onShare = () => {},
   onEdit = () => {},
-  onSave = () => {},
   onHide = () => {},
   onReport = () => {},
   onDelete = () => {},
@@ -39,12 +38,6 @@ const PostOptionsModal = ({
             icon={"share"}
             label={"Share Post"}
             onPress={onShare}
-          />
-          <SettingListItem
-            chevron={false}
-            icon={"bookmark"}
-            label={"Save Post"}
-            onPress={onSave}
           />
           <SettingListItem
             chevron={false}

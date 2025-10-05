@@ -167,19 +167,6 @@ const CreatePost = () => {
                     source={{ uri: getFileUri(file) }}
                     style={{ flex: 1 }}
                   />
-                  // <Video
-                  //   style={{ flex: 1 }}
-                  //   source={{ uri: getFileUri(file) }}
-                  //   useNativeControls
-                  //   resizeMode="cover"
-                  //   shouldPlay
-                  //   // isLooping
-                  // />
-                  // ) : (
-                  //   <Image
-                  //     source={{ uri: getFileUri(file) }}
-                  //     style={{ flex: 1 }}
-                  //   />
                 )}
                 <AppIoniconTouchable
                   name="close"
@@ -202,15 +189,6 @@ const CreatePost = () => {
                   onPress={() => onPick()}
                   style={styles.mediaIcon}
                 />
-
-                {/* No Video option available at the moment. */}
-                {/* <AppIoniconTouchable
-                  name="videocam"
-                  color={theme.colors.dark}
-                  size={20}
-                  onPress={() => onPick(false)}
-                  style={styles.mediaIcon}
-                /> */}
               </View>
             </View>
           </View>
@@ -288,14 +266,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   mediaIcon: {
-    backgroundColor: theme.colors.white,
     padding: 5,
-    borderRadius: theme.radius.xxl,
-    shadowColor: "hsla(0, 0.00%, 0.00%, 0.30)",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.7,
-    shadowRadius: 3,
     elevation: 5,
+    shadowRadius: 3,
+    shadowOpacity: 0.7,
+    borderRadius: theme.radius.xxl,
+    backgroundColor: theme.colors.white,
+    shadowOffset: { width: 0, height: 1 },
+    shadowColor: "hsla(0, 0.00%, 0.00%, 0.30)",
   },
   addMediaText: {
     fontSize: hp(1.6),
@@ -325,8 +303,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   lottie: {
-    width: 300,
-    height: 300,
+    width: 250,
+    height: 250,
   },
 });
 export default CreatePost;

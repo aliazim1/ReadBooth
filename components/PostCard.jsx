@@ -1,4 +1,3 @@
-import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import moment from "moment";
 import { useEffect, useState } from "react";
@@ -23,6 +22,7 @@ import {
   removePostLike,
   removeSavePost,
 } from "../services/postService";
+import AppPressableIoniconIcon from "./AppPressableIoniconIcon";
 import AppText from "./AppText";
 import Avatar from "./Avatar";
 import CustomAlert from "./CustomAlert";
@@ -163,13 +163,13 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
             <AppText style={styles.createdAt}>{createdAt}</AppText>
           </View>
         </View>
-        <Pressable style={styles.actions} onPress={() => setMenuVisible(true)}>
-          <Ionicons
-            name={"ellipsis-horizontal"}
-            color={theme.colors.dark}
-            size={hp(1.8)}
-          />
-        </Pressable>
+        <AppPressableIoniconIcon
+          onPress={() => setMenuVisible(true)}
+          name={"ellipsis-horizontal"}
+          size={hp(1.8)}
+          showLabel={false}
+          width={20}
+        />
       </View>
 
       {/* container: post's caption */}
@@ -202,46 +202,30 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
 
       {/* row container: post's footer (interactions: like, comment, save, share) */}
       <View style={styles.postFooterContainer}>
-        {/* </View> */}
-        <Pressable style={styles.footerBtnContainer} onPress={onShare}>
-          <Ionicons
-            name="arrow-redo-outline"
-            size={19}
-            color={theme.colors.dark}
-          />
-          <AppText style={styles.footerLabel}>Save</AppText>
-        </Pressable>
-        <Pressable onPress={onLike} style={styles.footerBtnContainer}>
-          <Ionicons
+        <View style={{ flexDirection: "row" }}>
+          <AppPressableIoniconIcon
+            onPress={onLike}
+            size={21}
+            label={likes?.length}
             name={liked ? "heart" : "heart-outline"}
             color={liked ? theme.colors.danger : theme.colors.dark}
-            size={21}
           />
-          <AppText style={styles.footerLabel}>{likes?.length}</AppText>
-        </Pressable>
-        <Pressable
-          onPress={homeScreen ? openPostComments : null}
-          style={styles.footerBtnContainer}
-        >
-          <Ionicons
+          <AppPressableIoniconIcon
             name="chatbubble-outline"
-            size={19}
-            color={theme.colors.dark}
+            label={item?.comments[0]?.count}
+            onPress={homeScreen ? openPostComments : null}
           />
-          <AppText style={styles.footerLabel}>
-            {item?.comments[0]?.count}
-          </AppText>
-        </Pressable>
-        <Pressable onPress={onSavePost} style={styles.footerBtnContainer}>
-          <Ionicons
-            name={saved ? "bookmark" : "bookmark-outline"}
-            color={theme.colors.dark}
-            size={19}
+          <AppPressableIoniconIcon
+            onPress={onShare}
+            label={"Save"}
+            name="arrow-redo-outline"
           />
-          <AppText style={styles.footerLabel}>
-            {saved ? "Saved" : "Save"}
-          </AppText>
-        </Pressable>
+        </View>
+        <AppPressableIoniconIcon
+          onPress={onSavePost}
+          label={saved ? "Saved" : "Save"}
+          name={saved ? "bookmark" : "bookmark-outline"}
+        />
       </View>
       <PostOptionsModal
         visible={menuVisible}
@@ -250,7 +234,6 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
         onClose={() => setMenuVisible(false)}
         onShare={onShare}
         onEdit={onEditPost}
-        onSave={() => {}}
         onHide={() => {}}
         onReport={() => {}}
         onDelete={handleDeletePost}
@@ -265,18 +248,12 @@ const styles = StyleSheet.create({
     marginVertical: hp(1.2),
   },
   postHeader: {
-    paddingHorizontal: wp(3),
     flexDirection: "row",
     alignItems: "flex-start",
+    paddingHorizontal: wp(3),
     justifyContent: "space-between",
   },
-  actions: {
-    flexDirection: "row",
-    height: "100%",
-    width: 20,
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
+
   headerFirstRow: {
     gap: 8,
     flexDirection: "row",
@@ -294,12 +271,12 @@ const styles = StyleSheet.create({
     fontWeight: theme.fonts.medium,
   },
   createdAt: {
-    fontSize: hp(1.2),
     marginTop: -14,
+    fontSize: hp(1.2),
   },
   captionContainer: {
-    paddingHorizontal: wp(4),
     marginTop: hp(1),
+    paddingHorizontal: wp(4),
   },
   text: {
     fontSize: 16,
@@ -316,87 +293,12 @@ const styles = StyleSheet.create({
     borderCurve: "continuous",
   },
   postFooterContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
     marginTop: hp(1),
-    paddingHorizontal: wp(4),
-  },
-  footerBtnContainer: {
-    gap: 2,
-    flexDirection: "row",
+    paddingLeft: wp(4),
     alignItems: "center",
-    paddingHorizontal: 10,
-  },
-  footerLabel: {
-    fontSize: hp(1),
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
 
 export default PostCard;
-
-// the old footer icons...
-{
-  /* <View style={styles.footerBtnContainer}>
-          <AppIoniconTouchable
-            name={liked ? "heart" : "heart-outline"}
-            color={liked ? theme.colors.rose : theme.colors.dark}
-            size={21}
-            onPress={onLike}
-            style={{ marginLeft: 0 }}
-          />
-
-          <AppText style={styles.footerLabel}>
-            {likes?.length} 
-          </AppText>
-        </View>
-        <View style={styles.footerBtnContainer}>
-          <AppIoniconTouchable
-            name="chatbubble-outline"
-            size={19}
-            color={theme.colors.dark}
-            style={{ marginLeft: 0 }}
-            onPress={showMoreIcons ? openPostDetails : null}
-          />
-          <AppText style={styles.footerLabel}>
-            {item?.comments[0]?.count}
-          </AppText>
-        </View>
-
-        <View style={styles.footerBtnContainer}>
-          <AppIoniconTouchable
-            name="arrow-redo-outline"
-            size={20}
-            color={theme.colors.dark}
-            style={{ marginLeft: 0 }}
-            onPress={onShare}
-          />
-          <AppText style={styles.footerLabel}>Share post</AppText>
-        </View>
-
-        <View style={{ flexDirection: "row" }}>
-          <View style={styles.footerBtnContainer}>
-            <AppIoniconTouchable
-              name="bookmark-outline"
-              size={19}
-              color={theme.colors.dark}
-              style={{ marginLeft: 0 }}
-            />
-
-            <AppText style={styles.footerLabel}>Save post</AppText>
-          </View>
-        </View>
-
-        <View style={{ flexDirection: "row" }}>
-          <View style={styles.footerBtnContainer}>
-            <AppIoniconTouchable
-              name="ban-outline"
-              size={20}
-              color={theme.colors.dark}
-              style={{ marginLeft: 0 }}
-            />
-
-            <AppText style={styles.footerLabel}>Hide post</AppText>
-          </View>
-        </View> */
-}

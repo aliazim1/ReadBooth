@@ -6,19 +6,21 @@ import { getSupabaseFileUrl } from "../services/imageService";
 import AppText from "./AppText";
 
 const PostGridItem = ({ item, router }) => {
+  const post = item?.post || item; // handles both structures (posts or savedPosts)
+
   return (
     <View style={styles.postContainer}>
-      {item?.file && item?.file?.includes("postImages") ? (
+      {post?.file && post?.file?.includes("postImages") ? (
         <Pressable
           onPress={() =>
             router.push({
               pathname: "postDetails",
-              params: { postId: item?.id },
+              params: { postId: post?.id },
             })
           }
         >
           <Image
-            source={getSupabaseFileUrl(item?.file)}
+            source={getSupabaseFileUrl(post?.file)}
             transition={100}
             contentFit="cover"
             style={styles.media}
@@ -30,11 +32,11 @@ const PostGridItem = ({ item, router }) => {
             onPress={() =>
               router.push({
                 pathname: "postDetails",
-                params: { postId: item?.id },
+                params: { postId: post?.id },
               })
             }
           >
-            <AppText style={styles.textOnlyContent}>{item.body}</AppText>
+            <AppText style={styles.textOnlyContent}>{post.body}</AppText>
           </Pressable>
         </View>
       )}

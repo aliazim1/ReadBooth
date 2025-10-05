@@ -1,4 +1,5 @@
 import { StyleSheet, View } from "react-native";
+
 import { theme } from "../constants/theme";
 import AppText from "./AppText";
 
@@ -15,12 +16,14 @@ const StatsItem = ({ title, value }) => {
 
 const styles = StyleSheet.create({
   column: {
-    alignItems: "center",
     width: 90,
-    height: 50,
-    backgroundColor: theme.colors.veryLightGrey,
+    paddingVertical: 7,
+    alignItems: "center",
     justifyContent: "center",
-    borderRadius: 12,
+
+    // add the following styles if wanted to show the statsItems as box
+    // backgroundColor: theme.colors.veryLightGrey,
+    // borderRadius: 12,
   },
   value: {
     color: theme.colors.dark,

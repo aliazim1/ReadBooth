@@ -1,6 +1,13 @@
-import { useNavigation, useRouter } from "expo-router";
-import { useLayoutEffect, useState } from "react";
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useFocusEffect, useNavigation, useRouter } from "expo-router";
+import { useCallback, useLayoutEffect, useState } from "react";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
 import AppMaterialCommunityIcon from "../../../components/AppMaterialCommunityIcon";
@@ -13,7 +20,7 @@ import StatsItem from "../../../components/StatsItem";
 import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
 import { hp, wp } from "../../../helpers/common";
-import { fetchPosts } from "../../../services/postService";
+import { fetchPosts, fetchSavedPosts } from "../../../services/postService";
 
 // global variable for the number of posts (limit)
 var limit = 0;
@@ -23,7 +30,19 @@ const Profile = () => {
   const router = useRouter();
   const navigation = useNavigation();
   const [posts, setPosts] = useState([]);
+  const [savedPosts, setSavedPosts] = useState([]);
   const [hasMorePosts, setHasMorePosts] = useState(true);
+  const [activeTab, setActiveTab] = useState("posts");
+
+  const getSavedPosts = async () => {
+    if (!hasMorePosts) return null;
+    limit += 9;
+    let res = await fetchSavedPosts(limit, user.id);
+    if (res.success) {
+      if (savedPosts.length === res.data.length) setHasMorePosts(false);
+      setSavedPosts(res.data);
+    }
+  };
 
   const getPosts = async () => {
     if (!hasMorePosts) return null;
@@ -47,12 +66,31 @@ const Profile = () => {
         />
       ),
     });
+
+    // initial load for posts and savedPosts
+    getPosts();
+    getSavedPosts();
   }, [navigation, router]);
+
+  useFocusEffect(
+    useCallback(() => {
+      // refresh when navigating back
+      getPosts();
+      getSavedPosts();
+    }, [user?.id])
+  );
+
+  // Get correct content based on active tab
+  const getCurrentData = () => {
+    return activeTab == "bookmarks" ? savedPosts : posts;
+  };
+
+  const currentData = getCurrentData();
 
   return (
     <SafeScreen>
       <FlatList
-        data={posts}
+        data={currentData}
         keyExtractor={(item) => item.id.toString()}
         numColumns={3}
         showsVerticalScrollIndicator={false}
@@ -86,6 +124,53 @@ const Profile = () => {
                 <StatsItem title="Books" value="0" />
               </View>
             </HorizontalPadding>
+            {/* 🆕 Tabs under stats */}
+            <View style={styles.tabsContainer}>
+              {["posts", "bookmarks"].map((tab) => {
+                const icons = {
+                  posts: "grid-outline",
+                  bookmarks: "bookmark-outline",
+                };
+
+                const activeIcons = {
+                  posts: "grid",
+                  bookmarks: "bookmark",
+                };
+
+                const iconName =
+                  activeTab === tab ? activeIcons[tab] : icons[tab];
+
+                return (
+                  <TouchableOpacity
+                    key={tab}
+                    onPress={() => setActiveTab(tab)}
+                    style={[
+                      styles.tabButton,
+                      activeTab === tab && styles.activeTabButton,
+                    ]}
+                  >
+                    <View style={styles.tabContent}>
+                      <Text
+                        style={[
+                          styles.tabText,
+                          activeTab === tab && styles.activeTabText,
+                        ]}
+                      >
+                        {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                      </Text>
+                      <Ionicons
+                        name={iconName}
+                        size={16}
+                        color={
+                          activeTab === tab ? theme.colors.primary : "gray"
+                        }
+                        style={{ marginLeft: 6 }}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
           </View>
         }
         renderItem={({ item }) => <PostGridItem item={item} router={router} />}
@@ -120,6 +205,37 @@ const styles = StyleSheet.create({
   bio: {
     marginTop: 8,
     color: theme.colors.dark,
+  },
+
+  // 🆕 Tabs styling
+  tabContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  tabsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    borderBottomWidth: 1,
+    borderColor: "#ddd",
+    marginBottom: 10,
+  },
+  tabButton: {
+    paddingVertical: 10,
+    flex: 1,
+    alignItems: "center",
+  },
+  activeTabButton: {
+    borderBottomWidth: 2,
+    borderColor: theme.colors.primary,
+  },
+  tabText: {
+    color: "gray",
+    fontWeight: "500",
+  },
+  activeTabText: {
+    color: theme.colors.primary,
+    fontWeight: "bold",
   },
 });
 

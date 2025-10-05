@@ -21,7 +21,7 @@ var limit = 0;
 const Home = () => {
   const router = useRouter();
   const navigation = useNavigation();
-  const { user, setAuth } = useAuth();
+  const { user } = useAuth();
   const [posts, setPosts] = useState([]);
   const [hasMorePosts, setHasMorePosts] = useState(true);
 
