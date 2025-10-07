@@ -1,6 +1,7 @@
 import { Stack, useRouter } from "expo-router";
 
 import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
+import { theme } from "../../../constants/theme";
 
 const ScreensLayout = () => {
   const router = useRouter();
@@ -9,6 +10,10 @@ const ScreensLayout = () => {
     <Stack
       screenOptions={{
         headerShadowVisible: false,
+        headerTintColor: theme.colors.text,
+        headerStyle: {
+          backgroundColor: theme.colors.background,
+        },
         headerLeft: () => (
           <AppIoniconTouchable
             name="chevron-back"
@@ -21,6 +26,12 @@ const ScreensLayout = () => {
         name="createPost"
         options={{
           headerTitle: "Create Post",
+        }}
+      />
+      <Stack.Screen
+        name="addBook"
+        options={{
+          headerTitle: "Add a New Book to Shelf",
         }}
       />
       <Stack.Screen
@@ -38,7 +49,7 @@ const ScreensLayout = () => {
       <Stack.Screen
         name="edit-profile-details"
         options={{
-          headerTitle: "Account",
+          headerTitle: "Account Info",
         }}
       />
     </Stack>

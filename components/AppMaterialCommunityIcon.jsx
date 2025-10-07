@@ -5,7 +5,7 @@ import { theme } from "../constants/theme";
 export default function AppMaterialCommunityIcon({
   name,
   size = 24,
-  color = theme.colors.dark,
+  color = theme.colors.text,
   style,
 }) {
   return (

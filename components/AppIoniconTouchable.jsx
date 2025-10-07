@@ -7,7 +7,7 @@ const AppIoniconTouchable = ({
   name = "chevron-back",
   size = 28,
   strokeWidth = 3,
-  color = theme.colors.dark,
+  color = theme.colors.text,
   onPress,
   style,
 }) => {

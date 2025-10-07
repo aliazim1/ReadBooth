@@ -1,4 +1,4 @@
-import Octicons from "@expo/vector-icons/Octicons";
+import { MaterialIcons, Octicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 
 import AppIonicon from "../../../components/AppIonicon";
@@ -15,10 +15,14 @@ export default function TabLayout() {
       initialRouteName="home"
       screenOptions={{
         headerShadowVisible: false,
-        tabBarActiveTintColor: theme.colors.primary,
-        tabBarInactiveTintColor: theme.colors.bottomTabIcon,
+        headerTintColor: theme.colors.text,
+        tabBarActiveTintColor: theme.colors.text,
+        tabBarInactiveTintColor: theme.colors.mediumGrey,
         tabBarStyle: {
-          backgroundColor: theme.colors.white,
+          backgroundColor: theme.colors.background,
+        },
+        headerStyle: {
+          backgroundColor: theme.colors.background,
         },
       }}
     >
@@ -32,6 +36,7 @@ export default function TabLayout() {
               style={{
                 fontSize: hp(2),
                 marginLeft: 12,
+                color: theme.colors.text,
                 fontWeight: theme.fonts.extraBold,
               }}
             >
@@ -42,9 +47,7 @@ export default function TabLayout() {
             <Octicons
               name="home-fill"
               size={22}
-              color={
-                focused ? theme.colors.primary : theme.colors.bottomTabIcon
-              }
+              color={focused ? theme.colors.text : theme.colors.mediumGrey}
             />
           ),
         }}
@@ -53,14 +56,12 @@ export default function TabLayout() {
       <Tabs.Screen
         name="books"
         options={{
-          title: "Books",
+          title: "Book Shelf",
           tabBarIcon: ({ focused }) => (
-            <AppIonicon
-              name={"book"}
-              size={25}
-              color={
-                focused ? theme.colors.primary : theme.colors.bottomTabIcon
-              }
+            <MaterialIcons
+              name="menu-book"
+              size={24}
+              color={focused ? theme.colors.text : theme.colors.mediumGrey}
             />
           ),
         }}
@@ -79,9 +80,7 @@ export default function TabLayout() {
             <AppIonicon
               name={"notifications"}
               size={25}
-              color={
-                focused ? theme.colors.primary : theme.colors.bottomTabIcon
-              }
+              color={focused ? theme.colors.text : theme.colors.mediumGrey}
             />
           ),
         }}
@@ -95,9 +94,7 @@ export default function TabLayout() {
             <AppIonicon
               name={"person"}
               size={25}
-              color={
-                focused ? theme.colors.primary : theme.colors.bottomTabIcon
-              }
+              color={focused ? theme.colors.text : theme.colors.mediumGrey}
             />
           ),
         }}

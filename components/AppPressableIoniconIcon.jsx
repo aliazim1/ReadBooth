@@ -12,12 +12,13 @@ const AppPressableIoniconIcon = ({
   size = 19,
   width = 60,
   showLabel = true,
-  color = theme.colors.dark,
+  color = theme.colors.text,
+  style,
 }) => {
   return (
     <Pressable
       onPress={onPress}
-      style={[styles.footerBtnContainer, { width: width }]}
+      style={[styles.footerBtnContainer, { width: width }, style]}
     >
       {name && <Ionicons name={name} color={color} size={size} />}
       {showLabel && <AppText style={styles.footerLabel}>{label}</AppText>}

@@ -1,22 +1,16 @@
 import { useEffect, useState } from "react";
-import {
-  Keyboard,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import AppButton from "../../../components/AppButton";
 import CustomInput from "../../../components/CustomInput";
 import SafeScreen from "../../../components/SafeScreen";
-import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
-import { hp, wp } from "../../../helpers/common";
+import { wp } from "../../../helpers/common";
 
 const ChangePassword = () => {
   const [loading, setLoading] = useState(false);
-  const { user: currentUser, setAuth } = useAuth();
+  const { user: currentUser } = useAuth();
 
   const [user, setUser] = useState({
     passwrod: "",
@@ -33,7 +27,7 @@ const ChangePassword = () => {
   }, [currentUser]);
 
   return (
-    <SafeScreen bg={theme.colors.white}>
+    <SafeScreen>
       <KeyboardAwareScrollView
         enableOnAndroid={true}
         extraScrollHeight={20}
@@ -77,22 +71,4 @@ const ChangePassword = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  profileDetails: {
-    marginTop: hp(5),
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  add: {
-    width: 50,
-    borderRadius: 20,
-    paddingVertical: 2,
-    backgroundColor: theme.colors.white,
-    shadowColor: "#0000006b",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 1,
-    shadowRadius: 5,
-    elevation: 5,
-  },
-});
 export default ChangePassword;

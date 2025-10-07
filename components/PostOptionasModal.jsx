@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     paddingTop: hp(2.2),
     paddingBottom: hp(5),
     gap: 24,
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.background,
     borderTopLeftRadius: theme.radius.xxl,
     borderTopRightRadius: theme.radius.xxl,
   },

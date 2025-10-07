@@ -3,7 +3,7 @@ import { theme } from "../constants/theme";
 
 export default function SafeScreen({
   children,
-  bg = theme.colors.white,
+  bg = theme.colors.background,
   style,
 }) {
   return (

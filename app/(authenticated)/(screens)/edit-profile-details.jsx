@@ -106,16 +106,13 @@ const EditProfileDetails = () => {
       : getUserImageSrc(user.image);
 
   return (
-    <SafeScreen bg={theme.colors.white}>
+    // <SafeScreen bg={theme.colors.white}>
+    <SafeScreen>
       <KeyboardAwareScrollView
         enableOnAndroid={true}
         extraScrollHeight={20}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingHorizontal: wp(4),
-          paddingBottom: 20,
-        }}
+        contentContainerStyle={styles.contentContainerStyle}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{ flex: 1 }}>
@@ -127,11 +124,7 @@ const EditProfileDetails = () => {
                   <AppIonicon name={"user"} />
                 )}
                 <Pressable onPress={addProfilePic} style={styles.add}>
-                  <AppIonicon
-                    name="camera"
-                    color={theme.colors.dark}
-                    size={20}
-                  />
+                  <AppIonicon name="camera" size={20} />
                 </Pressable>
               </View>
             </View>
@@ -191,6 +184,11 @@ const EditProfileDetails = () => {
 };
 
 const styles = StyleSheet.create({
+  contentContainerStyle: {
+    flexGrow: 1,
+    paddingBottom: 20,
+    paddingHorizontal: wp(4),
+  },
   profileDetails: {
     marginTop: hp(1),
     alignItems: "center",
@@ -216,14 +214,10 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   bio: {
-    flexDirection: "row",
     height: hp(15),
-    alignItems: "flex-start",
     paddingVertical: 15,
-  },
-  saveBtn: {
-    color: theme.colors.success,
-    fontWeight: theme.fonts.bold,
+    flexDirection: "row",
+    alignItems: "flex-start",
   },
 });
 export default EditProfileDetails;

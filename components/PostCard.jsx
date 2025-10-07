@@ -208,7 +208,7 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
             size={21}
             label={likes?.length}
             name={liked ? "heart" : "heart-outline"}
-            color={liked ? theme.colors.danger : theme.colors.dark}
+            color={liked ? theme.colors.danger : theme.colors.text}
           />
           <AppPressableIoniconIcon
             name="chatbubble-outline"
@@ -262,17 +262,18 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: hp(1.8),
-    color: theme.colors.dark,
+    color: theme.colors.text,
     fontWeight: theme.fonts.semibold,
   },
   username: {
     fontSize: hp(1.5),
-    color: theme.colors.textLight,
+    color: theme.colors.mediumGrey,
     fontWeight: theme.fonts.medium,
   },
   createdAt: {
     marginTop: -14,
     fontSize: hp(1.2),
+    color: theme.colors.mediumGrey,
   },
   captionContainer: {
     marginTop: hp(1),
@@ -280,7 +281,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    color: theme.colors.dark,
+    color: theme.colors.text,
   },
   link: {
     color: "blue",
@@ -295,6 +296,7 @@ const styles = StyleSheet.create({
   postFooterContainer: {
     marginTop: hp(1),
     paddingLeft: wp(4),
+    paddingRight: wp(1),
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",

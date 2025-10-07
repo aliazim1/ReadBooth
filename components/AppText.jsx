@@ -9,7 +9,7 @@ export default function AppText({ children, style, ...rest }) {
       style={[
         {
           fontSize: hp(1.6),
-          color: theme.colors.dark,
+          color: theme.colors.text,
           fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
         },
         style,

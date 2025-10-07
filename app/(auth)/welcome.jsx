@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "space-around",
-    backgroundColor: "white",
+    backgroundColor: theme.colors.background,
     paddingTop: hp(15),
     paddingHorizontal: wp(4),
   },

@@ -9,9 +9,9 @@ import AppText from "./AppText";
 const SettingListItem = ({
   label,
   icon,
-  iconColor = theme.colors.dark,
-  labelColor = theme.colors.dark,
-  iconBgColor = theme.colors.lightGrey,
+  iconColor = theme.colors.mediumGrey,
+  labelColor = theme.colors.text,
+  iconBgColor = theme.colors.danger,
   chevron = true,
   notification = false,
   toggle = false, // for dark mode toggle
@@ -106,7 +106,7 @@ const SettingListItem = ({
         <MaterialCommunityIcons
           name="chevron-right"
           size={20}
-          color={theme.colors.mediumGrey}
+          color={theme.colors.gray}
         />
       )}
     </TouchableOpacity>
@@ -115,7 +115,7 @@ const SettingListItem = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.background,
   },
   rowContainer: {
     flexDirection: "row",
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   chevronContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.background,
     paddingHorizontal: wp(4),
     justifyContent: "space-between",
   },

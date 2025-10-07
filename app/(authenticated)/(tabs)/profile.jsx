@@ -124,7 +124,8 @@ const Profile = () => {
                 <StatsItem title="Books" value="0" />
               </View>
             </HorizontalPadding>
-            {/* 🆕 Tabs under stats */}
+
+            {/* Tabs under stats */}
             <View style={styles.tabsContainer}>
               {["posts", "bookmarks"].map((tab) => {
                 const icons = {
@@ -162,7 +163,9 @@ const Profile = () => {
                         name={iconName}
                         size={16}
                         color={
-                          activeTab === tab ? theme.colors.primary : "gray"
+                          activeTab === tab
+                            ? theme.colors.primary
+                            : theme.colors.gray
                         }
                         style={{ marginLeft: 6 }}
                       />
@@ -204,10 +207,9 @@ const styles = StyleSheet.create({
 
   bio: {
     marginTop: 8,
-    color: theme.colors.dark,
+    color: theme.colors.text,
   },
 
-  // 🆕 Tabs styling
   tabContent: {
     flexDirection: "row",
     alignItems: "center",
@@ -215,9 +217,7 @@ const styles = StyleSheet.create({
   },
   tabsContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    borderBottomWidth: 1,
-    borderColor: "#ddd",
+    justifyContent: "space-between",
     marginBottom: 10,
   },
   tabButton: {
@@ -226,11 +226,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   activeTabButton: {
-    borderBottomWidth: 2,
+    borderBottomWidth: 4,
     borderColor: theme.colors.primary,
   },
   tabText: {
-    color: "gray",
+    color: theme.colors.gray,
     fontWeight: "500",
   },
   activeTabText: {

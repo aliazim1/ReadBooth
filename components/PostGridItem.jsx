@@ -6,7 +6,7 @@ import { getSupabaseFileUrl } from "../services/imageService";
 import AppText from "./AppText";
 
 const PostGridItem = ({ item, router }) => {
-  const post = item?.post || item; // handles both structures (posts or savedPosts)
+  const post = item?.post || item;
 
   return (
     <View style={styles.postContainer}>

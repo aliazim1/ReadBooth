@@ -163,7 +163,14 @@ const PostDetails = () => {
 
   if (startLoading) {
     return (
-      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          flex: 1,
+          backgroundColor: theme.colors.background,
+        }}
+      >
         <Loading />
       </View>
     );
@@ -180,7 +187,7 @@ const PostDetails = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: theme.colors.white,
+        backgroundColor: theme.colors.background,
       }}
     >
       <KeyboardAwareScrollView
@@ -214,13 +221,13 @@ const PostDetails = () => {
               />
               {loadingSend ? (
                 <View style={styles.sendBtn}>
-                  <Loading color={theme.colors.white} />
+                  <Loading color={theme.colors.text} />
                 </View>
               ) : (
                 <AppIoniconTouchable
                   name="navigate"
                   size={20}
-                  color={theme.colors.white}
+                  color={theme.colors.text}
                   style={[{ marginLeft: 0 }, styles.sendBtn]}
                   onPress={onNewComment}
                 />
@@ -276,7 +283,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: hp(1),
     paddingHorizontal: wp(4),
-    backgroundColor: "#fff",
   },
 
   input: {
@@ -293,7 +299,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: theme.radius.xxl,
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.success,
   },
   commentsListContainer: {
     gap: 10,

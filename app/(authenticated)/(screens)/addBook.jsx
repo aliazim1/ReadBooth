@@ -23,15 +23,17 @@ import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
 import { hp, wp } from "../../../helpers/common";
 import { getSupabaseFileUrl } from "../../../services/imageService";
-import { createPost } from "../../../services/postService";
+import { addBook } from "../../../services/postService";
 
 const CreatePost = () => {
   const { user } = useAuth();
   const router = useRouter();
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [bodyContent, setBodyContent] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [link1, setLink1] = useState("");
 
   const onPick = async () => {
     try {
@@ -55,12 +57,7 @@ const CreatePost = () => {
           file = { uri: result.uri, type: "image" };
         }
       }
-
-      if (file) {
-        setFile(file);
-      } else {
-        console.log("No file selected or trimming failed");
-      }
+      if (file) setFile(file);
     } catch (error) {
       console.log("Error picking media:", error);
     }
@@ -81,7 +78,7 @@ const CreatePost = () => {
       return file.type;
     }
 
-    // check for remote file if image/video
+    // check for remote file if image
     if (file.includes("postImages")) return "image";
     return null;
   };
@@ -98,31 +95,35 @@ const CreatePost = () => {
   // function to publish the post
   const onSubmit = async () => {
     // if user tries to post an empty post
-    if (bodyContent.trim() === "" && !file) {
-      Alert.alert("Empty Post", "Your post can’t be empty.");
+    if (title.trim() === "" || author.trim() === "" || !file) {
+      Alert.alert("Required Fields", "Please fill out the required fields.");
       return;
     }
 
     let data = {
       file,
-      body: bodyContent,
+      title: title,
+      author: author,
+      link1: link1,
       userId: user?.id,
     };
 
-    // create post
+    // add the book to the shelve
     setLoading(true);
-    let res = await createPost(data);
+    let res = await addBook(data);
     setLoading(false);
     if (res.success) {
       setFile(null);
-      setBodyContent("");
+      setTitle("");
+      setAuthor("");
+      setLink1("");
       setShowSuccess(true); // show the animation
       setTimeout(() => {
         setShowSuccess(false);
         router.back();
       }, 2000);
     } else {
-      Alert.alert("Post", res.msg);
+      Alert.alert("Add Book", res.msg);
     }
   };
 
@@ -150,13 +151,31 @@ const CreatePost = () => {
 
             {/* the text-field with actions */}
             <CustomInput
-              placeholder="What’s on your bookshelf today?"
-              value={bodyContent}
-              onChangeText={setBodyContent}
-              multiline={true}
+              label={"Title"}
+              placeholder="Title"
+              value={title}
+              onChangeText={setTitle}
+              multiline={false}
               autoCorrect={true}
-              numberOfLines={5}
-              style={styles.bodyContent}
+              style={styles.textInputs}
+            />
+            <CustomInput
+              label={"Author"}
+              placeholder="Author"
+              value={author}
+              onChangeText={setAuthor}
+              multiline={false}
+              autoCorrect={true}
+              style={styles.textInputs}
+            />
+            <CustomInput
+              label={"Link"}
+              placeholder="Enter link to the book"
+              value={link1}
+              onChangeText={setLink1}
+              multiline={false}
+              autoCorrect={true}
+              style={styles.textInputs}
             />
 
             {/* media will display here once selected */}
@@ -180,12 +199,12 @@ const CreatePost = () => {
 
             {/* attach media label & icons */}
             <View style={styles.mediaContainer}>
-              <AppText style={styles.addMediaText}> Add Image </AppText>
+              <AppText style={styles.addMediaText}> Add Picture </AppText>
               <View style={styles.mediaIconContainer}>
                 <AppIoniconTouchable
                   name="image"
                   size={20}
-                  color={theme.colors.background}
+                  color="black"
                   onPress={() => onPick()}
                   style={styles.mediaIcon}
                 />
@@ -213,8 +232,8 @@ const CreatePost = () => {
           </View>
         </View>
       )}
-      {/* publish button won't be scrollable  */}
-      <AppButton title="Publish" onPress={onSubmit} isLoading={loading} />
+      {/* add button won't be scrollable  */}
+      <AppButton title="Add Book" onPress={onSubmit} isLoading={loading} />
     </SafeScreen>
   );
 };
@@ -233,19 +252,19 @@ const styles = StyleSheet.create({
   },
   publicText: {
     fontSize: hp(1.5),
-    color: theme.colors.textLight,
+    color: theme.colors.mediumGrey,
     fontWeight: theme.fonts.medium,
   },
-  bodyContent: {
-    height: hp(15),
-    marginVertical: hp(2),
+  textInputs: {
+    paddingVertical: 14,
+    marginVertical: hp(0.5),
     textAlignVertical: "top",
   },
   file: {
     width: "100%",
     height: hp(30),
     overflow: "hidden",
-    marginBottom: hp(2),
+    marginTop: hp(2),
     borderCurve: "continuous",
     borderRadius: theme.radius.xl,
   },
@@ -255,8 +274,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 14,
+    marginVertical: hp(2),
     borderCurve: "continuous",
-    borderRadius: theme.radius.xl,
+    borderRadius: theme.radius.md,
     justifyContent: "space-between",
     borderColor: theme.colors.mediumGrey,
   },
@@ -271,7 +291,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.7,
     borderRadius: theme.radius.xxl,
-    backgroundColor: theme.colors.text,
+    backgroundColor: theme.colors.white,
     shadowOffset: { width: 0, height: 1 },
     shadowColor: "hsla(0, 0.00%, 0.00%, 0.30)",
   },

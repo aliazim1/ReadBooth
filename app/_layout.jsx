@@ -2,6 +2,7 @@ import { Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 
+import { theme } from "../constants/theme";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
 import { NotificationsProvider } from "../contexts/NotificationsContext";
 import { supabase } from "../lib/supabase";
@@ -11,7 +12,7 @@ const RootLayout = () => {
   return (
     <AuthProvider>
       <NotificationsProvider>
-        <StatusBar style="dark" />
+        <StatusBar style="light" />
         <MainLayout />
       </NotificationsProvider>
     </AuthProvider>
@@ -41,7 +42,14 @@ const MainLayout = () => {
   };
 
   return (
-    <Stack screenOptions={{ headerShown: false, headerShadowVisible: false }}>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        headerShadowVisible: false,
+        headerTintColor: theme.colors.text,
+        headerStyle: { backgroundColor: theme.colors.background },
+      }}
+    >
       <Stack.Screen name="index" />
       <Stack.Screen name="+not-found" />
       <Stack.Screen name="(authenticated)" />

@@ -41,7 +41,7 @@ const CustomInput = ({
           {
             borderColor: isFocused
               ? theme.colors.primary
-              : theme.colors.darkLight,
+              : theme.colors.mediumGrey,
           },
           style,
         ]}
@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     padding: hp(1.3),
     borderWidth: 0.7,
     borderRadius: theme.radius.md,
+    color: theme.colors.text,
   },
 });
 export default CustomInput;

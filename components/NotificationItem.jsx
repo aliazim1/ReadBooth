@@ -1,7 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import moment from "moment";
 import {
-  Alert,
   Pressable,
   StyleSheet,
   Text,
@@ -13,7 +12,11 @@ import { hp } from "../helpers/common";
 import AppText from "./AppText";
 import Avatar from "./Avatar";
 
-const NotificationItem = ({ item, router }) => {
+const NotificationItem = ({
+  item,
+  router,
+  onDeleteNotification = () => {},
+}) => {
   const createdAt = moment(item?.created_at).fromNow();
 
   const handleNotificationTap = () => {
@@ -33,13 +36,10 @@ const NotificationItem = ({ item, router }) => {
           <AppText style={styles.createdAt}>{createdAt}</AppText>
         </View>
       </View>
-      <Pressable
-        onPress={() => Alert.alert("Tapped", "You tapped the three dots")}
-        style={styles.action}
-      >
+      <Pressable onPress={onDeleteNotification} style={styles.action}>
         <Ionicons
           name={"ellipsis-horizontal"}
-          color={theme.colors.dark}
+          color={theme.colors.text}
           size={hp(1.8)}
         />
       </Pressable>
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: hp(1.8),
-    color: theme.colors.dark,
+    color: theme.colors.text,
     fontWeight: theme.fonts.semibold,
   },
   notificationMsg: {

@@ -80,7 +80,7 @@ export default function signup() {
   };
 
   return (
-    <SafeScreen bg={theme.colors.white}>
+    <SafeScreen>
       <KeyboardAwareScrollView
         enableOnAndroid={true}
         extraScrollHeight={20}

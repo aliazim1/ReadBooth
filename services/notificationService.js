@@ -44,3 +44,22 @@ export const fetchNotifications = async (receiverId) => {
     return { success: false, msg: "Could not fetch notification" };
   }
 };
+
+// function to remove notification
+export const removeNotification = async (notificationId) => {
+  try {
+    const { error } = await supabase
+      .from("notifications")
+      .delete()
+      .eq("id", notificationId);
+
+    if (error) {
+      console.log("removeNotification error: ", error);
+      return { success: false, msg: "Could not remove the notification" };
+    }
+    return { success: true, data: { notificationId } };
+  } catch (error) {
+    console.log("removeNotification error: ", error);
+    return { success: false, msg: "Could not remove the notification" };
+  }
+};

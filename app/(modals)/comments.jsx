@@ -175,7 +175,7 @@ const Comments = () => {
     );
   }
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.white }}>
+    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <KeyboardAwareScrollView
         enableOnAndroid={true}
         extraScrollHeight={20}
@@ -200,13 +200,13 @@ const Comments = () => {
               />
               {loadingSend ? (
                 <View style={styles.sendBtn}>
-                  <Loading color={theme.colors.white} />
+                  <Loading color={theme.colors.text} />
                 </View>
               ) : (
                 <AppIoniconTouchable
                   name="navigate"
-                  size={20}
-                  color={theme.colors.white}
+                  size={22}
+                  color={theme.colors.text}
                   style={[{ marginLeft: 0 }, styles.sendBtn]}
                   onPress={onNewComment}
                 />
@@ -261,7 +261,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: wp(4),
     paddingVertical: hp(1),
-    backgroundColor: "#fff",
   },
 
   input: {
@@ -274,11 +273,11 @@ const styles = StyleSheet.create({
     marginVertical: hp(2),
   },
   sendBtn: {
-    padding: 8,
+    padding: 6,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: theme.radius.xxl,
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.mediumGrey,
   },
   commentsListContainer: {
     gap: 17,

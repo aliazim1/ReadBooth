@@ -50,24 +50,23 @@ const AppButton = ({
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: theme.colors.primary,
     height: hp(5.5),
-    justifyContent: "center",
+    flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     borderCurve: "continuous",
     borderRadius: theme.radius.xl * 20,
-    flexDirection: "row",
+    backgroundColor: theme.colors.primary,
   },
   shadowBtn: {
-    shadowColor: "hsla(0, 0.00%, 0.00%, 0.30)",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.7,
-    shadowRadius: 3,
     elevation: 5,
+    shadowRadius: 3,
+    shadowOpacity: 0.7,
+    shadowOffset: { width: 0, height: 1 },
+    shadowColor: "hsla(0, 0.00%, 0.00%, 0.30)",
   },
   text: {
     fontSize: hp(2.2),
-    color: "white",
     fontWeight: theme.fonts.bold,
   },
   image: {

@@ -19,14 +19,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: hp(3),
     fontWeight: theme.fonts.bold,
-    color: theme.colors.dark,
   },
   punchLine: {
     fontSize: hp(1.8),
     fontWeight: theme.fonts.medium,
     marginTop: hp(0.5),
     marginBottom: hp(2),
-    color: theme.colors.dark,
     textAlign: "center",
   },
 });

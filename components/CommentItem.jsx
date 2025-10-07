@@ -58,7 +58,7 @@ const CommentItem = ({
             <AppIoniconTouchable
               name="trash"
               size={16}
-              color={theme.colors.dark}
+              color={theme.colors.text}
               onPress={handleDelete}
             />
           )}
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: hp(1.5),
-    color: theme.colors.dark,
+    color: theme.colors.text,
     fontWeight: theme.fonts.semibold,
   },
   lightText: {
@@ -101,13 +101,13 @@ const styles = StyleSheet.create({
   body: {
     marginLeft: wp(15),
     fontSize: hp(1.5),
-    color: theme.colors.dark,
+    color: theme.colors.text,
     paddingBottom: 10,
-    borderBottomColor: theme.colors.darkLight,
-    borderBottomWidth: 0.7,
+    borderBottomColor: theme.colors.text,
+    borderBottomWidth: 0.2,
   },
   highlight: {
-    backgroundColor: theme.colors.veryLightGrey,
+    backgroundColor: theme.colors.primary,
   },
 });
 export default CommentItem;

@@ -98,13 +98,13 @@ const Home = () => {
       headerRight: () => (
         <View style={styles.headerIconsContainer}>
           <Pressable onPress={() => {}}>
-            <Feather name="search" size={24} color={theme.colors.dark} />
+            <Feather name="search" size={24} color={theme.colors.text} />
           </Pressable>
           <Pressable onPress={() => router.push("/createPost")}>
             <FontAwesome
               name="plus-square-o"
               size={24}
-              color={theme.colors.dark}
+              color={theme.colors.text}
             />
           </Pressable>
         </View>
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   ItemSeparatorComponent: {
     height: 1,
     marginVertical: 10,
-    backgroundColor: theme.colors.itemSeparator,
+    backgroundColor: theme.colors.mediumGrey,
   },
   container: {
     alignItems: "center",

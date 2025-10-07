@@ -62,7 +62,7 @@ export default function login() {
     }
   };
   return (
-    <SafeScreen bg={theme.colors.white}>
+    <SafeScreen>
       <KeyboardAwareScrollView
         enableOnAndroid={true}
         extraScrollHeight={20}
@@ -119,7 +119,7 @@ export default function login() {
 
             <View style={styles.noAccountContainer}>
               <View style={styles.noAccountContainerRow}>
-                <AppText>Not a member of ReadVine?</AppText>
+                <AppText>Not a member of ReadBooth?</AppText>
                 <TouchableOpacity onPress={() => router.replace("/signup")}>
                   <AppText style={styles.signUp}>Sign Up</AppText>
                 </TouchableOpacity>
@@ -148,8 +148,6 @@ const styles = StyleSheet.create({
     fontWeight: theme.fonts.bold,
     color: theme.colors.primary,
   },
-
-  // display error message
   errorContainer: {
     width: "100%",
     paddingHorizontal: 8,
