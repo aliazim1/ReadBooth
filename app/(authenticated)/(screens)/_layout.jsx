@@ -31,7 +31,7 @@ const ScreensLayout = () => {
       <Stack.Screen
         name="addBook"
         options={{
-          headerTitle: "Add a New Book to Shelf",
+          headerTitle: "Add New Book",
         }}
       />
       <Stack.Screen

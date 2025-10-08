@@ -1,7 +1,9 @@
 export const theme = {
   colors: {
     primary: "#8B593E",
-    background: "#010313",
+    // background: "#0F181E", // Midnight Blue
+    background: "#010313", // MAYBE WILL BE THE BG COLOR
+    // text: "#FCFCFC",
     text: "#F5F5F5",
     border: "#f1f1f1ff",
     white: "#FFFFFF",
@@ -12,6 +14,12 @@ export const theme = {
     success: "#4B8B3B",
     danger: "#ef4444",
     dangerLight: "#f87171",
+    blue: "#97E0F7",
+    tintColor: "#723FEB",
+
+    // Additional colors
+    // background: "#1A1A1A",
+    // background: "#080808",
   },
   fonts: {
     medium: "500",

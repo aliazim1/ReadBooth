@@ -7,7 +7,6 @@ import { FlatList, Pressable, StyleSheet, View } from "react-native";
 import AppText from "../../../components/AppText";
 import Loading from "../../../components/Loading";
 import PostCard from "../../../components/PostCard";
-import SafeScreen from "../../../components/SafeScreen";
 import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
 import { hp } from "../../../helpers/common";
@@ -113,7 +112,7 @@ const Home = () => {
   }, [navigation, router]);
 
   return (
-    <SafeScreen>
+    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <FlatList
         data={posts}
         showsVerticalScrollIndicator={false}
@@ -149,7 +148,7 @@ const Home = () => {
           </View>
         }
       />
-    </SafeScreen>
+    </View>
   );
 };
 

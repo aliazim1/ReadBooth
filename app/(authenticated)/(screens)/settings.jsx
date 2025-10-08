@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
 import { Alert, ScrollView, View } from "react-native";
 
+import { useState } from "react";
 import AppText from "../../../components/AppText";
 import CustomAlert from "../../../components/CustomAlert";
 import SafeScreen from "../../../components/SafeScreen";
@@ -12,6 +13,7 @@ import { supabase } from "../../../lib/supabase";
 const Settings = () => {
   const router = useRouter();
   const { setAuth } = useAuth();
+  const [darkMode, setDarkMode] = useState(false);
 
   const onLogout = async () => {
     try {
@@ -47,6 +49,13 @@ const Settings = () => {
           label={"Password"}
           style={{ paddingVertical: 16 }}
           onPress={() => router.push("/password")}
+        />
+        <SettingListItem
+          label={"Dark Mode"}
+          style={{ paddingVertical: 16 }}
+          toggle={true}
+          value={darkMode}
+          onValueChange={setDarkMode}
         />
         <SettingListItem
           icon={"shield"}

@@ -1,26 +1,25 @@
 import { MaterialIcons, Octicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
+import { StyleSheet, View } from "react-native";
 
 import AppIonicon from "../../../components/AppIonicon";
 import AppText from "../../../components/AppText";
 import { theme } from "../../../constants/theme";
 import { useNotifications } from "../../../contexts/NotificationsContext";
-import { hp } from "../../../helpers/common";
+import { hp, wp } from "../../../helpers/common";
 
 export default function TabLayout() {
   const { badgeCount } = useNotifications();
 
   return (
     <Tabs
-      initialRouteName="home"
       screenOptions={{
+        tabBarShowLabel: false,
+        tabBarStyle: styles.tabBarStyling,
         headerShadowVisible: false,
         headerTintColor: theme.colors.text,
         tabBarActiveTintColor: theme.colors.text,
         tabBarInactiveTintColor: theme.colors.mediumGrey,
-        tabBarStyle: {
-          backgroundColor: theme.colors.background,
-        },
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -32,23 +31,25 @@ export default function TabLayout() {
           title: "Home",
           headerTitle: "",
           headerLeft: () => (
-            <AppText
-              style={{
-                fontSize: hp(2),
-                marginLeft: 12,
-                color: theme.colors.text,
-                fontWeight: theme.fonts.extraBold,
-              }}
-            >
-              ReadBooth
-            </AppText>
+            <AppText style={styles.homeHeaderTItle}>ReadBooth</AppText>
           ),
           tabBarIcon: ({ focused }) => (
-            <Octicons
-              name="home-fill"
-              size={22}
-              color={focused ? theme.colors.text : theme.colors.mediumGrey}
-            />
+            <View
+              style={[
+                styles.tabBarIcons,
+                {
+                  backgroundColor: focused
+                    ? theme.colors.primary
+                    : "transparent",
+                },
+              ]}
+            >
+              <Octicons
+                name="home-fill"
+                size={18}
+                color={focused ? theme.colors.text : theme.colors.mediumGrey}
+              />
+            </View>
           ),
         }}
       />
@@ -58,11 +59,22 @@ export default function TabLayout() {
         options={{
           title: "Book Shelf",
           tabBarIcon: ({ focused }) => (
-            <MaterialIcons
-              name="menu-book"
-              size={24}
-              color={focused ? theme.colors.text : theme.colors.mediumGrey}
-            />
+            <View
+              style={[
+                styles.tabBarIcons,
+                {
+                  backgroundColor: focused
+                    ? theme.colors.primary
+                    : "transparent",
+                },
+              ]}
+            >
+              <MaterialIcons
+                name="menu-book"
+                size={20}
+                color={focused ? theme.colors.text : theme.colors.mediumGrey}
+              />
+            </View>
           ),
         }}
       />
@@ -77,11 +89,22 @@ export default function TabLayout() {
             color: "white",
           },
           tabBarIcon: ({ focused }) => (
-            <AppIonicon
-              name={"notifications"}
-              size={25}
-              color={focused ? theme.colors.text : theme.colors.mediumGrey}
-            />
+            <View
+              style={[
+                styles.tabBarIcons,
+                {
+                  backgroundColor: focused
+                    ? theme.colors.primary
+                    : "transparent",
+                },
+              ]}
+            >
+              <AppIonicon
+                name={"notifications"}
+                size={20}
+                color={focused ? theme.colors.text : theme.colors.mediumGrey}
+              />
+            </View>
           ),
         }}
       />
@@ -91,14 +114,75 @@ export default function TabLayout() {
           title: "Profile",
           headerTitle: "",
           tabBarIcon: ({ focused }) => (
-            <AppIonicon
-              name={"person"}
-              size={25}
-              color={focused ? theme.colors.text : theme.colors.mediumGrey}
-            />
+            <View
+              style={[
+                styles.tabBarIcons,
+                {
+                  backgroundColor: focused
+                    ? theme.colors.primary
+                    : "transparent",
+                },
+              ]}
+            >
+              <AppIonicon
+                name={"person"}
+                size={20}
+                color={focused ? theme.colors.text : theme.colors.mediumGrey}
+              />
+            </View>
           ),
         }}
       />
     </Tabs>
   );
+}
+
+const styles = StyleSheet.create({
+  tabBarStyling: {
+    bottom: 20,
+    height: 63,
+    paddingTop: 10,
+    borderWidth: 1,
+    borderRadius: 50,
+    borderTopWidth: 1,
+    position: "absolute",
+    alignItems: "center",
+    borderColor: "#333",
+    borderTopColor: "#333",
+    justifyContent: "center",
+    marginHorizontal: wp(14),
+    backgroundColor: theme.colors.background,
+  },
+  homeHeaderTItle: {
+    fontSize: hp(2),
+    marginLeft: 12,
+    color: theme.colors.text,
+    fontWeight: theme.fonts.extraBold,
+  },
+  tabBarIcons: {
+    width: 40,
+    height: 40,
+    padding: 5,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+
+{
+  /* <Tabs
+      initialRouteName="home"
+      screenOptions={{
+        headerShadowVisible: false,
+        headerTintColor: theme.colors.text,
+        tabBarActiveTintColor: theme.colors.text,
+        tabBarInactiveTintColor: theme.colors.mediumGrey,
+        tabBarStyle: {
+          backgroundColor: theme.colors.background,
+        },
+        headerStyle: {
+          backgroundColor: theme.colors.background,
+        },
+      }}
+    > */
 }

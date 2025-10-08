@@ -22,7 +22,7 @@ const SettingListItem = ({
   style,
 }) => {
   return toggle ? (
-    <View style={[styles.container, { paddingHorizontal: 16 }, style]}>
+    <View style={[styles.container, { paddingHorizontal: wp(4.5) }, style]}>
       <View style={[styles.rowContainer]}>
         <View style={styles.left}>
           {icon && (

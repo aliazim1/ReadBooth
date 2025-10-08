@@ -152,7 +152,7 @@ const CreatePost = () => {
             {/* the text-field with actions */}
             <CustomInput
               label={"Title"}
-              placeholder="Title"
+              placeholder="Book Title"
               value={title}
               onChangeText={setTitle}
               multiline={false}
@@ -161,7 +161,7 @@ const CreatePost = () => {
             />
             <CustomInput
               label={"Author"}
-              placeholder="Author"
+              placeholder="Book Author"
               value={author}
               onChangeText={setAuthor}
               multiline={false}
