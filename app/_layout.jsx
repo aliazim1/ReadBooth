@@ -11,8 +11,7 @@ import { modalsStyles } from "../styles/modalsStyles";
 
 const RootLayout = () => {
   const [theme, setTheme] = useState({ mode: "dark" });
-
-  const toggleTheme = (newTheme) => {
+  const updateTheme = (newTheme) => {
     let mode;
     if (!newTheme) {
       mode = theme.mode === "dark" ? "light" : "dark";
@@ -22,10 +21,10 @@ const RootLayout = () => {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, updateTheme }}>
       <AuthProvider>
         <NotificationsProvider>
-          <StatusBar style="light" />
+          <StatusBar style={theme.mode === "dark" ? "light" : "dark"} />
           <MainLayout />
         </NotificationsProvider>
       </AuthProvider>

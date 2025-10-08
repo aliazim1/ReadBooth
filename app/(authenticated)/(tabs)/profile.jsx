@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import { useCallback, useLayoutEffect, useState } from "react";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, TouchableOpacity, View } from "react-native";
 
 import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
 import AppMaterialCommunityIcon from "../../../components/AppMaterialCommunityIcon";
@@ -147,21 +147,21 @@ const Profile = () => {
                     ]}
                   >
                     <View style={styles.tabContent}>
-                      <Text
+                      <AppText
                         style={[
                           styles.tabText,
                           activeTab === tab && styles.activeTabText,
                         ]}
                       >
                         {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                      </Text>
+                      </AppText>
                       <Ionicons
                         name={iconName}
                         size={16}
                         color={
                           activeTab === tab
-                            ? activeColors.primary
-                            : activeColors.gray
+                            ? activeColors.text
+                            : activeColors.mediumGrey
                         }
                         style={{ marginLeft: 6 }}
                       />

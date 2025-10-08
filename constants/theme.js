@@ -1,8 +1,8 @@
 export const colors = {
   light: {
-    primary: "#8B593E",
     background: "#F5F5F5",
-    text: "#010313",
+    text: "#1C1C1E",
+    primary: "#33D2A4",
     border: "#f1f1f1ff",
     white: "#FFFFFF",
     textLight: "#7C7C7C",
@@ -15,12 +15,13 @@ export const colors = {
     blue: "#97E0F7",
     tintColor: "#723FEB",
     black: "#1A1A1A",
+    tabBarBorder: "#f1f1f1ff",
+    iconsColor: "#1C1C1E",
   },
   dark: {
-    primary: "#8B593E",
-    background: "#0F181E",
-    // background: "#010313",
-    text: "#F5F5F5",
+    background: "#1A1A1A",
+    text: "#FFFEFE",
+    primary: "#33D2A4",
     border: "#f1f1f1ff",
     white: "#FFFFFF",
     textLight: "#7C7C7C",
@@ -33,6 +34,8 @@ export const colors = {
     blue: "#97E0F7",
     tintColor: "#723FEB",
     black: "#1A1A1A",
+    tabBarBorder: "#333",
+    iconsColor: "#FFFEFE",
   },
 };
 
@@ -55,6 +58,8 @@ export const appTheme = {
 
 // Additional colors
 // text: "#FCFCFC",
+// primary: "#8B593E",
+// background: "#010313",
 // background: "#1A1A1A",
 // background: "#080808",
 // background: "#0F181E", // Midnight Blue

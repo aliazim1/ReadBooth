@@ -140,7 +140,7 @@ const signup = () => {
             </View>
             <View style={styles.noAccountContainer}>
               <View style={styles.noAccountContainerRow}>
-                <AppText>Already a member of ReadVine?</AppText>
+                <AppText>Already have a ReadBooth account?</AppText>
                 <TouchableOpacity onPress={() => router.replace("/login")}>
                   <AppText style={styles.primaryColorText}>Sign In</AppText>
                 </TouchableOpacity>

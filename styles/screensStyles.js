@@ -74,17 +74,6 @@ export const useScreensStyles = () => {
           alignItems: "center",
           flexDirection: "row",
         },
-        mediaIcon: {
-          padding: 5,
-          elevation: 5,
-          shadowRadius: 3,
-          shadowOpacity: 0.7,
-          borderRadius: appTheme.radius.xxl,
-          backgroundColor: activeColors.text,
-          shadowOffset: { width: 0, height: 1 },
-          shadowColor: "hsla(0, 0.00%, 0.00%, 0.30)",
-        },
-
         successContainer: {
           zIndex: 999,
           alignItems: "center",

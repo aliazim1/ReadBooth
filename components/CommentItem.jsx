@@ -57,7 +57,6 @@ const CommentItem = ({
             <AppIoniconTouchable
               name="trash"
               size={16}
-              color={activeColors.text}
               onPress={handleDelete}
             />
           )}

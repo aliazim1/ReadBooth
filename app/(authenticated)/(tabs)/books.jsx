@@ -51,10 +51,10 @@ const Books = () => {
       headerRight: () => (
         <View style={styles.headerIconsContainer}>
           <Pressable onPress={() => {}}>
-            <Feather name="search" size={22} color={activeColors.text} />
+            <Feather name="search" size={24} color={activeColors.text} />
           </Pressable>
           <Pressable onPress={() => router.push("/addBook")}>
-            <Octicons name="plus-circle" size={20} color={activeColors.text} />
+            <Octicons name="plus-circle" size={21} color={activeColors.text} />
           </Pressable>
         </View>
       ),

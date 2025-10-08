@@ -12,7 +12,6 @@ import { supabase } from "../../../lib/supabase";
 import { fetchPosts } from "../../../services/postService";
 import { getUserData } from "../../../services/userService";
 import { useTabsStyles } from "../../../styles/tabsStyles";
-
 // global variable for the number of posts (limit)
 var limit = 0;
 
@@ -109,7 +108,7 @@ const Home = () => {
         </View>
       ),
     });
-  }, [navigation, router]);
+  }, [navigation, router, activeColors]);
 
   return (
     <View style={styles.outerContainer}>

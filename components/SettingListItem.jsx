@@ -28,7 +28,7 @@ const SettingListItem = ({
           {icon && (
             <MaterialCommunityIcons
               name={icon}
-              color={activeColors.gray || iconColor}
+              color={activeColors.iconsColor || iconColor}
               size={22}
               style={{ marginRight: 7 }}
             />
@@ -40,7 +40,10 @@ const SettingListItem = ({
         <Switch
           value={value}
           onValueChange={onValueChange}
-          trackColor={{ false: activeColors.gray, true: activeColors.primary }}
+          trackColor={{
+            false: activeColors.iconsColor,
+            true: activeColors.primary,
+          }}
         />
       </View>
       {description && (
@@ -60,7 +63,7 @@ const SettingListItem = ({
             <View style={[styles.notificationIcon]}>
               <MaterialCommunityIcons
                 name={icon}
-                color={iconColor || activeColors.gray}
+                color={iconColor || activeColors.iconsColor}
                 size={28}
               />
             </View>
@@ -78,7 +81,7 @@ const SettingListItem = ({
           <MaterialCommunityIcons
             name="chevron-right"
             size={20}
-            color={iconColor || activeColors.gray}
+            color={iconColor || activeColors.iconsColor}
           />
         )}
       </View>
@@ -93,7 +96,7 @@ const SettingListItem = ({
         {icon && (
           <MaterialCommunityIcons
             name={icon}
-            color={iconColor || activeColors.gray}
+            color={iconColor || activeColors.iconsColor}
             size={22}
           />
         )}
@@ -105,7 +108,7 @@ const SettingListItem = ({
         <MaterialCommunityIcons
           name="chevron-right"
           size={20}
-          color={activeColors.gray}
+          color={activeColors.iconsColor}
         />
       )}
     </TouchableOpacity>

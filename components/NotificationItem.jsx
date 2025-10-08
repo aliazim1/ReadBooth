@@ -37,7 +37,7 @@ const NotificationItem = ({
       <Pressable onPress={onDeleteNotification} style={styles.action}>
         <Ionicons
           name={"ellipsis-horizontal"}
-          color={activeColors.text}
+          color={activeColors.iconsColor}
           size={hp(1.8)}
         />
       </Pressable>

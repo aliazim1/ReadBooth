@@ -24,7 +24,7 @@ const AppPressableIoniconIcon = ({
       {name && (
         <Ionicons
           name={name}
-          color={activeColors.text || iconColor}
+          color={color || activeColors.iconsColor}
           size={size}
         />
       )}

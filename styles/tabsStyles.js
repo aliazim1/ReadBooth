@@ -22,11 +22,16 @@ export const useTabsStyles = () => {
           borderTopWidth: 1,
           position: "absolute",
           alignItems: "center",
-          borderColor: "#333",
-          borderTopColor: "#333",
+          borderColor: activeColors.tabBarBorder,
+          borderTopColor: activeColors.tabBarBorder,
           justifyContent: "center",
           marginHorizontal: wp(14),
           backgroundColor: activeColors.background,
+          elevation: 5,
+          shadowRadius: 3,
+          shadowOpacity: 0.7,
+          shadowOffset: { width: 0, height: 1 },
+          shadowColor: "hsla(0, 0.00%, 0.00%, 0.30)",
         },
         headerStyle: {
           backgroundColor: activeColors.background,
@@ -113,12 +118,14 @@ export const useTabsStyles = () => {
           flexDirection: "row",
           justifyContent: "space-between",
           gap: 10,
+          width: "100%",
           alignItems: "center",
           marginVertical: hp(1.5),
         },
 
         bio: {
           marginTop: 8,
+          fontSize: 14,
           color: activeColors.text,
         },
 
@@ -138,16 +145,15 @@ export const useTabsStyles = () => {
           alignItems: "center",
         },
         activeTabButton: {
-          borderBottomWidth: 4,
-          borderColor: activeColors.primary,
+          borderBottomWidth: 3,
+          borderColor: activeColors.text,
         },
         tabText: {
-          color: activeColors.gray,
-          fontWeight: "500",
+          color: activeColors.mediumGrey,
         },
         activeTabText: {
-          color: activeColors.primary,
-          fontWeight: "bold",
+          color: activeColors.text,
+          fontWeight: appTheme.fonts.bold,
         },
       }),
     [theme]

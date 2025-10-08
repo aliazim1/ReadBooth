@@ -12,7 +12,7 @@ export default function AppMaterialCommunityIcon({
   return (
     <MaterialCommunityIcons
       name={name}
-      color={activeColors.text || color}
+      color={activeColors.iconsColor || color}
       size={size}
       style={{ alignSelf: "center", ...style }}
     />

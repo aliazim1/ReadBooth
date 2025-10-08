@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Alert, ScrollView, View } from "react-native";
 
 import AppText from "../../../components/AppText";
@@ -7,14 +7,21 @@ import CustomAlert from "../../../components/CustomAlert";
 import SafeScreen from "../../../components/SafeScreen";
 import SettingListItem from "../../../components/SettingListItem";
 import { useAuth } from "../../../contexts/AuthContext";
+import { ThemeContext } from "../../../contexts/ThemeContext";
 import { supabase } from "../../../lib/supabase";
 import { useScreensStyles } from ".././../../styles/screensStyles";
 
 const Settings = () => {
-  const { styles, activeColors } = useScreensStyles();
   const router = useRouter();
   const { setAuth } = useAuth();
-  const [darkMode, setDarkMode] = useState(true);
+  const { styles, activeColors } = useScreensStyles();
+  const { theme, updateTheme } = useContext(ThemeContext);
+  const [darkMode, setDarkMode] = useState(theme.mode == "dark");
+
+  const toggleMode = () => {
+    updateTheme();
+    setDarkMode((prev) => !prev);
+  };
 
   const onLogout = async () => {
     try {
@@ -56,7 +63,7 @@ const Settings = () => {
           style={{ paddingVertical: 16 }}
           toggle={true}
           value={darkMode}
-          onValueChange={setDarkMode}
+          onValueChange={toggleMode}
         />
         <SettingListItem
           icon={"shield"}

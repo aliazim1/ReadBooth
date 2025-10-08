@@ -30,7 +30,7 @@ export const useComponentsStyles = () => {
           shadowColor: "hsla(0, 0.00%, 0.00%, 0.30)",
         },
         text: {
-          fontSize: hp(2.2),
+          fontSize: hp(2),
           fontWeight: appTheme.fonts.bold,
         },
         image: {
@@ -318,6 +318,7 @@ export const useComponentsStyles = () => {
         // stats item styles
         column: {
           width: 90,
+          gap: 5,
           paddingVertical: 7,
           alignItems: "center",
           justifyContent: "center",

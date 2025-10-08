@@ -1,8 +1,7 @@
-import { MaterialIcons, Octicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons, Octicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { View } from "react-native";
 
-import AppIonicon from "../../../components/AppIonicon";
 import AppText from "../../../components/AppText";
 import { useNotifications } from "../../../contexts/NotificationsContext";
 import { useTabsStyles } from "../../../styles/tabsStyles";
@@ -95,7 +94,7 @@ export default function TabLayout() {
                 },
               ]}
             >
-              <AppIonicon
+              <Ionicons
                 name={"notifications"}
                 size={20}
                 color={focused ? activeColors.text : activeColors.mediumGrey}
@@ -120,7 +119,7 @@ export default function TabLayout() {
                 },
               ]}
             >
-              <AppIonicon
+              <Ionicons
                 name={"person"}
                 size={20}
                 color={focused ? activeColors.text : activeColors.mediumGrey}

@@ -199,15 +199,11 @@ const CreatePost = () => {
             {/* attach media label & icons */}
             <View style={styles.mediaContainer}>
               <AppText style={styles.addMediaText}> Add Picture </AppText>
-              <View style={styles.mediaIconContainer}>
-                <AppIoniconTouchable
-                  name="image"
-                  size={20}
-                  color="black"
-                  onPress={() => onPick()}
-                  style={styles.mediaIcon}
-                />
-              </View>
+              <AppIoniconTouchable
+                name="image"
+                size={24}
+                onPress={() => onPick()}
+              />
             </View>
           </View>
         </TouchableWithoutFeedback>

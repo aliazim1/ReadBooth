@@ -35,7 +35,7 @@ const AppButton = ({
           name={iconName}
           style={{ marginRight: 5 }}
           size={22}
-          color={activeColors.text || iconColor}
+          color={activeColors.iconsColor || iconColor}
         />
       )}
       {imageUri && !isLoading && (

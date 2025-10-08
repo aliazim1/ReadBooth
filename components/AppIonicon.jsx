@@ -7,7 +7,7 @@ export default function AppIonicon({ name, size = 24, color, style }) {
   return (
     <Ionicons
       name={name}
-      color={activeColors.mediumGrey || color}
+      color={activeColors.iconsColor || color}
       size={size}
       style={[{ alignSelf: "center" }, style]}
     />

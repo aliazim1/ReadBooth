@@ -115,9 +115,9 @@ export default function login() {
 
             <View style={styles.noAccountContainer}>
               <View style={styles.noAccountContainerRow}>
-                <AppText>Not a member of ReadBooth?</AppText>
+                <AppText>Don't have a ReadBooth account?</AppText>
                 <TouchableOpacity onPress={() => router.replace("/signup")}>
-                  <AppText style={styles.primaryColorText}>Sign Up</AppText>
+                  <AppText style={styles.primaryColorText}>Sign Up Now</AppText>
                 </TouchableOpacity>
               </View>
             </View>

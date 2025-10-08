@@ -6,7 +6,7 @@ const Loading = ({ size = "small", color, style }) => {
 
   return (
     <View style={[{ justifyContent: "center", alignItems: "center" }, style]}>
-      <ActivityIndicator size={size} color={color || activeColors.text} />
+      <ActivityIndicator size={size} color={color || activeColors.iconsColor} />
     </View>
   );
 };

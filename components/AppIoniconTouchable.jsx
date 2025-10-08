@@ -17,7 +17,7 @@ const AppIoniconTouchable = ({
     <Pressable onPress={onPress} style={style}>
       <Ionicons
         name={name}
-        color={color || activeColors.text}
+        color={color || activeColors.iconsColor}
         size={size}
         strokeWidth={strokeWidth}
         style={{ alignSelf: "center" }}
