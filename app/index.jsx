@@ -1,19 +1,17 @@
-import { useRouter } from "expo-router";
 import { View } from "react-native";
 
 import Loading from "../components/Loading";
-import { theme } from "../constants/theme";
+import { modalsStyles } from "../styles/modalsStyles";
 
 const Index = () => {
-  const router = useRouter();
-
+  const { activeColors } = modalsStyles();
   return (
     <View
       style={{
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: theme.colors.white,
+        backgroundColor: activeColors.background,
       }}
     >
       <Loading />

@@ -1,14 +1,13 @@
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { theme } from "../constants/theme";
+import { authStyles } from "../styles/authStyles";
 
-export default function SafeScreen({
-  children,
-  bg = theme.colors.background,
-  style,
-}) {
+export default function SafeScreen({ children, style }) {
+  const { activeColors } = authStyles();
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={[{ flex: 1, backgroundColor: bg }, style]}>
+      <SafeAreaView
+        style={[{ flex: 1, backgroundColor: activeColors.background }, style]}
+      >
         {children}
       </SafeAreaView>
     </SafeAreaProvider>

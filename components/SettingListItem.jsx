@@ -1,52 +1,50 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { memo } from "react";
-import { StyleSheet, Switch, TouchableOpacity, View } from "react-native";
+import { Switch, TouchableOpacity, View } from "react-native";
 
-import { theme } from "../constants/theme";
-import { wp } from "../helpers/common";
+import { useComponentsStyles } from "../styles/componentsStyles";
 import AppText from "./AppText";
 
 const SettingListItem = ({
   label,
+  labelColor = "",
   icon,
-  iconColor = theme.colors.mediumGrey,
-  labelColor = theme.colors.text,
-  iconBgColor = theme.colors.danger,
+  iconColor = "",
   chevron = true,
   notification = false,
-  toggle = false, // for dark mode toggle
+  toggle = false,
   description,
   value,
   onValueChange,
   onPress,
   style,
 }) => {
+  const { styles, activeColors } = useComponentsStyles();
+
   return toggle ? (
-    <View style={[styles.container, { paddingHorizontal: wp(4.5) }, style]}>
+    <View style={[styles.settingItemContainer, style]}>
       <View style={[styles.rowContainer]}>
         <View style={styles.left}>
           {icon && (
             <MaterialCommunityIcons
               name={icon}
-              color={iconColor}
+              color={activeColors.gray || iconColor}
               size={22}
               style={{ marginRight: 7 }}
             />
           )}
-          <AppText style={styles.label}>{label}</AppText>
+          <AppText style={{ color: labelColor || activeColors.text }}>
+            {label}
+          </AppText>
         </View>
         <Switch
           value={value}
           onValueChange={onValueChange}
-          trackColor={{ false: theme.colors.gray, true: theme.colors.primary }}
+          trackColor={{ false: activeColors.gray, true: activeColors.primary }}
         />
       </View>
       {description && (
-        <AppText
-          style={{ color: theme.colors.gray, marginTop: 8, fontSize: 12 }}
-        >
-          {description}
-        </AppText>
+        <AppText style={styles.descriptionText}>{description}</AppText>
       )}
     </View>
   ) : notification ? (
@@ -59,24 +57,19 @@ const SettingListItem = ({
       <View style={[styles.rowContainer]}>
         <View style={styles.leftSide}>
           {icon && (
-            <View
-              style={[
-                styles.notificationIcon,
-                { backgroundColor: iconBgColor },
-              ]}
-            >
+            <View style={[styles.notificationIcon]}>
               <MaterialCommunityIcons
                 name={icon}
-                color={theme.colors.white}
+                color={iconColor || activeColors.gray}
                 size={28}
               />
             </View>
           )}
           <View>
-            <AppText style={styles.label}>{label}</AppText>
-            <AppText
-              style={{ color: theme.colors.gray, marginTop: 2, fontSize: 12 }}
-            >
+            <AppText style={{ color: labelColor || activeColors.text }}>
+              {label}
+            </AppText>
+            <AppText style={styles.descriptionText}>
               {"description will display here"}
             </AppText>
           </View>
@@ -85,7 +78,7 @@ const SettingListItem = ({
           <MaterialCommunityIcons
             name="chevron-right"
             size={20}
-            color={theme.colors.gray}
+            color={iconColor || activeColors.gray}
           />
         )}
       </View>
@@ -98,54 +91,25 @@ const SettingListItem = ({
     >
       <View style={styles.left}>
         {icon && (
-          <MaterialCommunityIcons name={icon} color={iconColor} size={22} />
+          <MaterialCommunityIcons
+            name={icon}
+            color={iconColor || activeColors.gray}
+            size={22}
+          />
         )}
-        <AppText style={[styles.label, { color: labelColor }]}>{label}</AppText>
+        <AppText style={{ color: labelColor || activeColors.text }}>
+          {label}
+        </AppText>
       </View>
       {chevron && (
         <MaterialCommunityIcons
           name="chevron-right"
           size={20}
-          color={theme.colors.gray}
+          color={activeColors.gray}
         />
       )}
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: theme.colors.background,
-  },
-  rowContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  leftSide: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  notificationIcon: {
-    padding: 12,
-    borderRadius: 50,
-  },
-  chevronContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: theme.colors.background,
-    paddingHorizontal: wp(4),
-    justifyContent: "space-between",
-  },
-  left: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  label: {
-    fontSize: 16,
-  },
-});
 
 export default memo(SettingListItem);

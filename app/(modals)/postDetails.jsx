@@ -3,7 +3,6 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import {
   Alert,
   Keyboard,
-  StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
@@ -16,9 +15,8 @@ import CommentItem from "../../components/CommentItem";
 import CustomInput from "../../components/CustomInput";
 import Loading from "../../components/Loading";
 import PostCard from "../../components/PostCard";
-import { theme } from "../../constants/theme";
 import { useAuth } from "../../contexts/AuthContext";
-import { hp, wp } from "../../helpers/common";
+import { hp } from "../../helpers/common";
 import { supabase } from "../../lib/supabase";
 import { createNotification } from "../../services/notificationService";
 import {
@@ -27,8 +25,10 @@ import {
   removePostComment,
 } from "../../services/postService";
 import { getUserData } from "../../services/userService";
+import { modalsStyles } from "../../styles/modalsStyles";
 
 const PostDetails = () => {
+  const { styles, activeColors } = modalsStyles();
   const router = useRouter();
   const navigation = useNavigation();
   const { user } = useAuth();
@@ -163,14 +163,7 @@ const PostDetails = () => {
 
   if (startLoading) {
     return (
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          flex: 1,
-          backgroundColor: theme.colors.background,
-        }}
-      >
+      <View style={styles.startLoadingContainer}>
         <Loading />
       </View>
     );
@@ -184,20 +177,13 @@ const PostDetails = () => {
     );
   }
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: theme.colors.background,
-      }}
-    >
+    <View style={styles.container}>
       <KeyboardAwareScrollView
         enableOnAndroid={true}
         extraScrollHeight={20}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          flexGrow: 1,
-        }}
+        contentContainerStyle={{ flexGrow: 1 }}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{ flex: 1 }}>
@@ -221,13 +207,13 @@ const PostDetails = () => {
               />
               {loadingSend ? (
                 <View style={styles.sendBtn}>
-                  <Loading color={theme.colors.text} />
+                  <Loading />
                 </View>
               ) : (
                 <AppIoniconTouchable
                   name="navigate"
                   size={20}
-                  color={theme.colors.text}
+                  color={activeColors.text}
                   style={[{ marginLeft: 0 }, styles.sendBtn]}
                   onPress={onNewComment}
                 />
@@ -271,55 +257,4 @@ const PostDetails = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  notFound: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  inputContainer: {
-    gap: 10,
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: hp(1),
-    paddingHorizontal: wp(4),
-  },
-
-  input: {
-    width: "100%",
-    borderWidth: 0,
-    lineHeight: 20,
-    maxHeight: 5 * 20,
-    paddingVertical: 8,
-    marginVertical: hp(2),
-    textAlignVertical: "top",
-  },
-  sendBtn: {
-    padding: 8,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: theme.radius.xxl,
-    backgroundColor: theme.colors.success,
-  },
-  commentsListContainer: {
-    gap: 10,
-    marginVertical: 16,
-    paddingBottom: hp(5),
-  },
-
-  commentCountContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  beFirst: {
-    fontSize: hp(1.4),
-    paddingLeft: wp(4),
-  },
-  commentCount: {
-    fontSize: hp(1.4),
-    marginRight: 5,
-    paddingLeft: wp(4),
-    fontWeight: theme.fonts.bold,
-  },
-});
 export default PostDetails;

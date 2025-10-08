@@ -1,17 +1,18 @@
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-import { theme } from "../constants/theme";
+import { useComponentsStyles } from "../styles/componentsStyles";
 
 export default function AppMaterialCommunityIcon({
   name,
   size = 24,
-  color = theme.colors.text,
+  color,
   style,
 }) {
+  const { activeColors } = useComponentsStyles();
   return (
     <MaterialCommunityIcons
       name={name}
-      color={color}
+      color={activeColors.text || color}
       size={size}
       style={{ alignSelf: "center", ...style }}
     />

@@ -2,7 +2,6 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
   Keyboard,
-  StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -15,13 +14,12 @@ import CustomInput from "../../components/CustomInput";
 import HeaderPunchLine from "../../components/HeaderPunchLine";
 import Illustration from "../../components/Illustration";
 import SafeScreen from "../../components/SafeScreen";
-import { theme } from "../../constants/theme";
-import { hp } from "../../helpers/common";
 import { supabase } from "../../lib/supabase";
+import { authStyles } from ".././../styles/authStyles";
 
 export default function login() {
   const router = useRouter();
-
+  const { styles } = authStyles();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -67,10 +65,7 @@ export default function login() {
         enableOnAndroid={true}
         extraScrollHeight={20}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingHorizontal: 24,
-        }}
+        contentContainerStyle={styles.contentContainerStyer}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{ flex: 1 }}>
@@ -80,6 +75,7 @@ export default function login() {
               title={"Welcome Back"}
               punchLine={"Your ReadBooth community awaits"}
             />
+
             <View>
               <CustomInput
                 label={"Email"}
@@ -121,7 +117,7 @@ export default function login() {
               <View style={styles.noAccountContainerRow}>
                 <AppText>Not a member of ReadBooth?</AppText>
                 <TouchableOpacity onPress={() => router.replace("/signup")}>
-                  <AppText style={styles.signUp}>Sign Up</AppText>
+                  <AppText style={styles.primaryColorText}>Sign Up</AppText>
                 </TouchableOpacity>
               </View>
             </View>
@@ -131,30 +127,3 @@ export default function login() {
     </SafeScreen>
   );
 }
-const styles = StyleSheet.create({
-  btn: {
-    marginTop: hp(3),
-  },
-  noAccountContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-  },
-  noAccountContainerRow: {
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  signUp: {
-    marginLeft: 5,
-    fontWeight: theme.fonts.bold,
-    color: theme.colors.primary,
-  },
-  errorContainer: {
-    width: "100%",
-    paddingHorizontal: 8,
-    marginVertical: 12,
-  },
-  errorText: {
-    color: theme.colors.danger,
-    fontSize: 13,
-  },
-});

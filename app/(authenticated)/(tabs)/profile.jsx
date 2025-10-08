@@ -1,13 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import { useCallback, useLayoutEffect, useState } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
 
 import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
 import AppMaterialCommunityIcon from "../../../components/AppMaterialCommunityIcon";
@@ -17,15 +11,17 @@ import HorizontalPadding from "../../../components/HorizontalPadding";
 import PostGridItem from "../../../components/PostGridItem";
 import SafeScreen from "../../../components/SafeScreen";
 import StatsItem from "../../../components/StatsItem";
-import { theme } from "../../../constants/theme";
+import { appTheme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
-import { hp, wp } from "../../../helpers/common";
+import { wp } from "../../../helpers/common";
 import { fetchPosts, fetchSavedPosts } from "../../../services/postService";
+import { useTabsStyles } from "../../../styles/tabsStyles";
 
 // global variable for the number of posts (limit)
 var limit = 0;
 
 const Profile = () => {
+  const { styles, activeColors } = useTabsStyles();
   const { user } = useAuth();
   const router = useRouter();
   const navigation = useNavigation();
@@ -101,7 +97,7 @@ const Profile = () => {
               <View style={styles.profileColumn}>
                 <Avatar uri={user?.image} />
                 <View style={{ width: wp(61) }}>
-                  <AppText style={{ fontWeight: theme.fonts.extraBold }}>
+                  <AppText style={{ fontWeight: appTheme.fonts.extraBold }}>
                     {user?.name}
                   </AppText>
                   {user?.username && <AppText>@{user?.username}</AppText>}
@@ -164,8 +160,8 @@ const Profile = () => {
                         size={16}
                         color={
                           activeTab === tab
-                            ? theme.colors.primary
-                            : theme.colors.gray
+                            ? activeColors.primary
+                            : activeColors.gray
                         }
                         style={{ marginLeft: 6 }}
                       />
@@ -183,60 +179,5 @@ const Profile = () => {
     </SafeScreen>
   );
 };
-
-const styles = StyleSheet.create({
-  profileDetails: {
-    marginTop: hp(2),
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  profileColumn: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    gap: 10,
-  },
-  statRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 10,
-    alignItems: "center",
-    marginVertical: hp(1.5),
-  },
-
-  bio: {
-    marginTop: 8,
-    color: theme.colors.text,
-  },
-
-  tabContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  tabsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 10,
-  },
-  tabButton: {
-    paddingVertical: 10,
-    flex: 1,
-    alignItems: "center",
-  },
-  activeTabButton: {
-    borderBottomWidth: 4,
-    borderColor: theme.colors.primary,
-  },
-  tabText: {
-    color: theme.colors.gray,
-    fontWeight: "500",
-  },
-  activeTabText: {
-    color: theme.colors.primary,
-    fontWeight: "bold",
-  },
-});
 
 export default Profile;

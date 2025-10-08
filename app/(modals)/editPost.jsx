@@ -3,7 +3,6 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import {
   Alert,
   Keyboard,
-  StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
@@ -15,12 +14,13 @@ import AppIoniconTouchable from "../../components/AppIoniconTouchable";
 import Avatar from "../../components/Avatar";
 import CustomInput from "../../components/CustomInput";
 import SafeScreen from "../../components/SafeScreen";
-import { theme } from "../../constants/theme";
 import { useAuth } from "../../contexts/AuthContext";
 import { hp, wp } from "../../helpers/common";
 import { updatePost } from "../../services/postService";
+import { modalsStyles } from "../../styles/modalsStyles";
 
 const EditPost = () => {
+  const styles = modalsStyles();
   const post = useLocalSearchParams();
   const { user } = useAuth();
   const router = useRouter();
@@ -106,27 +106,4 @@ const EditPost = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  header: {
-    gap: 12,
-    paddingTop: hp(1.5),
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  name: {
-    fontSize: hp(2.2),
-    color: theme.colors.dark,
-    fontWeight: theme.fonts.semibold,
-  },
-  publicText: {
-    fontSize: hp(1.5),
-    color: theme.colors.textLight,
-    fontWeight: theme.fonts.medium,
-  },
-  bodyContent: {
-    height: hp(15),
-    marginVertical: hp(2),
-    textAlignVertical: "top",
-  },
-});
 export default EditPost;

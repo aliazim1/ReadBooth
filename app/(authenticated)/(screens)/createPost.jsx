@@ -19,13 +19,14 @@ import AppText from "../../../components/AppText";
 import Avatar from "../../../components/Avatar";
 import CustomInput from "../../../components/CustomInput";
 import SafeScreen from "../../../components/SafeScreen";
-import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
 import { hp, wp } from "../../../helpers/common";
 import { getSupabaseFileUrl } from "../../../services/imageService";
 import { createPost } from "../../../services/postService";
+import { useScreensStyles } from ".././../../styles/screensStyles";
 
 const CreatePost = () => {
+  const { styles, activeColors } = useScreensStyles();
   const { user } = useAuth();
   const router = useRouter();
   const [file, setFile] = useState(null);
@@ -127,20 +128,18 @@ const CreatePost = () => {
   };
 
   return (
-    <SafeScreen style={{ paddingHorizontal: wp(3.9) }}>
+    <SafeScreen>
       <KeyboardAwareScrollView
         enableOnAndroid={true}
         extraScrollHeight={20}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          flexGrow: 1,
-        }}
+        contentContainerStyle={styles.contentContainerStyle}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View>
             {/* the profile details  */}
-            <View style={styles.header}>
+            <View style={[styles.postHeader, { marginBottom: 20 }]}>
               <Avatar uri={user?.image} size={hp(6.5)} />
               <View>
                 <Text style={styles.name}>{user?.name}</Text>
@@ -156,7 +155,7 @@ const CreatePost = () => {
               multiline={true}
               autoCorrect={true}
               numberOfLines={5}
-              style={styles.bodyContent}
+              style={styles.bio}
             />
 
             {/* media will display here once selected */}
@@ -171,7 +170,7 @@ const CreatePost = () => {
                 <AppIoniconTouchable
                   name="close"
                   size={20}
-                  color={theme.colors.white}
+                  color="white"
                   style={styles.deleteIcon}
                   onPress={() => setFile(null)}
                 />
@@ -185,7 +184,7 @@ const CreatePost = () => {
                 <AppIoniconTouchable
                   name="image"
                   size={20}
-                  color={theme.colors.background}
+                  color={activeColors.black}
                   onPress={() => onPick()}
                   style={styles.mediaIcon}
                 />
@@ -214,97 +213,11 @@ const CreatePost = () => {
         </View>
       )}
       {/* publish button won't be scrollable  */}
-      <AppButton title="Publish" onPress={onSubmit} isLoading={loading} />
+      <View style={{ paddingHorizontal: wp(4) }}>
+        <AppButton title="Publish" onPress={onSubmit} isLoading={loading} />
+      </View>
     </SafeScreen>
   );
 };
 
-const styles = StyleSheet.create({
-  header: {
-    gap: 12,
-    paddingTop: hp(1.5),
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  name: {
-    fontSize: hp(2.2),
-    color: theme.colors.text,
-    fontWeight: theme.fonts.semibold,
-  },
-  publicText: {
-    fontSize: hp(1.5),
-    color: theme.colors.textLight,
-    fontWeight: theme.fonts.medium,
-  },
-  bodyContent: {
-    height: hp(15),
-    marginVertical: hp(2),
-    textAlignVertical: "top",
-  },
-  file: {
-    width: "100%",
-    height: hp(30),
-    overflow: "hidden",
-    marginBottom: hp(2),
-    borderCurve: "continuous",
-    borderRadius: theme.radius.xl,
-  },
-  mediaContainer: {
-    padding: 10,
-    borderWidth: 0.7,
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 14,
-    borderCurve: "continuous",
-    borderRadius: theme.radius.xl,
-    justifyContent: "space-between",
-    borderColor: theme.colors.mediumGrey,
-  },
-  mediaIconContainer: {
-    gap: 25,
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  mediaIcon: {
-    padding: 5,
-    elevation: 5,
-    shadowRadius: 3,
-    shadowOpacity: 0.7,
-    borderRadius: theme.radius.xxl,
-    backgroundColor: theme.colors.text,
-    shadowOffset: { width: 0, height: 1 },
-    shadowColor: "hsla(0, 0.00%, 0.00%, 0.30)",
-  },
-  addMediaText: {
-    fontSize: hp(1.6),
-    fontWeight: theme.fonts.bold,
-  },
-  deleteIcon: {
-    top: 10,
-    right: 10,
-    width: 30,
-    height: 30,
-    position: "absolute",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: theme.radius.xl,
-    backgroundColor: "rgba(255, 0, 0, 0.6)",
-  },
-  successContainer: {
-    zIndex: 999,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: theme.colors.white,
-  },
-  animationContainer: {
-    width: wp(55),
-    height: wp(55),
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  lottie: {
-    width: 250,
-    height: 250,
-  },
-});
 export default CreatePost;

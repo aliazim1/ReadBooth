@@ -1,20 +1,20 @@
+import { Ionicons } from "@expo/vector-icons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useNavigation, useRouter } from "expo-router";
 import { useEffect, useLayoutEffect } from "react";
-import { Alert, Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { Alert, Pressable, ScrollView, View } from "react-native";
 
-import { Ionicons } from "@expo/vector-icons";
 import AppText from "../../../components/AppText";
 import CustomAlert from "../../../components/CustomAlert";
 import NotificationItem from "../../../components/NotificationItem";
 import SafeScreen from "../../../components/SafeScreen";
-import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useNotifications } from "../../../contexts/NotificationsContext";
-import { wp } from "../../../helpers/common";
 import { removeNotification } from "../../../services/notificationService";
+import { useTabsStyles } from "../../../styles/tabsStyles";
 
 const Notifications = () => {
+  const { styles, activeColors } = useTabsStyles();
   const { user } = useAuth();
   const router = useRouter();
   const navigation = useNavigation();
@@ -73,7 +73,7 @@ const Notifications = () => {
                 })
           }
         >
-          <MaterialIcons name="clear-all" size={24} color={theme.colors.text} />
+          <MaterialIcons name="clear-all" size={24} color={activeColors.text} />
         </Pressable>
       ),
     });
@@ -99,7 +99,7 @@ const Notifications = () => {
         <View style={styles.noNofiticationsContainer}>
           <Ionicons
             size={30}
-            color={theme.colors.text}
+            color={activeColors.text}
             name="notifications-outline"
           />
           <AppText>No notifications yet</AppText>
@@ -109,17 +109,4 @@ const Notifications = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: wp(4),
-  },
-
-  noNofiticationsContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    flex: 1,
-    gap: 10,
-  },
-});
 export default Notifications;

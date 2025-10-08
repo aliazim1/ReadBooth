@@ -6,9 +6,10 @@ import AppButton from "../../../components/AppButton";
 import CustomInput from "../../../components/CustomInput";
 import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
-import { wp } from "../../../helpers/common";
+import { useScreensStyles } from "../../../styles/screensStyles";
 
 const ChangePassword = () => {
+  const { styles, activeColors } = useScreensStyles();
   const [loading, setLoading] = useState(false);
   const { user: currentUser } = useAuth();
 
@@ -32,10 +33,7 @@ const ChangePassword = () => {
         enableOnAndroid={true}
         extraScrollHeight={20}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingHorizontal: wp(4),
-        }}
+        contentContainerStyle={styles.contentContainerStyle}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View>

@@ -1,8 +1,7 @@
 // PostOptionsModal.js
-import { Modal, Pressable, StyleSheet, View } from "react-native";
+import { Modal, Pressable, View } from "react-native";
 
-import { theme } from "../constants/theme";
-import { hp } from "../helpers/common";
+import { useComponentsStyles } from "../styles/componentsStyles";
 import SettingListItem from "./SettingListItem";
 
 const PostOptionsModal = ({
@@ -17,6 +16,8 @@ const PostOptionsModal = ({
   onDelete = () => {},
   item,
 }) => {
+  const { styles, activeColors } = useComponentsStyles();
+
   return (
     <Modal
       visible={visible}
@@ -60,8 +61,8 @@ const PostOptionsModal = ({
               chevron={false}
               icon={"trash-can"}
               label={"Delete Post"}
-              iconColor={theme.colors.danger}
-              labelColor={theme.colors.danger}
+              iconColor={activeColors.danger}
+              labelColor={activeColors.danger}
               onPress={onDelete}
             />
           )}
@@ -70,21 +71,5 @@ const PostOptionsModal = ({
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.3)",
-    justifyContent: "flex-end",
-  },
-  popup: {
-    paddingTop: hp(2.2),
-    paddingBottom: hp(5),
-    gap: 24,
-    backgroundColor: theme.colors.background,
-    borderTopLeftRadius: theme.radius.xxl,
-    borderTopRightRadius: theme.radius.xxl,
-  },
-});
 
 export default PostOptionsModal;

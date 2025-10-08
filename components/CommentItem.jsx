@@ -1,9 +1,8 @@
 import moment from "moment";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 
 import CustomAlert from "../components/CustomAlert";
-import { theme } from "../constants/theme";
-import { hp, wp } from "../helpers/common";
+import { useComponentsStyles } from "../styles/componentsStyles";
 import AppIoniconTouchable from "./AppIoniconTouchable";
 import AppText from "./AppText";
 import Avatar from "./Avatar";
@@ -14,7 +13,7 @@ const CommentItem = ({
   canDelete = false,
   onDelete = () => {},
 }) => {
-  //
+  const { styles, activeColors } = useComponentsStyles();
   // formats the created_at time as (min/hr ago)
   const createdAt = moment(item?.created_at).fromNow();
 
@@ -58,7 +57,7 @@ const CommentItem = ({
             <AppIoniconTouchable
               name="trash"
               size={16}
-              color={theme.colors.text}
+              color={activeColors.text}
               onPress={handleDelete}
             />
           )}
@@ -70,44 +69,4 @@ const CommentItem = ({
   );
 };
 
-const styles = StyleSheet.create({
-  commentHeader: {
-    flex: 1,
-    paddingHorizontal: wp(4),
-    paddingTop: 5,
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  imgNameTime: {
-    flexDirection: "row",
-    gap: 7,
-  },
-  nameAndTimeContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-  },
-  name: {
-    fontSize: hp(1.5),
-    color: theme.colors.text,
-    fontWeight: theme.fonts.semibold,
-  },
-  lightText: {
-    fontSize: hp(1.2),
-    color: theme.colors.textLight,
-    fontWeight: theme.fonts.medium,
-  },
-  body: {
-    marginLeft: wp(15),
-    fontSize: hp(1.5),
-    color: theme.colors.text,
-    paddingBottom: 10,
-    borderBottomColor: theme.colors.text,
-    borderBottomWidth: 0.2,
-  },
-  highlight: {
-    backgroundColor: theme.colors.primary,
-  },
-});
 export default CommentItem;

@@ -1,21 +1,11 @@
-import { Platform, Text } from "react-native";
+import { Text } from "react-native";
 
-import { theme } from "../constants/theme";
-import { hp } from "../helpers/common";
+import { useComponentsStyles } from "../styles/componentsStyles";
 
 export default function AppText({ children, style, ...rest }) {
+  const { styles, activeColors } = useComponentsStyles();
   return (
-    <Text
-      style={[
-        {
-          fontSize: hp(1.6),
-          color: theme.colors.text,
-          fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
-        },
-        style,
-      ]}
-      {...rest}
-    >
+    <Text style={[styles.appText, style]} {...rest}>
       {children}
     </Text>
   );

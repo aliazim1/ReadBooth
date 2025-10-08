@@ -3,7 +3,6 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import {
   Alert,
   Keyboard,
-  StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
@@ -15,9 +14,8 @@ import AppText from "../../components/AppText";
 import CommentItem from "../../components/CommentItem";
 import CustomInput from "../../components/CustomInput";
 import Loading from "../../components/Loading";
-import { theme } from "../../constants/theme";
 import { useAuth } from "../../contexts/AuthContext";
-import { hp, wp } from "../../helpers/common";
+import { hp } from "../../helpers/common";
 import { supabase } from "../../lib/supabase";
 import { createNotification } from "../../services/notificationService";
 import {
@@ -26,8 +24,10 @@ import {
   removePostComment,
 } from "../../services/postService";
 import { getUserData } from "../../services/userService";
+import { modalsStyles } from "../../styles/modalsStyles";
 
 const Comments = () => {
+  const { styles, activeColors } = modalsStyles();
   const { user } = useAuth();
   const router = useRouter();
   const navigation = useNavigation();
@@ -175,7 +175,7 @@ const Comments = () => {
     );
   }
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+    <View style={styles.container}>
       <KeyboardAwareScrollView
         enableOnAndroid={true}
         extraScrollHeight={20}
@@ -200,13 +200,13 @@ const Comments = () => {
               />
               {loadingSend ? (
                 <View style={styles.sendBtn}>
-                  <Loading color={theme.colors.text} />
+                  <Loading color={activeColors.text} />
                 </View>
               ) : (
                 <AppIoniconTouchable
                   name="navigate"
                   size={22}
-                  color={theme.colors.text}
+                  color={activeColors.text}
                   style={[{ marginLeft: 0 }, styles.sendBtn]}
                   onPress={onNewComment}
                 />
@@ -222,11 +222,7 @@ const Comments = () => {
               ) : (
                 <View style={styles.commentCountContainer}>
                   <AppText style={styles.commentCount}>Comments</AppText>
-                  <AppText
-                    style={{
-                      fontSize: hp(1.4),
-                    }}
-                  >
+                  <AppText style={{ fontSize: hp(1.4) }}>
                     {post?.comments?.length}
                   </AppText>
                 </View>
@@ -249,53 +245,4 @@ const Comments = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  notFound: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  inputContainer: {
-    gap: 10,
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: wp(4),
-    paddingVertical: hp(1),
-  },
-
-  input: {
-    maxHeight: 5 * 20,
-    lineHeight: 20,
-    paddingVertical: 8,
-    textAlignVertical: "top",
-    width: "100%",
-    borderWidth: 0,
-    marginVertical: hp(2),
-  },
-  sendBtn: {
-    padding: 6,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: theme.radius.xxl,
-    backgroundColor: theme.colors.mediumGrey,
-  },
-  commentsListContainer: {
-    gap: 17,
-    marginVertical: 16,
-  },
-  commentCountContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  beFirst: {
-    fontSize: hp(1.4),
-    paddingLeft: wp(4),
-  },
-  commentCount: {
-    fontSize: hp(1.4),
-    marginRight: 5,
-    paddingLeft: wp(4),
-    fontWeight: theme.fonts.bold,
-  },
-});
 export default Comments;

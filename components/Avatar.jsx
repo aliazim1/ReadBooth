@@ -1,22 +1,27 @@
 import { Image } from "expo-image";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 
-import { theme } from "../constants/theme";
 import { getUserImageSrc } from "../services/imageService";
+import { useComponentsStyles } from "../styles/componentsStyles";
 
 const Avatar = ({ uri, size = 90, rounded = 50, style = {} }) => {
+  const { styles } = useComponentsStyles();
   return (
     <View
       style={[
-        styles.container,
-        { width: size, height: size, borderRadius: size / 2 },
+        styles.avatarContainer,
+        {
+          width: size,
+          height: size,
+          borderRadius: size / 2,
+        },
       ]}
     >
       <Image
         source={getUserImageSrc(uri)}
         transition={100}
         style={[
-          styles.avatar,
+          { borderCurve: "circular" },
           { width: size, height: size, borderRadius: rounded },
           style,
         ]}
@@ -25,15 +30,4 @@ const Avatar = ({ uri, size = 90, rounded = 50, style = {} }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: theme.colors.gray,
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
-  },
-  avatar: {
-    borderCurve: "circular",
-  },
-});
 export default Avatar;

@@ -1,7 +1,6 @@
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Image, TouchableOpacity, View } from "react-native";
 
-import { theme } from "../constants/theme";
-import { hp } from "../helpers/common";
+import { useComponentsStyles } from "../styles/componentsStyles";
 import AppIonicon from "./AppIonicon";
 import AppText from "./AppText";
 import Loading from "./Loading";
@@ -10,18 +9,17 @@ const AppButton = ({
   title = "Click Me",
   iconName,
   imageUri,
-  iconColor = theme.colors.darkLight,
+  iconColor,
   hasShadow = false,
   isLoading = false,
   containerStyle,
   textStyle,
   onPress,
 }) => {
+  const { styles, activeColors } = useComponentsStyles();
   if (isLoading) {
     return (
-      <View
-        style={[styles.button, containerStyle, { backgroundColor: "white" }]}
-      >
+      <View style={[styles.button, containerStyle]}>
         <Loading />
       </View>
     );
@@ -37,7 +35,7 @@ const AppButton = ({
           name={iconName}
           style={{ marginRight: 5 }}
           size={22}
-          color={iconColor}
+          color={activeColors.text || iconColor}
         />
       )}
       {imageUri && !isLoading && (
@@ -47,34 +45,5 @@ const AppButton = ({
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    height: hp(5.5),
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    borderCurve: "continuous",
-    borderRadius: theme.radius.xl * 20,
-    backgroundColor: theme.colors.primary,
-  },
-  shadowBtn: {
-    elevation: 5,
-    shadowRadius: 3,
-    shadowOpacity: 0.7,
-    shadowOffset: { width: 0, height: 1 },
-    shadowColor: "hsla(0, 0.00%, 0.00%, 0.30)",
-  },
-  text: {
-    fontSize: hp(2.2),
-    fontWeight: theme.fonts.bold,
-  },
-  image: {
-    height: 25,
-    width: 25,
-    marginRight: 10,
-    alignSelf: "center",
-  },
-});
 
 export default AppButton;

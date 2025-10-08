@@ -1,19 +1,20 @@
 import { useRouter } from "expo-router";
+import { useState } from "react";
 import { Alert, ScrollView, View } from "react-native";
 
-import { useState } from "react";
 import AppText from "../../../components/AppText";
 import CustomAlert from "../../../components/CustomAlert";
 import SafeScreen from "../../../components/SafeScreen";
 import SettingListItem from "../../../components/SettingListItem";
-import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
-import { hp } from "../../../helpers/common";
 import { supabase } from "../../../lib/supabase";
+import { useScreensStyles } from ".././../../styles/screensStyles";
+
 const Settings = () => {
+  const { styles, activeColors } = useScreensStyles();
   const router = useRouter();
   const { setAuth } = useAuth();
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
 
   const onLogout = async () => {
     try {
@@ -71,13 +72,13 @@ const Settings = () => {
           icon={"logout"}
           label={"Log out"}
           chevron={false}
-          iconColor={theme.colors.danger}
-          labelColor={theme.colors.danger}
+          iconColor={activeColors.danger}
+          labelColor={activeColors.danger}
           style={{ paddingVertical: 16 }}
           onPress={() => handleLogOutBtn()}
         />
 
-        <View style={{ alignItems: "center", marginVertical: hp(5) }}>
+        <View style={styles.version}>
           <AppText>v1.0.0 (100000)</AppText>
         </View>
       </ScrollView>

@@ -2,22 +2,22 @@ import Feather from "@expo/vector-icons/Feather";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useNavigation, useRouter } from "expo-router";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, Pressable, StyleSheet, View } from "react-native";
+import { FlatList, Pressable, View } from "react-native";
 
 import AppText from "../../../components/AppText";
 import Loading from "../../../components/Loading";
 import PostCard from "../../../components/PostCard";
-import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
-import { hp } from "../../../helpers/common";
 import { supabase } from "../../../lib/supabase";
 import { fetchPosts } from "../../../services/postService";
 import { getUserData } from "../../../services/userService";
+import { useTabsStyles } from "../../../styles/tabsStyles";
 
 // global variable for the number of posts (limit)
 var limit = 0;
 
 const Home = () => {
+  const { styles, activeColors } = useTabsStyles();
   const router = useRouter();
   const navigation = useNavigation();
   const { user } = useAuth();
@@ -97,13 +97,13 @@ const Home = () => {
       headerRight: () => (
         <View style={styles.headerIconsContainer}>
           <Pressable onPress={() => {}}>
-            <Feather name="search" size={24} color={theme.colors.text} />
+            <Feather name="search" size={24} color={activeColors.text} />
           </Pressable>
           <Pressable onPress={() => router.push("/createPost")}>
             <FontAwesome
               name="plus-square-o"
               size={24}
-              color={theme.colors.text}
+              color={activeColors.text}
             />
           </Pressable>
         </View>
@@ -112,7 +112,7 @@ const Home = () => {
   }, [navigation, router]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+    <View style={styles.outerContainer}>
       <FlatList
         data={posts}
         showsVerticalScrollIndicator={false}
@@ -134,7 +134,7 @@ const Home = () => {
         }}
         onEndReachedThreshold={0}
         ListFooterComponent={
-          <View style={styles.container}>
+          <View style={styles.loadingContainer}>
             {hasMorePosts ? (
               <Loading style={{ marginVertical: 20 }} />
             ) : (
@@ -151,28 +151,5 @@ const Home = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  headerIconsContainer: {
-    gap: 12,
-    marginRight: 10,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  ItemSeparatorComponent: {
-    height: 1,
-    marginVertical: 10,
-    backgroundColor: theme.colors.mediumGrey,
-  },
-  container: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  noMorePost: {
-    fontSize: hp(1.3),
-    marginVertical: 20,
-  },
-});
 
 export default Home;

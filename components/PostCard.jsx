@@ -1,19 +1,10 @@
 import { Image } from "expo-image";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import {
-  Alert,
-  Linking,
-  Pressable,
-  Share,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Alert, Linking, Pressable, Share, Text, View } from "react-native";
 import ParsedText from "react-native-parsed-text";
 
-import { theme } from "../constants/theme";
-import { hp, stripHtmlTags, wp } from "../helpers/common";
+import { hp, stripHtmlTags } from "../helpers/common";
 import { getSupabaseFileUrl } from "../services/imageService";
 import {
   createPostLike,
@@ -22,6 +13,7 @@ import {
   removePostLike,
   removeSavePost,
 } from "../services/postService";
+import { useComponentsStyles } from "../styles/componentsStyles";
 import AppPressableIoniconIcon from "./AppPressableIoniconIcon";
 import AppText from "./AppText";
 import Avatar from "./Avatar";
@@ -29,6 +21,7 @@ import CustomAlert from "./CustomAlert";
 import PostOptionsModal from "./PostOptionasModal";
 
 const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
+  const { styles, activeColors } = useComponentsStyles();
   const [likes, setLikes] = useState([]);
   const [saves, setSaves] = useState([]);
   const [menuVisible, setMenuVisible] = useState(false);
@@ -177,7 +170,7 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
         <View style={styles.captionContainer}>
           <Pressable onPress={homeScreen ? openPostDetails : () => {}}>
             <ParsedText
-              style={styles.text}
+              style={styles.postCardText}
               parse={[
                 { type: "url", style: styles.link, onPress: handleUrlPress },
               ]}
@@ -208,7 +201,7 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
             size={21}
             label={likes?.length}
             name={liked ? "heart" : "heart-outline"}
-            color={liked ? theme.colors.danger : theme.colors.text}
+            color={liked ? activeColors.danger : activeColors.text}
           />
           <AppPressableIoniconIcon
             name="chatbubble-outline"
@@ -242,65 +235,5 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginVertical: hp(1.2),
-  },
-  postHeader: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    paddingHorizontal: wp(3),
-    justifyContent: "space-between",
-  },
-
-  headerFirstRow: {
-    gap: 8,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  name: {
-    fontSize: hp(1.8),
-    color: theme.colors.text,
-    fontWeight: theme.fonts.semibold,
-  },
-  username: {
-    fontSize: hp(1.5),
-    color: theme.colors.mediumGrey,
-    fontWeight: theme.fonts.medium,
-  },
-  createdAt: {
-    marginTop: -14,
-    fontSize: hp(1.2),
-    color: theme.colors.mediumGrey,
-  },
-  captionContainer: {
-    marginTop: hp(1),
-    paddingHorizontal: wp(4),
-  },
-  text: {
-    fontSize: 16,
-    color: theme.colors.text,
-  },
-  link: {
-    color: "blue",
-    textDecorationLine: "underline",
-  },
-  postMedia: {
-    width: "100%",
-    aspectRatio: 1,
-    marginTop: hp(1),
-    borderCurve: "continuous",
-  },
-  postFooterContainer: {
-    marginTop: hp(1),
-    paddingLeft: wp(4),
-    paddingRight: wp(1),
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-});
 
 export default PostCard;

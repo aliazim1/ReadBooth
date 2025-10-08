@@ -3,7 +3,6 @@ import { useState } from "react";
 
 import {
   Keyboard,
-  StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -16,13 +15,12 @@ import CustomInput from "../../components/CustomInput";
 import HeaderPunchLine from "../../components/HeaderPunchLine";
 import Illustration from "../../components/Illustration";
 import SafeScreen from "../../components/SafeScreen";
-import { theme } from "../../constants/theme";
-import { hp } from "../../helpers/common";
 import { supabase } from "../../lib/supabase";
+import { authStyles } from ".././../styles/authStyles";
 
-export default function signup() {
+const signup = () => {
+  const { styles } = authStyles();
   const router = useRouter();
-
   const [loading, setLoading] = useState(false);
   const [loadingverify, setLoadingVerify] = useState(false);
   const [fullName, setFullName] = useState("");
@@ -85,10 +83,7 @@ export default function signup() {
         enableOnAndroid={true}
         extraScrollHeight={20}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingHorizontal: 24,
-        }}
+        contentContainerStyle={styles.contentContainerStyer}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{ flex: 1 }}>
@@ -108,6 +103,7 @@ export default function signup() {
                 autoCapitalize="words"
                 onChangeText={setFullName}
               />
+
               <CustomInput
                 label={"email Address"}
                 placeholder="Enter your email address"
@@ -146,7 +142,7 @@ export default function signup() {
               <View style={styles.noAccountContainerRow}>
                 <AppText>Already a member of ReadVine?</AppText>
                 <TouchableOpacity onPress={() => router.replace("/login")}>
-                  <AppText style={styles.signIn}>Sign In</AppText>
+                  <AppText style={styles.primaryColorText}>Sign In</AppText>
                 </TouchableOpacity>
               </View>
             </View>
@@ -155,78 +151,5 @@ export default function signup() {
       </KeyboardAwareScrollView>
     </SafeScreen>
   );
-}
-const styles = StyleSheet.create({
-  btn: {
-    marginTop: hp(3),
-  },
-
-  btnContainer: {
-    marginBottom: hp(3),
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  loginOptionBtns: {
-    backgroundColor: theme.colors.primary,
-  },
-  text: {
-    color: theme.colors.white,
-  },
-  noAccountContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-  },
-  noAccountContainerRow: {
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  signIn: {
-    marginLeft: 5,
-    fontWeight: theme.fonts.bold,
-    color: theme.colors.primary,
-  },
-
-  // email verification section
-  imgContainer: {
-    paddingTop: 40,
-    alignItems: "center",
-  },
-  img: {
-    width: 150,
-    height: 150,
-    alignSelf: "center",
-  },
-
-  email: {
-    fontWeight: "bold",
-  },
-  verificationContainer: {
-    marginTop: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  codeInput: {
-    width: "60%",
-    height: 50,
-    borderWidth: 1,
-    borderColor: theme.colors.primary,
-    borderRadius: 10,
-    textAlign: "center",
-    fontSize: 20,
-    color: theme.colors.dark,
-  },
-  verificationBtn: {
-    marginTop: 25,
-  },
-
-  // display error message
-  errorContainer: {
-    width: "100%",
-    paddingHorizontal: 8,
-    marginVertical: 12,
-  },
-  errorText: {
-    color: theme.colors.danger,
-    fontSize: 13,
-  },
-});
+};
+export default signup;

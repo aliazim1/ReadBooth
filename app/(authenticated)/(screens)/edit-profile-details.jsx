@@ -6,7 +6,6 @@ import {
   Alert,
   Keyboard,
   Pressable,
-  StyleSheet,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -16,13 +15,13 @@ import AppButton from "../../../components/AppButton";
 import AppIonicon from "../../../components/AppIonicon";
 import CustomInput from "../../../components/CustomInput";
 import SafeScreen from "../../../components/SafeScreen";
-import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
-import { hp, wp } from "../../../helpers/common";
 import { getUserImageSrc, uploadFile } from "../../../services/imageService";
 import { updateUserData } from "../../../services/userService";
+import { useScreensStyles } from "../../../styles/screensStyles";
 
 const EditProfileDetails = () => {
+  const { styles } = useScreensStyles();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { user: currentUser, setUserData } = useAuth();
@@ -183,41 +182,4 @@ const EditProfileDetails = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  contentContainerStyle: {
-    flexGrow: 1,
-    paddingBottom: 20,
-    paddingHorizontal: wp(4),
-  },
-  profileDetails: {
-    marginTop: hp(1),
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  add: {
-    position: "absolute",
-    bottom: -10,
-    left: wp(8.5),
-    borderRadius: 50,
-    paddingVertical: 1,
-    paddingHorizontal: 8,
-    backgroundColor: theme.colors.white,
-    shadowColor: "#0000006b",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 1,
-    shadowRadius: 5,
-    elevation: 5,
-  },
-  avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 100,
-  },
-  bio: {
-    height: hp(15),
-    paddingVertical: 15,
-    flexDirection: "row",
-    alignItems: "flex-start",
-  },
-});
 export default EditProfileDetails;

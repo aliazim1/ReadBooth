@@ -1,22 +1,22 @@
 import { Feather, Octicons } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import { useCallback, useLayoutEffect, useState } from "react";
-import { Alert, FlatList, Pressable, StyleSheet, View } from "react-native";
+import { Alert, FlatList, Pressable, View } from "react-native";
 
 import AppMaterialCommunityIcon from "../../../components/AppMaterialCommunityIcon";
 import AppText from "../../../components/AppText";
 import BookItem from "../../../components/BookItem";
 import CustomAlert from "../../../components/CustomAlert";
 import SafeScreen from "../../../components/SafeScreen";
-import { theme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
-import { wp } from "../../../helpers/common";
 import { deleteBook, fetchBooks } from "../../../services/postService";
+import { useTabsStyles } from "../../../styles/tabsStyles";
 
 // global variable for the number of posts (limit)
 var limit = 0;
 
 const Books = () => {
+  const { styles, activeColors } = useTabsStyles();
   const { user } = useAuth();
   const router = useRouter();
   const navigation = useNavigation();
@@ -51,10 +51,10 @@ const Books = () => {
       headerRight: () => (
         <View style={styles.headerIconsContainer}>
           <Pressable onPress={() => {}}>
-            <Feather name="search" size={22} color={theme.colors.text} />
+            <Feather name="search" size={22} color={activeColors.text} />
           </Pressable>
           <Pressable onPress={() => router.push("/addBook")}>
-            <Octicons name="plus-circle" size={20} color={theme.colors.text} />
+            <Octicons name="plus-circle" size={20} color={activeColors.text} />
           </Pressable>
         </View>
       ),
@@ -77,11 +77,7 @@ const Books = () => {
         <FlatList
           data={books}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingTop: 20,
-            gap: 14,
-            paddingHorizontal: wp(4),
-          }}
+          contentContainerStyle={styles.contentContainerStyle}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <BookItem
@@ -105,7 +101,7 @@ const Books = () => {
         <View style={styles.noNofiticationsContainer}>
           <AppMaterialCommunityIcon
             name="bookshelf"
-            color={theme.colors.text}
+            color={activeColors.text}
           />
           <AppText>Your book shelf is empty</AppText>
         </View>
@@ -113,22 +109,5 @@ const Books = () => {
     </SafeScreen>
   );
 };
-
-const styles = StyleSheet.create({
-  headerIconsContainer: {
-    gap: 12,
-    marginRight: 10,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-
-  noNofiticationsContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    flex: 1,
-    gap: 10,
-  },
-});
 
 export default Books;

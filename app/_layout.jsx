@@ -1,25 +1,40 @@
 import { Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { theme } from "../constants/theme";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
 import { NotificationsProvider } from "../contexts/NotificationsContext";
+import { ThemeContext } from "../contexts/ThemeContext";
 import { supabase } from "../lib/supabase";
 import { getUserData } from "../services/userService";
+import { modalsStyles } from "../styles/modalsStyles";
 
 const RootLayout = () => {
+  const [theme, setTheme] = useState({ mode: "dark" });
+
+  const toggleTheme = (newTheme) => {
+    let mode;
+    if (!newTheme) {
+      mode = theme.mode === "dark" ? "light" : "dark";
+      newTheme = { mode };
+    }
+    setTheme(newTheme);
+  };
+
   return (
-    <AuthProvider>
-      <NotificationsProvider>
-        <StatusBar style="light" />
-        <MainLayout />
-      </NotificationsProvider>
-    </AuthProvider>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      <AuthProvider>
+        <NotificationsProvider>
+          <StatusBar style="light" />
+          <MainLayout />
+        </NotificationsProvider>
+      </AuthProvider>
+    </ThemeContext.Provider>
   );
 };
 
 const MainLayout = () => {
+  const { activeColors } = modalsStyles();
   const router = useRouter();
   const { setAuth, setUserData } = useAuth();
 
@@ -46,8 +61,8 @@ const MainLayout = () => {
       screenOptions={{
         headerShown: false,
         headerShadowVisible: false,
-        headerTintColor: theme.colors.text,
-        headerStyle: { backgroundColor: theme.colors.background },
+        headerTintColor: activeColors.text,
+        headerStyle: { backgroundColor: activeColors.background },
       }}
     >
       <Stack.Screen name="index" />

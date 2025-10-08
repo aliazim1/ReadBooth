@@ -1,28 +1,27 @@
 import { MaterialIcons, Octicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 
 import AppIonicon from "../../../components/AppIonicon";
 import AppText from "../../../components/AppText";
-import { theme } from "../../../constants/theme";
 import { useNotifications } from "../../../contexts/NotificationsContext";
-import { hp, wp } from "../../../helpers/common";
+import { useTabsStyles } from "../../../styles/tabsStyles";
 
 export default function TabLayout() {
+  const { styles, activeColors } = useTabsStyles();
   const { badgeCount } = useNotifications();
 
   return (
     <Tabs
       screenOptions={{
         tabBarShowLabel: false,
-        tabBarStyle: styles.tabBarStyling,
         headerShadowVisible: false,
-        headerTintColor: theme.colors.text,
-        tabBarActiveTintColor: theme.colors.text,
-        tabBarInactiveTintColor: theme.colors.mediumGrey,
-        headerStyle: {
-          backgroundColor: theme.colors.background,
-        },
+        tabBarStyle: styles.tabBarStyle,
+        headerStyle: styles.headerStyle,
+        tabBarBadgeStyle: styles.tabBarBadge,
+        headerTintColor: activeColors.text,
+        tabBarActiveTintColor: activeColors.text,
+        tabBarInactiveTintColor: activeColors.mediumGrey,
       }}
     >
       <Tabs.Screen
@@ -39,7 +38,7 @@ export default function TabLayout() {
                 styles.tabBarIcons,
                 {
                   backgroundColor: focused
-                    ? theme.colors.primary
+                    ? activeColors.primary
                     : "transparent",
                 },
               ]}
@@ -47,7 +46,7 @@ export default function TabLayout() {
               <Octicons
                 name="home-fill"
                 size={18}
-                color={focused ? theme.colors.text : theme.colors.mediumGrey}
+                color={focused ? activeColors.text : activeColors.mediumGrey}
               />
             </View>
           ),
@@ -64,7 +63,7 @@ export default function TabLayout() {
                 styles.tabBarIcons,
                 {
                   backgroundColor: focused
-                    ? theme.colors.primary
+                    ? activeColors.primary
                     : "transparent",
                 },
               ]}
@@ -72,7 +71,7 @@ export default function TabLayout() {
               <MaterialIcons
                 name="menu-book"
                 size={20}
-                color={focused ? theme.colors.text : theme.colors.mediumGrey}
+                color={focused ? activeColors.text : activeColors.mediumGrey}
               />
             </View>
           ),
@@ -84,17 +83,14 @@ export default function TabLayout() {
         options={{
           title: "Notifications",
           tabBarBadge: badgeCount > 0 ? badgeCount : undefined,
-          tabBarBadgeStyle: {
-            backgroundColor: theme.colors.danger,
-            color: "white",
-          },
+          // tabBarBadgeStyle: styles.tabBarBadge,
           tabBarIcon: ({ focused }) => (
             <View
               style={[
                 styles.tabBarIcons,
                 {
                   backgroundColor: focused
-                    ? theme.colors.primary
+                    ? activeColors.primary
                     : "transparent",
                 },
               ]}
@@ -102,7 +98,7 @@ export default function TabLayout() {
               <AppIonicon
                 name={"notifications"}
                 size={20}
-                color={focused ? theme.colors.text : theme.colors.mediumGrey}
+                color={focused ? activeColors.text : activeColors.mediumGrey}
               />
             </View>
           ),
@@ -119,7 +115,7 @@ export default function TabLayout() {
                 styles.tabBarIcons,
                 {
                   backgroundColor: focused
-                    ? theme.colors.primary
+                    ? activeColors.primary
                     : "transparent",
                 },
               ]}
@@ -127,7 +123,7 @@ export default function TabLayout() {
               <AppIonicon
                 name={"person"}
                 size={20}
-                color={focused ? theme.colors.text : theme.colors.mediumGrey}
+                color={focused ? activeColors.text : activeColors.mediumGrey}
               />
             </View>
           ),
@@ -136,38 +132,6 @@ export default function TabLayout() {
     </Tabs>
   );
 }
-
-const styles = StyleSheet.create({
-  tabBarStyling: {
-    bottom: 20,
-    height: 63,
-    paddingTop: 10,
-    borderWidth: 1,
-    borderRadius: 50,
-    borderTopWidth: 1,
-    position: "absolute",
-    alignItems: "center",
-    borderColor: "#333",
-    borderTopColor: "#333",
-    justifyContent: "center",
-    marginHorizontal: wp(14),
-    backgroundColor: theme.colors.background,
-  },
-  homeHeaderTItle: {
-    fontSize: hp(2),
-    marginLeft: 12,
-    color: theme.colors.text,
-    fontWeight: theme.fonts.extraBold,
-  },
-  tabBarIcons: {
-    width: 40,
-    height: 40,
-    padding: 5,
-    borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 {
   /* <Tabs

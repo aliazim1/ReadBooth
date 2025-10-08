@@ -1,18 +1,19 @@
 import { Stack, useRouter } from "expo-router";
 
 import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
-import { theme } from "../../../constants/theme";
+import { useScreensStyles } from ".././../../styles/screensStyles";
 
 const ScreensLayout = () => {
   const router = useRouter();
+  const { activeColors } = useScreensStyles();
 
   return (
     <Stack
       screenOptions={{
         headerShadowVisible: false,
-        headerTintColor: theme.colors.text,
+        headerTintColor: activeColors.text,
         headerStyle: {
-          backgroundColor: theme.colors.background,
+          backgroundColor: activeColors.background,
         },
         headerLeft: () => (
           <AppIoniconTouchable

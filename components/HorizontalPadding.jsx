@@ -1,10 +1,8 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { wp } from "../helpers/common";
 
-export default function HorizontalPadding({ children, style }) {
-  return <View style={[styles.container, style]}>{children}</View>;
-}
+const HorizontalPadding = ({ children, style }) => {
+  return <View style={[{ marginHorizontal: wp(4) }, style]}>{children}</View>;
+};
 
-const styles = StyleSheet.create({
-  container: { marginHorizontal: wp(4) },
-});
+export default HorizontalPadding;

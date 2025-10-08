@@ -1,13 +1,13 @@
 import { Image } from "expo-image";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, View } from "react-native";
 
-import { theme } from "../constants/theme";
 import { getSupabaseFileUrl } from "../services/imageService";
+import { useComponentsStyles } from "../styles/componentsStyles";
 import AppText from "./AppText";
 
 const PostGridItem = ({ item, router }) => {
   const post = item?.post || item;
-
+  const { styles } = useComponentsStyles();
   return (
     <View style={styles.postContainer}>
       {post?.file && post?.file?.includes("postImages") ? (
@@ -43,30 +43,5 @@ const PostGridItem = ({ item, router }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  postContainer: {
-    flex: 1 / 3,
-    aspectRatio: 1,
-    margin: 1,
-    backgroundColor: theme.colors.veryLightGrey,
-  },
-  media: {
-    width: "100%",
-    height: "100%",
-  },
-  textOnly: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 5,
-    backgroundColor: theme.colors.lightGrey,
-  },
-  textOnlyContent: {
-    textAlign: "center",
-    color: theme.colors.dark,
-    fontSize: 12,
-  },
-});
 
 export default PostGridItem;

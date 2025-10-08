@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import { theme } from "../constants/theme";
+import { appTheme } from "../constants/theme";
 import { hp } from "../helpers/common";
 import AppText from "./AppText";
 
@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: hp(3),
-    fontWeight: theme.fonts.bold,
+    fontWeight: appTheme.fonts.bold,
   },
   punchLine: {
     fontSize: hp(1.8),
-    fontWeight: theme.fonts.medium,
+    fontWeight: appTheme.fonts.medium,
     marginTop: hp(0.5),
     marginBottom: hp(2),
     textAlign: "center",

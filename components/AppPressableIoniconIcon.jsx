@@ -1,8 +1,8 @@
 import { Pressable, StyleSheet } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
-import { theme } from "../constants/theme";
 import { hp } from "../helpers/common";
+import { useComponentsStyles } from "../styles/componentsStyles";
 import AppText from "./AppText";
 
 const AppPressableIoniconIcon = ({
@@ -12,15 +12,22 @@ const AppPressableIoniconIcon = ({
   size = 19,
   width = 60,
   showLabel = true,
-  color = theme.colors.text,
+  color,
   style,
 }) => {
+  const { activeColors } = useComponentsStyles();
   return (
     <Pressable
       onPress={onPress}
       style={[styles.footerBtnContainer, { width: width }, style]}
     >
-      {name && <Ionicons name={name} color={color} size={size} />}
+      {name && (
+        <Ionicons
+          name={name}
+          color={activeColors.text || iconColor}
+          size={size}
+        />
+      )}
       {showLabel && <AppText style={styles.footerLabel}>{label}</AppText>}
     </Pressable>
   );

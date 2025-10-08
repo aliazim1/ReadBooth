@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import { TextInput, View } from "react-native";
 
-import { theme } from "../constants/theme";
-import { hp } from "../helpers/common";
+import { useComponentsStyles } from "../styles/componentsStyles";
 import AppText from "./AppText";
 
 const CustomInput = ({
@@ -14,34 +13,31 @@ const CustomInput = ({
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
+  const { styles, activeColors } = useComponentsStyles();
 
   return (
-    <View style={styles.container}>
-      {label && (
-        <AppText style={{ marginTop: 20, fontWeight: theme.fonts.bold }}>
-          {label}
-        </AppText>
-      )}
+    <View style={{ flex: 1 }}>
+      {label && <AppText style={styles.inputLabel}>{label}</AppText>}
       <TextInput
         {...props}
-        clearButtonMode="while-editing"
-        autoCapitalize={props.autoCapitalize}
-        autoCorrect={props.autoCorrect}
         value={value}
         onChangeText={onChangeText}
-        secureTextEntry={props.secureTextEntry}
-        keyboardType={props.keyboardType}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         placeholder={placeholder}
-        placeholderTextColor={theme.colors.mediumGrey}
-        className="input"
+        placeholderTextColor={activeColors.mediumGrey}
+        clearButtonMode="while-editing"
+        autoCapitalize={props.autoCapitalize}
+        autoCorrect={props.autoCorrect}
+        secureTextEntry={props.secureTextEntry}
+        keyboardType={props.keyboardType}
         style={[
           styles.textInput,
           {
+            color: activeColors.text,
             borderColor: isFocused
-              ? theme.colors.primary
-              : theme.colors.mediumGrey,
+              ? activeColors.primary
+              : activeColors.mediumGrey,
           },
           style,
         ]}
@@ -50,15 +46,4 @@ const CustomInput = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  textInput: {
-    padding: hp(1.3),
-    borderWidth: 0.7,
-    borderRadius: theme.radius.md,
-    color: theme.colors.text,
-  },
-});
 export default CustomInput;

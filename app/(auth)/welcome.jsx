@@ -1,14 +1,15 @@
 import { useRouter } from "expo-router";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 
 import AppButton from "../../components/AppButton";
 import HeaderPunchLine from "../../components/HeaderPunchLine";
 import Illustration from "../../components/Illustration";
-import { theme } from "../../constants/theme";
-import { hp, wp } from "../../helpers/common";
+import { authStyles } from ".././../styles/authStyles";
 
 const Welcome = () => {
+  const { styles, activeColors } = authStyles();
   const router = useRouter();
+
   return (
     <View style={styles.container}>
       <View>
@@ -27,32 +28,13 @@ const Welcome = () => {
         <AppButton
           title="Sign In"
           hasShadow={true}
-          containerStyle={{ backgroundColor: theme.colors.white }}
-          textStyle={[styles.btnTitle, { color: theme.colors.dark }]}
+          containerStyle={styles.signinBtn}
+          textStyle={[styles.btnTitle, { color: activeColors.black }]}
           onPress={() => router.replace("/login")}
         />
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "space-around",
-    backgroundColor: theme.colors.background,
-    paddingTop: hp(15),
-    paddingHorizontal: wp(4),
-  },
-  footer: {
-    marginTop: hp(15),
-    width: "100%",
-    gap: 20,
-  },
-  btnTitle: {
-    fontWeight: theme.fonts.bold,
-  },
-});
 
 export default Welcome;
