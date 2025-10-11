@@ -21,8 +21,8 @@ import CustomInput from "../../../components/CustomInput";
 import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
 import { hp, wp } from "../../../helpers/common";
+import { addBook } from "../../../services/bookServices";
 import { getSupabaseFileUrl } from "../../../services/imageService";
-import { addBook } from "../../../services/postService";
 import { useScreensStyles } from ".././../../styles/screensStyles";
 
 const CreatePost = () => {
@@ -150,31 +150,33 @@ const CreatePost = () => {
 
             {/* the text-field with actions */}
             <CustomInput
-              label={"Title"}
-              placeholder="Book Title"
               value={title}
-              onChangeText={setTitle}
+              label={"Title"}
               multiline={false}
               autoCorrect={true}
+              onChangeText={setTitle}
+              placeholder="Book Title"
+              autoCapitalize={"words"}
               style={styles.textInputs}
             />
             <CustomInput
-              label={"Author"}
-              placeholder="Book Author"
               value={author}
-              onChangeText={setAuthor}
+              label={"Author"}
               multiline={false}
               autoCorrect={true}
+              onChangeText={setAuthor}
+              autoCapitalize={"words"}
+              placeholder="Book Author"
               style={styles.textInputs}
             />
             <CustomInput
               label={"Link"}
-              placeholder="Enter link to the book"
               value={link1}
-              onChangeText={setLink1}
               multiline={false}
               autoCorrect={true}
+              onChangeText={setLink1}
               style={styles.textInputs}
+              placeholder="Enter link to the book"
             />
 
             {/* media will display here once selected */}
@@ -182,15 +184,15 @@ const CreatePost = () => {
               <View style={styles.file}>
                 {getFileType(file) == "image" && (
                   <Image
-                    source={{ uri: getFileUri(file) }}
                     style={{ flex: 1 }}
+                    source={{ uri: getFileUri(file) }}
                   />
                 )}
                 <AppIoniconTouchable
                   name="close"
                   size={20}
-                  color={activeColors.white}
                   style={styles.deleteIcon}
+                  color={activeColors.white}
                   onPress={() => setFile(null)}
                 />
               </View>
@@ -200,8 +202,8 @@ const CreatePost = () => {
             <View style={styles.mediaContainer}>
               <AppText style={styles.addMediaText}> Add Picture </AppText>
               <AppIoniconTouchable
-                name="image"
                 size={24}
+                name="image"
                 onPress={() => onPick()}
               />
             </View>
@@ -219,10 +221,10 @@ const CreatePost = () => {
         >
           <View style={styles.animationContainer}>
             <LottieView
-              source={require("../../../assets/images/success.json")}
               autoPlay
               loop={false}
               style={styles.lottie}
+              source={require("../../../assets/images/success.json")}
             />
           </View>
         </View>

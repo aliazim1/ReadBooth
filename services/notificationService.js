@@ -10,13 +10,44 @@ export const createNotification = async (notification) => {
       .single();
 
     if (error) {
-      console.log("notification error: ", error);
-      return { success: false, msg: "Something went wrong" };
+      console.log("Notification error: ", error);
+      return {
+        success: false,
+        msg: "Something went wrong while creating notification",
+      };
     }
     return { success: true, data: data };
   } catch (error) {
-    console.log("notification error: ", error);
-    return { success: false, msg: "Something went wrong" };
+    console.log("Notification error: ", error);
+    return {
+      success: false,
+      msg: "Something went wrong while creating notification",
+    };
+  }
+};
+
+// Helper Function: to send notifications (flexible for like, comment, follow)
+export const sendNotification = async (
+  senderId,
+  receiverId,
+  type,
+  message,
+  postId = null,
+  commentId = null
+) => {
+  if (senderId === receiverId) return; // don't notify yourself
+  try {
+    const notification = {
+      senderId: senderId,
+      receiverId: receiverId,
+      type: type,
+      message: message,
+      postId: postId,
+      commentId: commentId,
+    };
+    await createNotification(notification);
+  } catch (error) {
+    console.log("Notification error:", error);
   }
 };
 

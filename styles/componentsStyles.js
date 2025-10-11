@@ -12,6 +12,16 @@ export const useComponentsStyles = () => {
   const styles = useMemo(
     () =>
       StyleSheet.create({
+        //
+        // create post & edit post
+        deleteIcon: {
+          padding: 4,
+          borderRadius: 20,
+          alignItems: "center",
+          backgroundColor: activeColors.danger,
+        },
+
+        //
         //  AppButton styles
         button: {
           height: hp(5.5),
@@ -40,6 +50,7 @@ export const useComponentsStyles = () => {
           alignSelf: "center",
         },
 
+        //
         // AppText styles
         appText: {
           fontSize: hp(1.6),
@@ -47,6 +58,7 @@ export const useComponentsStyles = () => {
           fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
         },
 
+        //
         // avatar styles
         avatarContainer: {
           alignItems: "center",
@@ -55,6 +67,7 @@ export const useComponentsStyles = () => {
           backgroundColor: activeColors.gray,
         },
 
+        //
         // book item styles
         bookContainer: {
           gap: 10,
@@ -74,7 +87,7 @@ export const useComponentsStyles = () => {
         },
         bookNameContainer: {
           gap: 5,
-          width: wp(65),
+          width: wp(64),
         },
         bookName: {
           fontWeight: appTheme.fonts.bold,
@@ -93,13 +106,34 @@ export const useComponentsStyles = () => {
         linkText: {
           fontWeight: appTheme.fonts.semibold,
         },
-        deleteIcon: {
-          padding: 4,
+        bookDeleteIcon: {
+          right: 10,
+          bottom: 12,
           borderRadius: 20,
           alignItems: "center",
-          backgroundColor: activeColors.danger,
+          position: "absolute",
         },
 
+        //
+        // add comment component styles
+        inputContainer: {
+          gap: 5,
+          flexDirection: "row",
+          alignItems: "center",
+          paddingHorizontal: wp(4),
+          paddingVertical: hp(1),
+        },
+        sendBtn: {
+          backgroundColor: activeColors.primary,
+          paddingVertical: 10,
+          paddingHorizontal: 12,
+          borderRadius: 12,
+        },
+        sendbtnText: {
+          fontWeight: "600",
+        },
+
+        //
         // comment item styles
         commentHeader: {
           flex: 1,
@@ -129,17 +163,20 @@ export const useComponentsStyles = () => {
           fontWeight: appTheme.fonts.medium,
         },
         body: {
-          marginLeft: wp(15),
+          marginLeft: wp(14),
+          marginRight: wp(3),
           fontSize: hp(1.5),
           color: activeColors.text,
-          paddingBottom: 10,
-          borderBottomColor: activeColors.text,
-          borderBottomWidth: 0.2,
+          backgroundColor: activeColors.commentBox,
+          padding: 8,
+          borderRadius: 10,
         },
+
         highlight: {
           backgroundColor: activeColors.primary,
         },
 
+        //
         //  custom input styles
         inputLabel: {
           marginTop: 20,
@@ -151,6 +188,7 @@ export const useComponentsStyles = () => {
           borderRadius: appTheme.radius.md,
         },
 
+        //
         // notification item styles
         notificationContaienr: {
           flex: 1,
@@ -184,6 +222,7 @@ export const useComponentsStyles = () => {
           justifyContent: "flex-end",
         },
 
+        //
         // post card styles
         container: {
           marginVertical: hp(1.2),
@@ -238,6 +277,7 @@ export const useComponentsStyles = () => {
           justifyContent: "space-between",
         },
 
+        //
         // postGridItem styles
         postContainer: {
           flex: 1 / 3,
@@ -262,6 +302,7 @@ export const useComponentsStyles = () => {
           fontSize: 12,
         },
 
+        //
         // post options modal styles
         overlay: {
           flex: 1,
@@ -277,6 +318,7 @@ export const useComponentsStyles = () => {
           borderTopRightRadius: appTheme.radius.xxl,
         },
 
+        //
         // setting list item styles
         settingItemContainer: {
           backgroundColor: activeColors.background,
@@ -315,6 +357,7 @@ export const useComponentsStyles = () => {
           gap: 8,
         },
 
+        //
         // stats item styles
         column: {
           width: 90,

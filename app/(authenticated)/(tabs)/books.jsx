@@ -1,4 +1,4 @@
-import { Feather, Octicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import { useCallback, useLayoutEffect, useState } from "react";
 import { Alert, FlatList, Pressable, View } from "react-native";
@@ -9,7 +9,7 @@ import BookItem from "../../../components/BookItem";
 import CustomAlert from "../../../components/CustomAlert";
 import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
-import { deleteBook, fetchBooks } from "../../../services/postService";
+import { deleteBook, fetchBooks } from "../../../services/bookServices";
 import { useTabsStyles } from "../../../styles/tabsStyles";
 
 // global variable for the number of posts (limit)
@@ -54,7 +54,7 @@ const Books = () => {
             <Feather name="search" size={24} color={activeColors.text} />
           </Pressable>
           <Pressable onPress={() => router.push("/addBook")}>
-            <Octicons name="plus-circle" size={21} color={activeColors.text} />
+            <AppMaterialCommunityIcon name="square-edit-outline" />
           </Pressable>
         </View>
       ),

@@ -1,6 +1,6 @@
 export const colors = {
   light: {
-    background: "#F5F5F5",
+    background: "#FCFCFC",
     text: "#1C1C1E",
     primary: "#33D2A4",
     border: "#f1f1f1ff",
@@ -13,14 +13,14 @@ export const colors = {
     danger: "#ef4444",
     dangerLight: "#f87171",
     blue: "#97E0F7",
-    tintColor: "#723FEB",
     black: "#1A1A1A",
     tabBarBorder: "#f1f1f1ff",
     iconsColor: "#1C1C1E",
+    commentBox: "#eee",
   },
   dark: {
     background: "#1A1A1A",
-    text: "#FFFEFE",
+    text: "#FCFCFC",
     primary: "#33D2A4",
     border: "#f1f1f1ff",
     white: "#FFFFFF",
@@ -32,10 +32,10 @@ export const colors = {
     danger: "#ef4444",
     dangerLight: "#f87171",
     blue: "#97E0F7",
-    tintColor: "#723FEB",
     black: "#1A1A1A",
     tabBarBorder: "#333",
-    iconsColor: "#FFFEFE",
+    iconsColor: "#FCFCFC",
+    commentBox: "#38383971",
   },
 };
 
@@ -57,7 +57,6 @@ export const appTheme = {
 };
 
 // Additional colors
-// text: "#FCFCFC",
 // primary: "#8B593E",
 // background: "#010313",
 // background: "#1A1A1A",

@@ -1,9 +1,9 @@
 import Feather from "@expo/vector-icons/Feather";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useNavigation, useRouter } from "expo-router";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { FlatList, Pressable, View } from "react-native";
 
+import AppMaterialCommunityIcon from "../../../components/AppMaterialCommunityIcon";
 import AppText from "../../../components/AppText";
 import Loading from "../../../components/Loading";
 import PostCard from "../../../components/PostCard";
@@ -12,6 +12,7 @@ import { supabase } from "../../../lib/supabase";
 import { fetchPosts } from "../../../services/postService";
 import { getUserData } from "../../../services/userService";
 import { useTabsStyles } from "../../../styles/tabsStyles";
+
 // global variable for the number of posts (limit)
 var limit = 0;
 
@@ -99,11 +100,7 @@ const Home = () => {
             <Feather name="search" size={24} color={activeColors.text} />
           </Pressable>
           <Pressable onPress={() => router.push("/createPost")}>
-            <FontAwesome
-              name="plus-square-o"
-              size={24}
-              color={activeColors.text}
-            />
+            <AppMaterialCommunityIcon name="square-edit-outline" />
           </Pressable>
         </View>
       ),
@@ -115,7 +112,7 @@ const Home = () => {
       <FlatList
         data={posts}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingTop: 20 }}
+        contentContainerStyle={styles.homeContentContainerStyle}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <PostCard

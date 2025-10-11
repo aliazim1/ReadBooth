@@ -6,6 +6,7 @@ import AppButton from "../../../components/AppButton";
 import CustomInput from "../../../components/CustomInput";
 import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
+import { wp } from "../../../helpers/common";
 import { useScreensStyles } from "../../../styles/screensStyles";
 
 const ChangePassword = () => {
@@ -55,16 +56,17 @@ const ChangePassword = () => {
               value={user.email}
               onChangeText={(value) => setUser({ ...user, email: value })}
             />
-
-            <AppButton
-              title="Save"
-              // onPress={onSave}
-              isLoading={loading}
-              containerStyle={{ marginTop: 30 }}
-            />
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAwareScrollView>
+      <View style={{ paddingHorizontal: wp(4) }}>
+        <AppButton
+          title="Save"
+          // onPress={onSave}
+          isLoading={loading}
+          containerStyle={{ marginTop: 30 }}
+        />
+      </View>
     </SafeScreen>
   );
 };

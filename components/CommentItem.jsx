@@ -9,7 +9,7 @@ import Avatar from "./Avatar";
 
 const CommentItem = ({
   item,
-  highlight = false,
+  highlight = true,
   canDelete = false,
   onDelete = () => {},
 }) => {
@@ -20,14 +20,16 @@ const CommentItem = ({
   // Delete the comment, receives the onDelete function from parent
   const handleDelete = () => {
     CustomAlert({
-      title: "Delete",
+      title: "Delete Comment",
       message: "Are you sure you want to delete this comment?",
       onConfirm: onDelete,
     });
   };
 
   return (
-    <View style={highlight && styles.highlight}>
+    <View
+    // style={highlight && styles.highlight}
+    >
       <View style={[styles.commentHeader]}>
         <View style={styles.imgNameTime}>
           <Avatar uri={item?.user?.image} size={40} />
@@ -62,7 +64,20 @@ const CommentItem = ({
           )}
         </View>
       </View>
-      {<AppText style={styles.body}>{item?.text}</AppText>}
+      {/* comment body text */}
+      {
+        <AppText
+          style={[
+            styles.body,
+            {
+              backgroundColor:
+                (highlight && activeColors.primary) || activeColors.commentBox,
+            },
+          ]}
+        >
+          {item?.text}
+        </AppText>
+      }
       {/* TODO:  */}
     </View>
   );

@@ -13,8 +13,9 @@ import SafeScreen from "../../../components/SafeScreen";
 import StatsItem from "../../../components/StatsItem";
 import { appTheme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
-import { wp } from "../../../helpers/common";
-import { fetchPosts, fetchSavedPosts } from "../../../services/postService";
+import { hp, wp } from "../../../helpers/common";
+import { fetchPosts } from "../../../services/postService";
+import { fetchSavedPosts } from "../../../services/savedService";
 import { useTabsStyles } from "../../../styles/tabsStyles";
 
 // global variable for the number of posts (limit)
@@ -27,8 +28,19 @@ const Profile = () => {
   const navigation = useNavigation();
   const [posts, setPosts] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
+  const [savedBooks, setSavedBookss] = useState([]);
   const [hasMorePosts, setHasMorePosts] = useState(true);
   const [activeTab, setActiveTab] = useState("posts");
+
+  const getPosts = async () => {
+    if (!hasMorePosts) return null;
+    limit += 9;
+    let res = await fetchPosts(limit, user.id);
+    if (res.success) {
+      if (posts.length === res.data.length) setHasMorePosts(false);
+      setPosts(res.data);
+    }
+  };
 
   const getSavedPosts = async () => {
     if (!hasMorePosts) return null;
@@ -40,13 +52,13 @@ const Profile = () => {
     }
   };
 
-  const getPosts = async () => {
+  const getSavedBooks = async () => {
     if (!hasMorePosts) return null;
     limit += 9;
-    let res = await fetchPosts(limit, user.id);
+    let res = await fetchSavedPosts(limit, user.id);
     if (res.success) {
-      if (posts.length === res.data.length) setHasMorePosts(false);
-      setPosts(res.data);
+      if (savedPosts.length === res.data.length) setHasMorePosts(false);
+      setSavedPosts(res.data);
     }
   };
 
@@ -66,19 +78,25 @@ const Profile = () => {
     // initial load for posts and savedPosts
     getPosts();
     getSavedPosts();
+    getSavedBooks();
   }, [navigation, router]);
 
+  // refresh when navigating back
   useFocusEffect(
     useCallback(() => {
-      // refresh when navigating back
       getPosts();
       getSavedPosts();
+      getSavedBooks();
     }, [user?.id])
   );
 
   // Get correct content based on active tab
   const getCurrentData = () => {
-    return activeTab == "bookmarks" ? savedPosts : posts;
+    return activeTab == "bookmarks"
+      ? savedPosts
+      : activeTab == "books"
+      ? getSavedBooks
+      : posts;
   };
 
   const currentData = getCurrentData();
@@ -123,15 +141,17 @@ const Profile = () => {
 
             {/* Tabs under stats */}
             <View style={styles.tabsContainer}>
-              {["posts", "bookmarks"].map((tab) => {
+              {["posts", "saved", "books"].map((tab) => {
                 const icons = {
                   posts: "grid-outline",
-                  bookmarks: "bookmark-outline",
+                  saved: "bookmark-outline",
+                  books: "bookmark-outline",
                 };
 
                 const activeIcons = {
                   posts: "grid",
-                  bookmarks: "bookmark",
+                  saved: "bookmark",
+                  books: "bookmark",
                 };
 
                 const iconName =
@@ -170,6 +190,26 @@ const Profile = () => {
                 );
               })}
             </View>
+          </View>
+        }
+        ListEmptyComponent={
+          <View
+            style={{
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: hp(10),
+            }}
+          >
+            <AppText style={{ color: activeColors.mediumGrey, fontSize: 16 }}>
+              No{" "}
+              {activeTab === "posts"
+                ? "posts"
+                : activeTab === "bookmarks"
+                ? "saved posts"
+                : "saved books"}{" "}
+              yet
+            </AppText>
           </View>
         }
         renderItem={({ item }) => <PostGridItem item={item} router={router} />}

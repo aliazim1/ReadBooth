@@ -18,20 +18,22 @@ const BookItem = ({ item, currentUser, onDeleteBook }) => {
         <AppText>By: {item?.author}</AppText>
         <View style={styles.bottomRow}>
           <View style={styles.linkContainer}>
-            <AppText style={styles.linkText}>Links:</AppText>
             {item?.link1 && (
-              <AppPressableIoniconIcon
-                name={"logo-amazon"}
-                size={14}
-                width={20}
-              />
+              <AppText style={styles.linkText}>Link to book:</AppText>
+            )}
+            {item?.link1 && (
+              <AppPressableIoniconIcon name={"link"} size={14} width={20} />
             )}
           </View>
-          <Pressable onPress={onDeleteBook} style={styles.deleteIcon}>
-            <Ionicons name={"trash"} size={10} color={activeColors.white} />
-          </Pressable>
         </View>
       </View>
+      <Pressable onPress={onDeleteBook} style={styles.bookDeleteIcon}>
+        <Ionicons
+          name={"ellipsis-horizontal"}
+          size={16}
+          color={activeColors.white}
+        />
+      </Pressable>
     </View>
   );
 };

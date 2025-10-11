@@ -6,13 +6,9 @@ import ParsedText from "react-native-parsed-text";
 
 import { hp, stripHtmlTags } from "../helpers/common";
 import { getSupabaseFileUrl } from "../services/imageService";
-import {
-  createPostLike,
-  createSavePost,
-  deletePost,
-  removePostLike,
-  removeSavePost,
-} from "../services/postService";
+import { createPostLike, removePostLike } from "../services/likeService";
+import { deletePost } from "../services/postService";
+import { createSavePost, removeSavePost } from "../services/savedService";
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppPressableIoniconIcon from "./AppPressableIoniconIcon";
 import AppText from "./AppText";
@@ -47,7 +43,7 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
       };
 
       setLikes([...likes, data]);
-      let res = await createPostLike(data);
+      let res = await createPostLike(data, item, currentUser);
       if (!res.success) Alert.alert("Dislike", "Something went wrong.");
     }
   };
@@ -123,7 +119,7 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
     router.push({ pathname: "editPost", params: { ...item } });
   };
 
-  // function to open the link if the body is as link
+  // function to open the link if the post caption hsa a link
   const handleUrlPress = (url) => {
     Linking.openURL(url);
   };

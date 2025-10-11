@@ -1,28 +1,20 @@
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useEffect, useLayoutEffect, useState } from "react";
-import {
-  Alert,
-  Keyboard,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { Keyboard, Text, TouchableWithoutFeedback, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+import AddComment from "../../components/AddComment";
 import AppIoniconTouchable from "../../components/AppIoniconTouchable";
 import AppText from "../../components/AppText";
 import CommentItem from "../../components/CommentItem";
-import CustomInput from "../../components/CustomInput";
 import Loading from "../../components/Loading";
 import { useAuth } from "../../contexts/AuthContext";
-import { hp } from "../../helpers/common";
 import { supabase } from "../../lib/supabase";
-import { createNotification } from "../../services/notificationService";
 import {
-  createComment,
-  fetchPostDetails,
+  addNewCommentService,
   removePostComment,
-} from "../../services/postService";
+} from "../../services/commentService";
+import { fetchPostDetails } from "../../services/postService";
 import { getUserData } from "../../services/userService";
 import { modalsStyles } from "../../styles/modalsStyles";
 
@@ -86,64 +78,15 @@ const Comments = () => {
     setStartLoading(false);
   };
 
-  // function to add a new comment
   const onNewComment = async () => {
-    if (comment.trim() === "") return null;
-    let data = {
-      userId: user?.id,
-      postId: post?.id,
-      text: comment,
-    };
-
-    setLoadingSend(true); // create the comment
-    let res = await createComment(data);
-    setLoadingSend(false);
-    setComment("");
-
-    if (res.success) {
-      if (user.id != post.userId) {
-        // send notification if now my own post
-        let notify = {
-          senderId: user.id,
-          receiverId: post.userId,
-          title: "commented on your post",
-          data: JSON.stringify({ postId: post.id, commentId: res?.data?.id }),
-        };
-        createNotification(notify);
-      }
-      let userRes = await getUserData(res.data.userId);
-      let newComment = {
-        ...res.data,
-        user: userRes.success ? userRes.data : {},
-      };
-
-      setPost((prevPost) => {
-        const exists = prevPost.comments.some((c) => c.id === newComment.id);
-        if (exists) return prevPost;
-        return {
-          ...prevPost,
-          comments: [newComment, ...prevPost.comments],
-        };
-      });
-    } else {
-      Alert.alert("Comment", res.msg);
-    }
-  };
-
-  // function to delet the comment (only for comment and post owner)
-  const onDelete = async (comment) => {
-    let res = await removePostComment(comment?.id);
-    if (res.success) {
-      setPost((prevPost) => {
-        let updatedPost = { ...prevPost };
-        updatedPost.comments = updatedPost.comments.filter(
-          (c) => c.id != comment.id
-        );
-        return updatedPost;
-      });
-    } else {
-      Alert.alert("Comment", res.msg);
-    }
+    await addNewCommentService({
+      user,
+      post,
+      comment,
+      setPost,
+      setComment,
+      setLoadingSend,
+    });
   };
 
   // used for header + icons
@@ -152,7 +95,7 @@ const Comments = () => {
       headerRight: () => (
         <AppIoniconTouchable
           style={{ marginLeft: 3.5 }}
-          name="close"
+          name="chevron-down"
           onPress={() => router.back()}
         />
       ),
@@ -187,31 +130,13 @@ const Comments = () => {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={{ flex: 1 }}>
-            {/* comments & text-input to add comment */}
-            <View style={styles.inputContainer}>
-              <CustomInput
-                placeholder="Type a comment..."
-                value={comment}
-                onChangeText={setComment}
-                multiline
-                numberOfLines={5}
-                autoCapitalize="sentences"
-                autoCorrect={true}
-              />
-              {loadingSend ? (
-                <View style={styles.sendBtn}>
-                  <Loading color={activeColors.text} />
-                </View>
-              ) : (
-                <AppIoniconTouchable
-                  name="navigate"
-                  size={22}
-                  color={activeColors.text}
-                  style={[{ marginLeft: 0 }, styles.sendBtn]}
-                  onPress={onNewComment}
-                />
-              )}
-            </View>
+            {/*  text-input & btn to add comment */}
+            <AddComment
+              comment={comment}
+              setComment={setComment}
+              loadingSend={loadingSend}
+              onNewComment={onNewComment}
+            />
 
             {/* all comments list */}
             <View style={styles.commentsListContainer}>
@@ -221,20 +146,20 @@ const Comments = () => {
                 </AppText>
               ) : (
                 <View style={styles.commentCountContainer}>
-                  <AppText style={styles.commentCount}>Comments</AppText>
-                  <AppText style={{ fontSize: hp(1.4) }}>
+                  <AppText style={styles.commentCountLabel}>Comments</AppText>
+                  <AppText style={styles.commentCount}>
                     {post?.comments?.length}
                   </AppText>
                 </View>
               )}
               {post?.comments?.map((comment) => (
                 <CommentItem
-                  key={comment?.id?.toString()}
                   item={comment}
+                  key={comment?.id?.toString()}
                   canDelete={
                     user.id == comment.userId || user.id == post.userId
                   }
-                  onDelete={() => onDelete(comment)}
+                  onDelete={() => removePostComment(comment?.id, setPost)}
                 />
               ))}
             </View>

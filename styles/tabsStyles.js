@@ -55,6 +55,29 @@ export const useTabsStyles = () => {
           justifyContent: "center",
         },
 
+        // home styles
+        outerContainer: {
+          flex: 1,
+          backgroundColor: activeColors.background,
+        },
+        homeContentContainerStyle: {
+          paddingTop: 20,
+          paddingBottom: hp(10),
+        },
+        ItemSeparatorComponent: {
+          height: 1,
+          marginVertical: 10,
+          backgroundColor: activeColors.mediumGrey,
+        },
+        loadingContainer: {
+          alignItems: "center",
+          justifyContent: "center",
+        },
+        noMorePost: {
+          fontSize: hp(1.3),
+          marginVertical: 20,
+        },
+
         // books styles
         headerIconsContainer: {
           gap: 12,
@@ -74,25 +97,6 @@ export const useTabsStyles = () => {
           paddingTop: 20,
           gap: 14,
           paddingHorizontal: wp(4),
-        },
-
-        // home styles
-        outerContainer: {
-          flex: 1,
-          backgroundColor: activeColors.background,
-        },
-        ItemSeparatorComponent: {
-          height: 1,
-          marginVertical: 10,
-          backgroundColor: activeColors.mediumGrey,
-        },
-        loadingContainer: {
-          alignItems: "center",
-          justifyContent: "center",
-        },
-        noMorePost: {
-          fontSize: hp(1.3),
-          marginVertical: 20,
         },
 
         // notifications styles

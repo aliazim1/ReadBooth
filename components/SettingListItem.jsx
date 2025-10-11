@@ -2,6 +2,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { memo } from "react";
 import { Switch, TouchableOpacity, View } from "react-native";
 
+import { appTheme } from "../constants/theme";
+import { hp } from "../helpers/common";
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppText from "./AppText";
 
@@ -11,7 +13,6 @@ const SettingListItem = ({
   icon,
   iconColor = "",
   chevron = true,
-  notification = false,
   toggle = false,
   description,
   value,
@@ -33,7 +34,13 @@ const SettingListItem = ({
               style={{ marginRight: 7 }}
             />
           )}
-          <AppText style={{ color: labelColor || activeColors.text }}>
+          <AppText
+            style={{
+              color: labelColor || activeColors.text,
+              fontSize: hp(1.8),
+              fontWeight: appTheme.fonts.medium,
+            }}
+          >
             {label}
           </AppText>
         </View>
@@ -50,42 +57,6 @@ const SettingListItem = ({
         <AppText style={styles.descriptionText}>{description}</AppText>
       )}
     </View>
-  ) : notification ? (
-    <TouchableOpacity
-      style={[styles.container, style]}
-      onPress={onPress}
-      activeOpacity={0.7}
-    >
-      {/* the row contents  */}
-      <View style={[styles.rowContainer]}>
-        <View style={styles.leftSide}>
-          {icon && (
-            <View style={[styles.notificationIcon]}>
-              <MaterialCommunityIcons
-                name={icon}
-                color={iconColor || activeColors.iconsColor}
-                size={28}
-              />
-            </View>
-          )}
-          <View>
-            <AppText style={{ color: labelColor || activeColors.text }}>
-              {label}
-            </AppText>
-            <AppText style={styles.descriptionText}>
-              {"description will display here"}
-            </AppText>
-          </View>
-        </View>
-        {chevron && (
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={20}
-            color={iconColor || activeColors.iconsColor}
-          />
-        )}
-      </View>
-    </TouchableOpacity>
   ) : (
     <TouchableOpacity
       style={[styles.chevronContainer, style]}
@@ -100,7 +71,13 @@ const SettingListItem = ({
             size={22}
           />
         )}
-        <AppText style={{ color: labelColor || activeColors.text }}>
+        <AppText
+          style={{
+            color: labelColor || activeColors.text,
+            fontSize: hp(1.8),
+            fontWeight: appTheme.fonts.medium,
+          }}
+        >
           {label}
         </AppText>
       </View>

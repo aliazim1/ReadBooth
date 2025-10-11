@@ -16,6 +16,7 @@ import AppIonicon from "../../../components/AppIonicon";
 import CustomInput from "../../../components/CustomInput";
 import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
+import { wp } from "../../../helpers/common";
 import { getUserImageSrc, uploadFile } from "../../../services/imageService";
 import { updateUserData } from "../../../services/userService";
 import { useScreensStyles } from "../../../styles/screensStyles";
@@ -168,16 +169,12 @@ const EditProfileDetails = () => {
               style={styles.bio}
               onChangeText={(value) => setUser({ ...user, bio: value })}
             />
-
-            <AppButton
-              title="Save"
-              onPress={onSave}
-              isLoading={loading}
-              containerStyle={{ marginTop: 30 }}
-            />
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAwareScrollView>
+      <View style={{ paddingHorizontal: wp(4) }}>
+        <AppButton title="Save" onPress={onSave} isLoading={loading} />
+      </View>
     </SafeScreen>
   );
 };
