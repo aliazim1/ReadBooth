@@ -4,17 +4,17 @@ import { Keyboard, Text, TouchableWithoutFeedback, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import AddComment from "../../components/AddComment";
-import AppIoniconTouchable from "../../components/AppIoniconTouchable";
 import AppText from "../../components/AppText";
 import CommentItem from "../../components/CommentItem";
+import HeaderRight from "../../components/HeaderRight";
 import Loading from "../../components/Loading";
 import { useAuth } from "../../contexts/AuthContext";
 import { supabase } from "../../lib/supabase";
 import {
   addNewCommentService,
+  fetchPostDetails,
   removePostComment,
-} from "../../services/commentService";
-import { fetchPostDetails } from "../../services/postService";
+} from "../../services/postService";
 import { getUserData } from "../../services/userService";
 import { modalsStyles } from "../../styles/modalsStyles";
 
@@ -92,13 +92,7 @@ const Comments = () => {
   // used for header + icons
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <AppIoniconTouchable
-          style={{ marginLeft: 3.5 }}
-          name="chevron-down"
-          onPress={() => router.back()}
-        />
-      ),
+      headerRight: () => <HeaderRight onPress2={() => router.back()} />,
     });
   }, [navigation, router, post]);
 

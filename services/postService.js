@@ -1,9 +1,10 @@
 import { supabase } from "../lib/supabase";
 import { uploadFile } from "./imageService";
+import { sendNotification } from "./notificationService";
+import { getUserData } from "./userService";
 
 //
 // function to create a new post including image & caption
-//
 export const createPost = async (post) => {
   try {
     // if there’s a file, upload it first
@@ -42,7 +43,6 @@ export const createPost = async (post) => {
 
 //
 // function to edit the post
-//
 export const updatePost = async ({ id, body }) => {
   try {
     const { data, error } = await supabase
@@ -70,7 +70,6 @@ export const updatePost = async ({ id, body }) => {
 
 //
 // function to delete the post
-//
 export const deletePost = async (postId) => {
   try {
     const { error } = await supabase.from("posts").delete().eq("id", postId);
@@ -88,7 +87,6 @@ export const deletePost = async (postId) => {
 
 //
 // function to fetch all the posts with a limit of 10 posts first
-//
 export const fetchPosts = async (limit = 9, userId) => {
   try {
     if (userId) {
@@ -141,7 +139,6 @@ export const fetchPosts = async (limit = 9, userId) => {
 
 //
 // function to fetch the posts details
-//
 export const fetchPostDetails = async (postId) => {
   try {
     const { data, error } = await supabase
@@ -167,5 +164,265 @@ export const fetchPostDetails = async (postId) => {
   } catch (error) {
     console.log("fetchPostDetails error: ", error);
     return { success: false, msg: "Could not fetch the post's details" };
+  }
+};
+
+//
+// function to like the post and create a notification
+// in notifications table for it
+export const createPostLike = async (postLike, post, currentUser) => {
+  try {
+    const { data, error } = await supabase
+      .from("postLikes")
+      .insert(postLike)
+      .select()
+      .single();
+
+    if (error) {
+      console.log("postLike error: ", error);
+      return { success: false, msg: "Could not like the post" };
+    }
+
+    // send notification
+    sendNotification(
+      currentUser.id, // sender id
+      post?.user?.id, // receiver id
+      "like", // type
+      "liked your post", // message
+      post?.id // postId
+    );
+    return { success: true, data: data };
+  } catch (error) {
+    console.log("postLike error: ", error);
+    return { success: false, msg: "Could not like the post" };
+  }
+};
+
+//
+// function to remove the like from post, the like from postLikes
+//  table & its notification from notification table
+export const removePostLike = async (postId, userId) => {
+  try {
+    const { error } = await supabase
+      .from("postLikes")
+      .delete()
+      .eq("userId", userId)
+      .eq("postId", postId);
+
+    if (error) {
+      console.log("postLike error: ", error);
+      return { success: false, msg: "Could not remove the post like" };
+    }
+
+    // also remove the "like's" notification
+    const { error: notifError } = await supabase
+      .from("notifications")
+      .delete()
+      .eq("postId", postId)
+      .eq("senderId", userId)
+      .eq("type", "like");
+
+    if (notifError) {
+      console.log("remove like notification error:", notifError);
+    }
+    return { success: true };
+  } catch (error) {
+    console.log("postLike error: ", error);
+    return { success: false, msg: "Could not remove the post like" };
+  }
+};
+
+//
+// function to add a new comment to the post
+export const createComment = async (comment) => {
+  try {
+    const { data, error } = await supabase
+      .from("comments")
+      .insert(comment)
+      .select()
+      .single();
+
+    if (error) {
+      console.log("comment error: ", error);
+      return { success: false, msg: "Could not create the comment" };
+    }
+    return { success: true, data: data };
+  } catch (error) {
+    console.log("comment error: ", error);
+    return { success: false, msg: "Could not create the comment" };
+  }
+};
+
+//
+// function to remove the comment from comments table and also it will
+// remove its notification from notifications table, no need to do it manually
+export const removePostComment = async (commentId, setPost) => {
+  try {
+    const { error } = await supabase
+      .from("comments")
+      .delete()
+      .eq("id", commentId);
+
+    if (error) {
+      console.log("removeComment error: ", error);
+      return { success: false, msg: "Could not remove the comment" };
+    }
+
+    setPost((prevPost) => {
+      let updatedPost = { ...prevPost };
+      updatedPost.comments = updatedPost.comments.filter(
+        (c) => c.id != commentId
+      );
+      return updatedPost;
+    });
+
+    return { success: true, data: { commentId } };
+  } catch (error) {
+    console.log("removeComment error: ", error);
+    return { success: false, msg: "Could not remove the comment" };
+  }
+};
+
+//
+// Add new comment
+export const addNewCommentService = async ({
+  user,
+  post,
+  comment,
+  setPost,
+  setComment,
+  setLoadingSend,
+}) => {
+  if (comment.trim() === "") return null;
+
+  const commentData = {
+    userId: user?.id,
+    postId: post?.id,
+    text: comment,
+  };
+
+  try {
+    setLoadingSend(true);
+    let res = await createComment(commentData);
+    setLoadingSend(false);
+    setComment("");
+
+    if (!res.success) {
+      Alert.alert("Comment", res.msg);
+      return;
+    }
+
+    // send notification
+    sendNotification(
+      user.id, // sender id
+      post.userId, // receiver id
+      "comment", // type
+      "commented on your post", // message
+      post.id, // postId
+      res?.data?.id // commentId
+    );
+
+    // fetch comment user data
+    let userRes = await getUserData(res.data.userId);
+    let newComment = {
+      ...res.data,
+      user: userRes.success ? userRes.data : {},
+    };
+
+    // update post state
+    setPost((prevPost) => {
+      if (prevPost.comments.some((c) => c.id === newComment.id))
+        return prevPost;
+      return {
+        ...prevPost,
+        comments: [newComment, ...prevPost.comments],
+      };
+    });
+  } catch (err) {
+    console.log("addNewCommentService error:", err);
+    setLoadingSend(false);
+  }
+};
+
+//
+// function to save the post
+export const createSavePost = async (savePost) => {
+  try {
+    const { data, error } = await supabase
+      .from("savedPosts")
+      .insert(savePost)
+      .select()
+      .single();
+
+    if (error) {
+      console.log("savePost error: ", error);
+      return { success: false, msg: "Could save the post." };
+    }
+    return { success: true, data: data };
+  } catch (error) {
+    console.log("savePost error: ", error);
+    return { success: false, msg: "Could save the post." };
+  }
+};
+
+//
+// function to unsave the post
+export const removeSavePost = async (postId, userId) => {
+  try {
+    const { error } = await supabase
+      .from("savedPosts")
+      .delete()
+      .eq("userId", userId)
+      .eq("postId", postId);
+
+    if (error) {
+      console.log("unsavePost error: ", error);
+      return { success: false, msg: "Could not unsave the post" };
+    }
+    return { success: true };
+  } catch (error) {
+    console.log("unsavePost error: ", error);
+    return { success: false, msg: "Could not unsave the post" };
+  }
+};
+
+//
+// function to fetch all the posts with a limit of 10 posts first
+export const fetchSavedPosts = async (limit = 9, userId) => {
+  try {
+    const query = supabase
+      .from("savedPosts")
+      .select(
+        `
+        id,
+        created_at,
+        post: posts (
+          id,
+          body,
+          file,
+          created_at,
+          user: users (id, name, username, image),
+          postLikes (*),
+          savedPosts (*),
+          comments (count)
+        )
+      `
+      )
+      .order("created_at", { ascending: false })
+      .limit(limit);
+
+    if (userId) query.eq("userId", userId);
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.log("fetchSavedPosts error:", error);
+      return { success: false, msg: "Could not fetch saved posts" };
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.log("fetchSavedPosts error:", error);
+    return { success: false, msg: "Could not fetch saved posts" };
   }
 };

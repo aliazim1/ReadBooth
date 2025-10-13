@@ -1,17 +1,17 @@
+// PostOptionsModal.js
 import { Modal, Pressable, View } from "react-native";
 
 import { useComponentsStyles } from "../styles/componentsStyles";
 import SettingListItem from "./SettingListItem";
 
-const PostOptionsModal = ({
+const BookOptionsModal = ({
   owner = false,
-  homeScreen = true,
   visible,
   onClose,
+  saved = false,
   onShare = () => {},
   onEdit = () => {},
-  onHide = () => {},
-  onReport = () => {},
+  onSave = () => {},
   onDelete = () => {},
   item,
 }) => {
@@ -26,40 +26,33 @@ const PostOptionsModal = ({
     >
       <Pressable style={styles.overlay} onPress={onClose}>
         <View style={styles.popup}>
-          {/* only the owner can edit the post */}
           {owner && (
             <SettingListItem
-              icon={"comment-edit"}
-              label={"Edit Post"}
+              icon={"pencil"}
+              label={"Edit Book"}
               onPress={onEdit}
             />
           )}
           <SettingListItem
             icon={"share"}
-            label={"Share Post"}
+            label={"Share Book"}
             onPress={onShare}
           />
-          <SettingListItem
-            chevron={false}
-            icon={"eye-off"}
-            label={"Hide Post"}
-            onPress={onHide}
-          />
-          {/* Report post: only others' posts */}
           {!owner && (
             <SettingListItem
-              icon={"flag"}
-              label={"Report Post"}
-              onPress={onReport}
+              icon={saved ? "bookmark" : "bookmark-outline"}
+              label={saved ? "Saved Book" : "Save Book"}
+              onPress={onSave}
+              chevron={false}
             />
           )}
 
           {/* Delete post: if it's in postDetails screen & is owner */}
-          {!homeScreen && owner && (
+          {owner && (
             <SettingListItem
               chevron={false}
               icon={"trash-can"}
-              label={"Delete Post"}
+              label={"Delete Book"}
               iconColor={activeColors.danger}
               labelColor={activeColors.danger}
               onPress={onDelete}
@@ -71,4 +64,4 @@ const PostOptionsModal = ({
   );
 };
 
-export default PostOptionsModal;
+export default BookOptionsModal;

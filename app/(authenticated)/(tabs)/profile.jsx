@@ -3,10 +3,10 @@ import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import { useCallback, useLayoutEffect, useState } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 
-import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
 import AppMaterialCommunityIcon from "../../../components/AppMaterialCommunityIcon";
 import AppText from "../../../components/AppText";
 import Avatar from "../../../components/Avatar";
+import HeaderRight from "../../../components/HeaderRight";
 import HorizontalPadding from "../../../components/HorizontalPadding";
 import PostGridItem from "../../../components/PostGridItem";
 import SafeScreen from "../../../components/SafeScreen";
@@ -14,8 +14,8 @@ import StatsItem from "../../../components/StatsItem";
 import { appTheme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
 import { hp, wp } from "../../../helpers/common";
-import { fetchPosts } from "../../../services/postService";
-import { fetchSavedPosts } from "../../../services/savedService";
+import { fetchBooks } from "../../../services/bookServices";
+import { fetchPosts, fetchSavedPosts } from "../../../services/postService";
 import { useTabsStyles } from "../../../styles/tabsStyles";
 
 // global variable for the number of posts (limit)
@@ -27,9 +27,11 @@ const Profile = () => {
   const router = useRouter();
   const navigation = useNavigation();
   const [posts, setPosts] = useState([]);
+  const [books, setBooks] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
   const [savedBooks, setSavedBookss] = useState([]);
   const [hasMorePosts, setHasMorePosts] = useState(true);
+  const [hasMoreBooks, setHasMoreBooks] = useState(true);
   const [activeTab, setActiveTab] = useState("posts");
 
   const getPosts = async () => {
@@ -39,6 +41,21 @@ const Profile = () => {
     if (res.success) {
       if (posts.length === res.data.length) setHasMorePosts(false);
       setPosts(res.data);
+    }
+  };
+
+  const getBooks = async () => {
+    if (!hasMoreBooks) return null;
+    limit += 9;
+    let res = await fetchBooks(limit, user.id);
+    if (res.success) {
+      if (books.length === res.data.length) setHasMoreBooks(false);
+      setBooks((prevBooks) => {
+        // Only replace if data actually changed
+        if (JSON.stringify(prevBooks) === JSON.stringify(res.data))
+          return prevBooks;
+        return res.data;
+      });
     }
   };
 
@@ -66,17 +83,18 @@ const Profile = () => {
     navigation.setOptions({
       headerTitle: user?.name ? user.name : "Profile",
       headerRight: () => (
-        <AppIoniconTouchable
-          name="menu"
+        <HeaderRight
+          icon2="menu"
           size={24}
           style={{ marginRight: 10 }}
-          onPress={() => router.push("/settings")}
+          onPress2={() => router.push("/settings")}
         />
       ),
     });
 
     // initial load for posts and savedPosts
     getPosts();
+    getBooks();
     getSavedPosts();
     getSavedBooks();
   }, [navigation, router]);
@@ -85,6 +103,7 @@ const Profile = () => {
   useFocusEffect(
     useCallback(() => {
       getPosts();
+      getBooks();
       getSavedPosts();
       getSavedBooks();
     }, [user?.id])
@@ -92,11 +111,11 @@ const Profile = () => {
 
   // Get correct content based on active tab
   const getCurrentData = () => {
-    return activeTab == "bookmarks"
+    return activeTab == "posts"
+      ? posts
+      : activeTab == "saved"
       ? savedPosts
-      : activeTab == "books"
-      ? getSavedBooks
-      : posts;
+      : getSavedBooks;
   };
 
   const currentData = getCurrentData();
@@ -135,7 +154,7 @@ const Profile = () => {
                 <StatsItem title="Followers" value="0" />
                 <StatsItem title="Following" value="0" />
                 <StatsItem title="Posts" value={posts.length} />
-                <StatsItem title="Books" value="0" />
+                <StatsItem title="Books" value={books.length} />
               </View>
             </HorizontalPadding>
 
@@ -205,7 +224,7 @@ const Profile = () => {
               No{" "}
               {activeTab === "posts"
                 ? "posts"
-                : activeTab === "bookmarks"
+                : activeTab === "saved"
                 ? "saved posts"
                 : "saved books"}{" "}
               yet

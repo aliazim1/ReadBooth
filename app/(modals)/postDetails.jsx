@@ -13,9 +13,9 @@ import { useAuth } from "../../contexts/AuthContext";
 import { supabase } from "../../lib/supabase";
 import {
   addNewCommentService,
+  fetchPostDetails,
   removePostComment,
-} from "../../services/commentService";
-import { fetchPostDetails } from "../../services/postService";
+} from "../../services/postService";
 import { getUserData } from "../../services/userService";
 import { modalsStyles } from "../../styles/modalsStyles";
 
@@ -97,7 +97,7 @@ const PostDetails = () => {
       headerRight: () => (
         <AppIoniconTouchable
           style={{ marginLeft: 3.5 }}
-          name="close"
+          name="chevron-down"
           onPress={() => router.back()}
         />
       ),

@@ -115,6 +115,14 @@ const MainLayout = () => {
           headerShown: true,
         }}
       />
+      <Stack.Screen
+        name="(modals)/editBook"
+        options={{
+          headerTitle: "Edit Book",
+          presentation: "modal",
+          headerShown: true,
+        }}
+      />
     </Stack>
   );
 };

@@ -6,9 +6,13 @@ import ParsedText from "react-native-parsed-text";
 
 import { hp, stripHtmlTags } from "../helpers/common";
 import { getSupabaseFileUrl } from "../services/imageService";
-import { createPostLike, removePostLike } from "../services/likeService";
-import { deletePost } from "../services/postService";
-import { createSavePost, removeSavePost } from "../services/savedService";
+import {
+  createPostLike,
+  createSavePost,
+  deletePost,
+  removePostLike,
+  removeSavePost,
+} from "../services/postService";
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppPressableIoniconIcon from "./AppPressableIoniconIcon";
 import AppText from "./AppText";
@@ -139,9 +143,7 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
 
   return (
     <View style={styles.container}>
-      {/* user's avatar, name, username, post created_at, 3-dots */}
       <View style={styles.postHeader}>
-        {/* avatar */}
         <View style={styles.headerFirstRow}>
           <Avatar size={hp(5)} uri={item?.user?.image} />
           <View>

@@ -25,7 +25,7 @@ import { addBook } from "../../../services/bookServices";
 import { getSupabaseFileUrl } from "../../../services/imageService";
 import { useScreensStyles } from ".././../../styles/screensStyles";
 
-const CreatePost = () => {
+const AddBook = () => {
   const { styles, activeColors } = useScreensStyles();
   const { user } = useAuth();
   const router = useRouter();
@@ -34,7 +34,7 @@ const CreatePost = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
-  const [link1, setLink1] = useState("");
+  const [link, setLink] = useState("");
 
   const onPick = async () => {
     try {
@@ -105,7 +105,7 @@ const CreatePost = () => {
       file,
       title: title,
       author: author,
-      link1: link1,
+      link: link,
       userId: user?.id,
     };
 
@@ -117,7 +117,7 @@ const CreatePost = () => {
       setFile(null);
       setTitle("");
       setAuthor("");
-      setLink1("");
+      setLink("");
       setShowSuccess(true); // show the animation
       setTimeout(() => {
         setShowSuccess(false);
@@ -171,10 +171,10 @@ const CreatePost = () => {
             />
             <CustomInput
               label={"Link"}
-              value={link1}
+              value={link}
               multiline={false}
               autoCorrect={true}
-              onChangeText={setLink1}
+              onChangeText={setLink}
               style={styles.textInputs}
               placeholder="Enter link to the book"
             />
@@ -237,4 +237,4 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default AddBook;

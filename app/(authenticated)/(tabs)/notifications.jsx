@@ -1,11 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useNavigation, useRouter } from "expo-router";
 import { useEffect, useLayoutEffect } from "react";
-import { Alert, Pressable, ScrollView, View } from "react-native";
+import { Alert, ScrollView, View } from "react-native";
 
 import AppText from "../../../components/AppText";
 import CustomAlert from "../../../components/CustomAlert";
+import HeaderRight from "../../../components/HeaderRight";
 import NotificationItem from "../../../components/NotificationItem";
 import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -52,9 +52,11 @@ const Notifications = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Pressable
+        <HeaderRight
+          icon2="filter"
+          size={24}
           style={{ marginRight: 10 }}
-          onPress={() =>
+          onPress2={() =>
             notifications.length === 0
               ? null
               : CustomAlert({
@@ -72,9 +74,7 @@ const Notifications = () => {
                   },
                 })
           }
-        >
-          <MaterialIcons name="clear-all" size={24} color={activeColors.text} />
-        </Pressable>
+        />
       ),
     });
   }, [notifications, navigation, router]);

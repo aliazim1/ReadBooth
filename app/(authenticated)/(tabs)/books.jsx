@@ -1,12 +1,12 @@
-import { Feather } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import { useCallback, useLayoutEffect, useState } from "react";
-import { Alert, FlatList, Pressable, View } from "react-native";
+import { Alert, FlatList, View } from "react-native";
 
 import AppMaterialCommunityIcon from "../../../components/AppMaterialCommunityIcon";
 import AppText from "../../../components/AppText";
 import BookItem from "../../../components/BookItem";
 import CustomAlert from "../../../components/CustomAlert";
+import HeaderRight from "../../../components/HeaderRight";
 import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
 import { deleteBook, fetchBooks } from "../../../services/bookServices";
@@ -23,14 +23,18 @@ const Books = () => {
   const [books, setBooks] = useState([]);
   const [hasMoreBooks, setHasMoreBooks] = useState(true);
 
-  // function: fetching the posts
   const getBooks = async () => {
     if (!hasMoreBooks) return null;
     limit += 9;
     let res = await fetchBooks(limit, user.id);
     if (res.success) {
       if (books.length === res.data.length) setHasMoreBooks(false);
-      setBooks(res.data);
+      setBooks((prevBooks) => {
+        // Only replace if data actually changed
+        if (JSON.stringify(prevBooks) === JSON.stringify(res.data))
+          return prevBooks;
+        return res.data;
+      });
     }
   };
 
@@ -39,30 +43,11 @@ const Books = () => {
     const res = await deleteBook(item?.id);
     if (res.success) {
       setBooks((prevBooks) => prevBooks.filter((b) => b.id !== item.id));
-      getBooks(); // Refresh quietly
+      getBooks();
     } else {
       Alert.alert("Book", res.msg || "Failed to delete book");
     }
   };
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTitle: "Book Shelf",
-      headerRight: () => (
-        <View style={styles.headerIconsContainer}>
-          <Pressable onPress={() => {}}>
-            <Feather name="search" size={24} color={activeColors.text} />
-          </Pressable>
-          <Pressable onPress={() => router.push("/addBook")}>
-            <AppMaterialCommunityIcon name="square-edit-outline" />
-          </Pressable>
-        </View>
-      ),
-    });
-
-    // initial load for books
-    getBooks();
-  }, [navigation, router]);
 
   // refresh when navigating back
   useFocusEffect(
@@ -70,6 +55,24 @@ const Books = () => {
       getBooks();
     }, [user?.id])
   );
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: "Book Shelf",
+      headerRight: () => (
+        <HeaderRight
+          size={24}
+          icon1="search-outline"
+          icon2="create-outline"
+          style={{ marginRight: 10 }}
+          onPress2={() => router.push("/addBook")}
+        />
+      ),
+    });
+
+    // initial load for books
+    getBooks();
+  }, [navigation, router]);
 
   return (
     <SafeScreen>
@@ -79,9 +82,11 @@ const Books = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainerStyle}
           keyExtractor={(item) => item.id.toString()}
+          extraData={books}
           renderItem={({ item }) => (
             <BookItem
               item={item}
+              router={router}
               currentUser={user}
               onDeleteBook={() => {
                 CustomAlert({

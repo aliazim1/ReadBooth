@@ -83,6 +83,33 @@ export const fetchBooks = async (limit = 9, userId) => {
 };
 
 //
+// function to edit the post
+export const editBook = async ({ id, title, author, link }) => {
+  try {
+    const { data, error } = await supabase
+      .from("books")
+      .update({ title, author, link })
+      .eq("id", Number(id)) // ensure it's a number if DB column is int
+      .select()
+      .maybeSingle(); // use maybeSingle to avoid crash if no rows
+
+    if (error) {
+      console.log("editBook: ", error);
+      return { success: false, msg: "Could not edit the book details" };
+    }
+
+    if (!data) {
+      return { success: false, msg: "No book found with this id" };
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.log("editBook: ", error);
+    return { success: false, msg: "Could not edit the book details" };
+  }
+};
+
+//
 // function to delete the book
 export const deleteBook = async (bookId) => {
   try {
@@ -96,5 +123,47 @@ export const deleteBook = async (bookId) => {
   } catch (error) {
     console.log("deleteBook error: ", error);
     return { success: false, msg: "Could not delete the book." };
+  }
+};
+
+//
+// function to save the post
+export const createSavePost = async (saveBook) => {
+  try {
+    const { data, error } = await supabase
+      .from("savedBooks")
+      .insert(saveBook)
+      .select()
+      .single();
+
+    if (error) {
+      console.log("saveBook error: ", error);
+      return { success: false, msg: "Could save the book." };
+    }
+    return { success: true, data: data };
+  } catch (error) {
+    console.log("saveBook error: ", error);
+    return { success: false, msg: "Could save the book." };
+  }
+};
+
+//
+// function to unsave the book
+export const removeSaveBook = async (bookId, userId) => {
+  try {
+    const { error } = await supabase
+      .from("savedBooks")
+      .delete()
+      .eq("userId", userId)
+      .eq("bookId", bookId);
+
+    if (error) {
+      console.log("unsaveBook error: ", error);
+      return { success: false, msg: "Could not unsave the book." };
+    }
+    return { success: true };
+  } catch (error) {
+    console.log("unsaveBook error: ", error);
+    return { success: false, msg: "Could not unsave the book." };
   }
 };

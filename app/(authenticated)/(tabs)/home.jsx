@@ -1,10 +1,9 @@
-import Feather from "@expo/vector-icons/Feather";
 import { useNavigation, useRouter } from "expo-router";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, Pressable, View } from "react-native";
+import { FlatList, View } from "react-native";
 
-import AppMaterialCommunityIcon from "../../../components/AppMaterialCommunityIcon";
 import AppText from "../../../components/AppText";
+import HeaderRight from "../../../components/HeaderRight";
 import Loading from "../../../components/Loading";
 import PostCard from "../../../components/PostCard";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -95,14 +94,13 @@ const Home = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <View style={styles.headerIconsContainer}>
-          <Pressable onPress={() => {}}>
-            <Feather name="search" size={24} color={activeColors.text} />
-          </Pressable>
-          <Pressable onPress={() => router.push("/createPost")}>
-            <AppMaterialCommunityIcon name="square-edit-outline" />
-          </Pressable>
-        </View>
+        <HeaderRight
+          size={24}
+          icon1="search-outline"
+          icon2="create-outline"
+          style={{ marginRight: 10 }}
+          onPress2={() => router.push("/createPost")}
+        />
       ),
     });
   }, [navigation, router, activeColors]);

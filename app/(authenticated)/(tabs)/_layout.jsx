@@ -1,6 +1,5 @@
 import { Ionicons, MaterialIcons, Octicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { View } from "react-native";
 
 import AppText from "../../../components/AppText";
 import { useNotifications } from "../../../contexts/NotificationsContext";
@@ -15,12 +14,19 @@ export default function TabLayout() {
       screenOptions={{
         tabBarShowLabel: false,
         headerShadowVisible: false,
-        tabBarStyle: styles.tabBarStyle,
-        headerStyle: styles.headerStyle,
-        tabBarBadgeStyle: styles.tabBarBadge,
         headerTintColor: activeColors.text,
         tabBarActiveTintColor: activeColors.text,
         tabBarInactiveTintColor: activeColors.mediumGrey,
+        tabBarStyle: {
+          backgroundColor: activeColors.background,
+          height: 80,
+          paddingTop: 10,
+          alignItems: "center",
+          justifyContent: "center",
+        },
+        headerStyle: {
+          backgroundColor: activeColors.background,
+        },
       }}
     >
       <Tabs.Screen
@@ -32,22 +38,11 @@ export default function TabLayout() {
             <AppText style={styles.homeHeaderTItle}>ReadBooth</AppText>
           ),
           tabBarIcon: ({ focused }) => (
-            <View
-              style={[
-                styles.tabBarIcons,
-                {
-                  backgroundColor: focused
-                    ? activeColors.primary
-                    : "transparent",
-                },
-              ]}
-            >
-              <Octicons
-                name="home-fill"
-                size={18}
-                color={focused ? activeColors.text : activeColors.mediumGrey}
-              />
-            </View>
+            <Octicons
+              name="home-fill"
+              size={28}
+              color={focused ? activeColors.text : activeColors.mediumGrey}
+            />
           ),
         }}
       />
@@ -57,22 +52,11 @@ export default function TabLayout() {
         options={{
           title: "Book Shelf",
           tabBarIcon: ({ focused }) => (
-            <View
-              style={[
-                styles.tabBarIcons,
-                {
-                  backgroundColor: focused
-                    ? activeColors.primary
-                    : "transparent",
-                },
-              ]}
-            >
-              <MaterialIcons
-                name="menu-book"
-                size={20}
-                color={focused ? activeColors.text : activeColors.mediumGrey}
-              />
-            </View>
+            <MaterialIcons
+              name="menu-book"
+              size={28}
+              color={focused ? activeColors.text : activeColors.mediumGrey}
+            />
           ),
         }}
       />
@@ -84,22 +68,11 @@ export default function TabLayout() {
           tabBarBadge: badgeCount > 0 ? badgeCount : undefined,
           // tabBarBadgeStyle: styles.tabBarBadge,
           tabBarIcon: ({ focused }) => (
-            <View
-              style={[
-                styles.tabBarIcons,
-                {
-                  backgroundColor: focused
-                    ? activeColors.primary
-                    : "transparent",
-                },
-              ]}
-            >
-              <Ionicons
-                name={"notifications"}
-                size={20}
-                color={focused ? activeColors.text : activeColors.mediumGrey}
-              />
-            </View>
+            <Ionicons
+              name={"notifications"}
+              size={28}
+              color={focused ? activeColors.text : activeColors.mediumGrey}
+            />
           ),
         }}
       />
@@ -109,22 +82,11 @@ export default function TabLayout() {
           title: "Profile",
           headerTitle: "",
           tabBarIcon: ({ focused }) => (
-            <View
-              style={[
-                styles.tabBarIcons,
-                {
-                  backgroundColor: focused
-                    ? activeColors.primary
-                    : "transparent",
-                },
-              ]}
-            >
-              <Ionicons
-                name={"person"}
-                size={20}
-                color={focused ? activeColors.text : activeColors.mediumGrey}
-              />
-            </View>
+            <Ionicons
+              name={"person"}
+              size={28}
+              color={focused ? activeColors.text : activeColors.mediumGrey}
+            />
           ),
         }}
       />
@@ -133,19 +95,16 @@ export default function TabLayout() {
 }
 
 {
-  /* <Tabs
-      initialRouteName="home"
-      screenOptions={{
-        headerShadowVisible: false,
-        headerTintColor: theme.colors.text,
-        tabBarActiveTintColor: theme.colors.text,
-        tabBarInactiveTintColor: theme.colors.mediumGrey,
-        tabBarStyle: {
-          backgroundColor: theme.colors.background,
-        },
-        headerStyle: {
-          backgroundColor: theme.colors.background,
-        },
-      }}
-    > */
+  /* 
+  // screenOptions={{
+      //   tabBarShowLabel: false,
+      //   headerShadowVisible: false,
+      //   tabBarStyle: styles.tabBarStyle,
+      //   headerStyle: styles.headerStyle,
+      //   tabBarBadgeStyle: styles.tabBarBadge,
+      //   headerTintColor: activeColors.text,
+      //   tabBarActiveTintColor: activeColors.text,
+      //   tabBarInactiveTintColor: activeColors.mediumGrey,
+      // }}
+  */
 }

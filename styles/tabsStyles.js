@@ -62,7 +62,7 @@ export const useTabsStyles = () => {
         },
         homeContentContainerStyle: {
           paddingTop: 20,
-          paddingBottom: hp(10),
+          paddingBottom: hp(2),
         },
         ItemSeparatorComponent: {
           height: 1,
