@@ -5,7 +5,7 @@ import AppText from "../../../components/AppText";
 import { useNotifications } from "../../../contexts/NotificationsContext";
 import { useTabsStyles } from "../../../styles/tabsStyles";
 
-export default function TabLayout() {
+const TabLayout = () => {
   const { styles, activeColors } = useTabsStyles();
   const { badgeCount } = useNotifications();
 
@@ -14,19 +14,11 @@ export default function TabLayout() {
       screenOptions={{
         tabBarShowLabel: false,
         headerShadowVisible: false,
+        headerStyle: styles.headerStyle,
+        tabBarStyle: styles.tabBarStyles,
         headerTintColor: activeColors.text,
         tabBarActiveTintColor: activeColors.text,
         tabBarInactiveTintColor: activeColors.mediumGrey,
-        tabBarStyle: {
-          backgroundColor: activeColors.background,
-          height: 80,
-          paddingTop: 10,
-          alignItems: "center",
-          justifyContent: "center",
-        },
-        headerStyle: {
-          backgroundColor: activeColors.background,
-        },
       }}
     >
       <Tabs.Screen
@@ -50,7 +42,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="books"
         options={{
-          title: "Book Shelf",
+          title: "Books",
+          headerTitle: "Book Shelf",
           tabBarIcon: ({ focused }) => (
             <MaterialIcons
               name="menu-book"
@@ -92,8 +85,9 @@ export default function TabLayout() {
       />
     </Tabs>
   );
-}
+};
 
+export default TabLayout;
 {
   /* 
   // screenOptions={{

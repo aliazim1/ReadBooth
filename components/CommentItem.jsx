@@ -3,13 +3,13 @@ import { View } from "react-native";
 
 import CustomAlert from "../components/CustomAlert";
 import { useComponentsStyles } from "../styles/componentsStyles";
-import AppIoniconTouchable from "./AppIoniconTouchable";
 import AppText from "./AppText";
 import Avatar from "./Avatar";
+import HeaderRight from "./HeaderRight";
 
 const CommentItem = ({
   item,
-  highlight = true,
+  highlight = false,
   canDelete = false,
   onDelete = () => {},
 }) => {
@@ -27,9 +27,7 @@ const CommentItem = ({
   };
 
   return (
-    <View
-    // style={highlight && styles.highlight}
-    >
+    <View>
       <View style={[styles.commentHeader]}>
         <View style={styles.imgNameTime}>
           <Avatar uri={item?.user?.image} size={40} />
@@ -46,23 +44,12 @@ const CommentItem = ({
           </View>
         </View>
 
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 30,
-          }}
-        >
-          <AppIoniconTouchable name="heart-outline" size={16} />
-          {/* delete/more icon  */}
-          {canDelete && (
-            <AppIoniconTouchable
-              name="trash"
-              size={16}
-              onPress={handleDelete}
-            />
-          )}
-        </View>
+        <HeaderRight
+          icon1="heart-outline"
+          icon2={canDelete ? "trash" : ""}
+          size={16}
+          onPress2={handleDelete}
+        />
       </View>
       {/* comment body text */}
       {
@@ -78,7 +65,6 @@ const CommentItem = ({
           {item?.text}
         </AppText>
       }
-      {/* TODO:  */}
     </View>
   );
 };

@@ -13,25 +13,34 @@ export const useTabsStyles = () => {
     () =>
       StyleSheet.create({
         // tabs _layout styles
-        tabBarStyle: {
-          bottom: 20,
-          height: 63,
+
+        // THIS IS FOR FLOATING TAB BAR...
+        // tabBarStyle: {
+        //   bottom: 20,
+        //   height: 63,
+        //   paddingTop: 10,
+        //   borderWidth: 1,
+        //   borderRadius: 50,
+        //   borderTopWidth: 1,
+        //   position: "absolute",
+        //   alignItems: "center",
+        //   borderColor: activeColors.tabBarBorder,
+        //   borderTopColor: activeColors.tabBarBorder,
+        //   justifyContent: "center",
+        //   marginHorizontal: wp(14),
+        //   backgroundColor: activeColors.background,
+        //   elevation: 5,
+        //   shadowRadius: 3,
+        //   shadowOpacity: 0.7,
+        //   shadowOffset: { width: 0, height: 1 },
+        //   shadowColor: "hsla(0, 0.00%, 0.00%, 0.30)",
+        // },
+        tabBarStyles: {
+          height: 80,
           paddingTop: 10,
-          borderWidth: 1,
-          borderRadius: 50,
-          borderTopWidth: 1,
-          position: "absolute",
           alignItems: "center",
-          borderColor: activeColors.tabBarBorder,
-          borderTopColor: activeColors.tabBarBorder,
           justifyContent: "center",
-          marginHorizontal: wp(14),
           backgroundColor: activeColors.background,
-          elevation: 5,
-          shadowRadius: 3,
-          shadowOpacity: 0.7,
-          shadowOffset: { width: 0, height: 1 },
-          shadowColor: "hsla(0, 0.00%, 0.00%, 0.30)",
         },
         headerStyle: {
           backgroundColor: activeColors.background,
@@ -79,6 +88,13 @@ export const useTabsStyles = () => {
         },
 
         // books styles
+        tabBarIndicatorStyle: {
+          width: 35,
+          marginLeft: 55,
+          alignSelf: "center",
+          justifyContent: "center",
+          backgroundColor: activeColors.primary,
+        },
         headerIconsContainer: {
           gap: 12,
           marginRight: 10,

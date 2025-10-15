@@ -139,7 +139,7 @@ export const useComponentsStyles = () => {
           flex: 1,
           paddingHorizontal: wp(4),
           paddingTop: 5,
-          alignItems: "center",
+          alignItems: "flex-start",
           flexDirection: "row",
           justifyContent: "space-between",
         },

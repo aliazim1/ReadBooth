@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { FlatList, View } from "react-native";
 
 import AppText from "../../../components/AppText";
-import HeaderRight from "../../../components/HeaderRight";
+import HeaderIcons from "../../../components/HeaderIcons";
 import Loading from "../../../components/Loading";
 import PostCard from "../../../components/PostCard";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -94,7 +94,7 @@ const Home = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <HeaderRight
+        <HeaderIcons
           size={24}
           icon1="search-outline"
           icon2="create-outline"

@@ -69,16 +69,6 @@ const Profile = () => {
     }
   };
 
-  const getSavedBooks = async () => {
-    if (!hasMorePosts) return null;
-    limit += 9;
-    let res = await fetchSavedPosts(limit, user.id);
-    if (res.success) {
-      if (savedPosts.length === res.data.length) setHasMorePosts(false);
-      setSavedPosts(res.data);
-    }
-  };
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: user?.name ? user.name : "Profile",
@@ -96,7 +86,6 @@ const Profile = () => {
     getPosts();
     getBooks();
     getSavedPosts();
-    getSavedBooks();
   }, [navigation, router]);
 
   // refresh when navigating back
@@ -105,17 +94,12 @@ const Profile = () => {
       getPosts();
       getBooks();
       getSavedPosts();
-      getSavedBooks();
     }, [user?.id])
   );
 
   // Get correct content based on active tab
   const getCurrentData = () => {
-    return activeTab == "posts"
-      ? posts
-      : activeTab == "saved"
-      ? savedPosts
-      : getSavedBooks;
+    return activeTab == "posts" ? posts : savedPosts;
   };
 
   const currentData = getCurrentData();
@@ -160,17 +144,15 @@ const Profile = () => {
 
             {/* Tabs under stats */}
             <View style={styles.tabsContainer}>
-              {["posts", "saved", "books"].map((tab) => {
+              {["posts", "bookmarks"].map((tab) => {
                 const icons = {
                   posts: "grid-outline",
-                  saved: "bookmark-outline",
-                  books: "bookmark-outline",
+                  bookmarks: "bookmark-outline",
                 };
 
                 const activeIcons = {
                   posts: "grid",
-                  saved: "bookmark",
-                  books: "bookmark",
+                  bookmarks: "bookmark",
                 };
 
                 const iconName =

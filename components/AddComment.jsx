@@ -15,7 +15,7 @@ const AddComment = ({ comment, setComment, loadingSend, onNewComment }) => {
         numberOfLines={5}
         autoCorrect={true}
         onChangeText={setComment}
-        placeholder="Type a comment..."
+        placeholder="Leave a comment..."
       />
       {loadingSend ? (
         <View style={styles.sendBtn}>

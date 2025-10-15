@@ -1,10 +1,10 @@
 import { Image } from "expo-image";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { Alert, Linking, Pressable, Share, Text, View } from "react-native";
+import { Alert, Linking, Pressable, Share, View } from "react-native";
 import ParsedText from "react-native-parsed-text";
 
-import { hp, stripHtmlTags } from "../helpers/common";
+import { stripHtmlTags } from "../helpers/common";
 import { getSupabaseFileUrl } from "../services/imageService";
 import {
   createPostLike,
@@ -15,8 +15,6 @@ import {
 } from "../services/postService";
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppPressableIoniconIcon from "./AppPressableIoniconIcon";
-import AppText from "./AppText";
-import Avatar from "./Avatar";
 import CustomAlert from "./CustomAlert";
 import PostOptionsModal from "./PostOptionasModal";
 
@@ -143,6 +141,11 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
 
   return (
     <View style={styles.container}>
+      {/* <PostHeader
+        item={item}
+        createdAt={createdAt}
+        onPress={() => setMenuVisible(true)}
+      /> */}
       <View style={styles.postHeader}>
         <View style={styles.headerFirstRow}>
           <Avatar size={hp(5)} uri={item?.user?.image} />

@@ -123,6 +123,14 @@ const MainLayout = () => {
           headerShown: true,
         }}
       />
+      {/* <Stack.Screen
+        name="(modals)/userDetails"
+        options={{
+          headerTitle: "User Details", // change it to the user's full name or username
+          presentation: "modal",
+          headerShown: true,
+        }}
+      /> */}
     </Stack>
   );
 };
