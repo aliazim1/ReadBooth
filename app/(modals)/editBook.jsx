@@ -12,7 +12,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import AppButton from "../../components/AppButton";
 import Avatar from "../../components/Avatar";
 import CustomInput from "../../components/CustomInput";
-import HeaderRight from "../../components/HeaderRight";
+import HeaderIcons from "../../components/HeaderIcons";
 import SafeScreen from "../../components/SafeScreen";
 import { useAuth } from "../../contexts/AuthContext";
 import { hp, wp } from "../../helpers/common";
@@ -70,7 +70,7 @@ const EditBook = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <HeaderRight onPress2={() => router.back()} />,
+      headerRight: () => <HeaderIcons onPress2={() => router.back()} />,
     });
   }, [navigation, router]);
 

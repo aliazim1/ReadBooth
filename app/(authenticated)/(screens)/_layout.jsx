@@ -30,6 +30,13 @@ const ScreensLayout = () => {
         }}
       />
       <Stack.Screen
+        name="userDetails"
+        options={{
+          title: "",
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
         name="addBook"
         options={{
           headerTitle: "Add New Book",

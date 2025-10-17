@@ -31,7 +31,7 @@ export const authStyles = () => {
           gap: 20,
         },
         btnTitle: {
-          color: activeColors.text,
+          color: activeColors.white,
           fontWeight: appTheme.fonts.bold,
         },
         signinBtn: {

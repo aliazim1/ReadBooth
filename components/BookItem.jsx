@@ -76,9 +76,9 @@ const BookItem = ({ item, currentUser, onDeleteBook, router }) => {
         style={styles.bookDeleteIcon}
       >
         <Ionicons
-          name={"ellipsis-horizontal"}
           size={16}
-          color={activeColors.white}
+          color={activeColors.text}
+          name={"ellipsis-horizontal"}
         />
       </Pressable>
       <BookOptionsModal

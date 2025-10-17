@@ -7,7 +7,6 @@ import {
   Alert,
   Keyboard,
   StyleSheet,
-  Text,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -16,11 +15,11 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import AppButton from "../../../components/AppButton";
 import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
 import AppText from "../../../components/AppText";
-import Avatar from "../../../components/Avatar";
 import CustomInput from "../../../components/CustomInput";
+import PostHeader from "../../../components/PostHeader";
 import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
-import { hp, wp } from "../../../helpers/common";
+import { wp } from "../../../helpers/common";
 import { getSupabaseFileUrl } from "../../../services/imageService";
 import { createPost } from "../../../services/postService";
 import { useScreensStyles } from ".././../../styles/screensStyles";
@@ -139,13 +138,12 @@ const CreatePost = () => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View>
             {/* the profile details  */}
-            <View style={[styles.postHeader, { marginBottom: 20 }]}>
-              <Avatar uri={user?.image} size={hp(6.5)} />
-              <View>
-                <Text style={styles.name}>{user?.name}</Text>
-                <Text style={styles.publicText}>Public</Text>
-              </View>
-            </View>
+
+            <PostHeader
+              item={user}
+              forPostCard={false}
+              style={{ paddingHorizontal: 0, marginBottom: 20 }}
+            />
 
             {/* the text-field with actions */}
             <CustomInput

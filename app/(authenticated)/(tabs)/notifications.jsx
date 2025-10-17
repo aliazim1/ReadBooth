@@ -5,7 +5,7 @@ import { Alert, ScrollView, View } from "react-native";
 
 import AppText from "../../../components/AppText";
 import CustomAlert from "../../../components/CustomAlert";
-import HeaderRight from "../../../components/HeaderRight";
+import HeaderIcons from "../../../components/HeaderIcons";
 import NotificationItem from "../../../components/NotificationItem";
 import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -52,7 +52,7 @@ const Notifications = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <HeaderRight
+        <HeaderIcons
           icon2="filter"
           size={24}
           style={{ marginRight: 10 }}

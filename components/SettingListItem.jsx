@@ -2,7 +2,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { memo } from "react";
 import { Switch, TouchableOpacity, View } from "react-native";
 
-import { appTheme } from "../constants/theme";
 import { hp } from "../helpers/common";
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppText from "./AppText";
@@ -38,7 +37,6 @@ const SettingListItem = ({
             style={{
               color: labelColor || activeColors.text,
               fontSize: hp(1.8),
-              fontWeight: appTheme.fonts.medium,
             }}
           >
             {label}
@@ -75,7 +73,6 @@ const SettingListItem = ({
           style={{
             color: labelColor || activeColors.text,
             fontSize: hp(1.8),
-            fontWeight: appTheme.fonts.medium,
           }}
         >
           {label}

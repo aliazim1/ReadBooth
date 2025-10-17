@@ -27,7 +27,7 @@ const TabLayout = () => {
           title: "Home",
           headerTitle: "",
           headerLeft: () => (
-            <AppText style={styles.homeHeaderTItle}>ReadBooth</AppText>
+            <AppText style={styles.homeHeaderTitle}>ReadBooth</AppText>
           ),
           tabBarIcon: ({ focused }) => (
             <Octicons
@@ -43,7 +43,10 @@ const TabLayout = () => {
         name="books"
         options={{
           title: "Books",
-          headerTitle: "Book Shelf",
+          headerTitle: "",
+          headerLeft: () => (
+            <AppText style={styles.nbpHeaderTitle}>Book Shelf</AppText>
+          ),
           tabBarIcon: ({ focused }) => (
             <MaterialIcons
               name="menu-book"
@@ -58,8 +61,12 @@ const TabLayout = () => {
         name="notifications"
         options={{
           title: "Notifications",
+          headerTitle: "",
           tabBarBadge: badgeCount > 0 ? badgeCount : undefined,
           // tabBarBadgeStyle: styles.tabBarBadge,
+          headerLeft: () => (
+            <AppText style={styles.nbpHeaderTitle}>Notifications</AppText>
+          ),
           tabBarIcon: ({ focused }) => (
             <Ionicons
               name={"notifications"}

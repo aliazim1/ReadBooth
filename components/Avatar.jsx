@@ -4,7 +4,7 @@ import { View } from "react-native";
 import { getUserImageSrc } from "../services/imageService";
 import { useComponentsStyles } from "../styles/componentsStyles";
 
-const Avatar = ({ uri, size = 90, rounded = 50, style = {} }) => {
+const Avatar = ({ uri, size = 70, rounded = 50, style = {} }) => {
   const { styles } = useComponentsStyles();
   return (
     <View

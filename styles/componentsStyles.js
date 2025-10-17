@@ -32,6 +32,7 @@ export const useComponentsStyles = () => {
           borderRadius: appTheme.radius.xl * 20,
           backgroundColor: activeColors.primary,
         },
+
         shadowBtn: {
           elevation: 5,
           shadowRadius: 3,
@@ -39,8 +40,10 @@ export const useComponentsStyles = () => {
           shadowOffset: { width: 0, height: 1 },
           shadowColor: "hsla(0, 0.00%, 0.00%, 0.30)",
         },
+
         text: {
           fontSize: hp(2),
+          color: activeColors.white,
           fontWeight: appTheme.fonts.bold,
         },
         image: {
@@ -49,7 +52,13 @@ export const useComponentsStyles = () => {
           marginRight: 10,
           alignSelf: "center",
         },
-
+        followButton: {
+          marginTop: 10,
+          paddingVertical: 10,
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: appTheme.radius.xxl,
+        },
         //
         // AppText styles
         appText: {
@@ -131,6 +140,7 @@ export const useComponentsStyles = () => {
         },
         sendbtnText: {
           fontWeight: "600",
+          color: activeColors.white,
         },
 
         //
@@ -230,7 +240,7 @@ export const useComponentsStyles = () => {
         postHeader: {
           flexDirection: "row",
           alignItems: "flex-start",
-          paddingHorizontal: wp(3),
+          paddingHorizontal: wp(4),
           justifyContent: "space-between",
         },
 

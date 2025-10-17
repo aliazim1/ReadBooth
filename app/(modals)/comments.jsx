@@ -6,7 +6,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import AddComment from "../../components/AddComment";
 import AppText from "../../components/AppText";
 import CommentItem from "../../components/CommentItem";
-import HeaderRight from "../../components/HeaderRight";
+import HeaderIcons from "../../components/HeaderIcons";
 import Loading from "../../components/Loading";
 import { useAuth } from "../../contexts/AuthContext";
 import { supabase } from "../../lib/supabase";
@@ -92,7 +92,9 @@ const Comments = () => {
   // used for header + icons
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <HeaderRight onPress2={() => router.back()} />,
+      headerRight: () => (
+        <HeaderIcons onPress2={() => router.back()} style={{ marginLeft: 4 }} />
+      ),
     });
   }, [navigation, router, post]);
 

@@ -1,7 +1,8 @@
 import { useNavigation, useRouter } from "expo-router";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, View } from "react-native";
+import { FlatList, Pressable, View } from "react-native";
 
+import AppMaterialCommunityIcon from "../../../components/AppMaterialCommunityIcon";
 import AppText from "../../../components/AppText";
 import HeaderIcons from "../../../components/HeaderIcons";
 import Loading from "../../../components/Loading";
@@ -94,13 +95,12 @@ const Home = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <HeaderIcons
-          size={24}
-          icon1="search-outline"
-          icon2="create-outline"
-          style={{ marginRight: 10 }}
-          onPress2={() => router.push("/createPost")}
-        />
+        <View style={styles.headerIcons}>
+          <HeaderIcons size={24} icon2="search" />
+          <Pressable onPress={() => router.push("/addBook")}>
+            <AppMaterialCommunityIcon name="square-edit-outline" />
+          </Pressable>
+        </View>
       ),
     });
   }, [navigation, router, activeColors]);

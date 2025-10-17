@@ -13,22 +13,6 @@ export const useScreensStyles = () => {
     () =>
       StyleSheet.create({
         // add book styles
-        postHeader: {
-          gap: 12,
-          paddingTop: hp(1.5),
-          flexDirection: "row",
-          alignItems: "center",
-        },
-        name: {
-          fontSize: hp(2.2),
-          color: activeColors.text,
-          fontWeight: appTheme.fonts.semibold,
-        },
-        publicText: {
-          fontSize: hp(1.5),
-          color: activeColors.mediumGrey,
-          fontWeight: appTheme.fonts.medium,
-        },
         textInputs: {
           paddingVertical: 14,
           marginVertical: hp(0.5),

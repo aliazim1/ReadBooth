@@ -1,7 +1,7 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import { useCallback, useLayoutEffect, useState } from "react";
-import { Alert, FlatList, View } from "react-native";
+import { Alert, FlatList, Pressable, View } from "react-native";
 
 import AppMaterialCommunityIcon from "../../../components/AppMaterialCommunityIcon";
 import AppText from "../../../components/AppText";
@@ -12,7 +12,6 @@ import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
 import { deleteBook, fetchBooks } from "../../../services/bookServices";
 import { useTabsStyles } from "../../../styles/tabsStyles";
-
 const Tab = createMaterialTopTabNavigator();
 
 // global variable for the number of posts (limit)
@@ -110,22 +109,13 @@ const Books = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: () => (
-        <HeaderIcons
-          icon2=""
-          size={24}
-          icon1="search-outline"
-          style={{ marginLeft: 12 }}
-          onPress1={() => {}}
-        />
-      ),
       headerRight: () => (
-        <HeaderIcons
-          size={24}
-          icon2="create-outline"
-          style={{ marginRight: 10 }}
-          onPress2={() => router.push("/addBook")}
-        />
+        <View style={styles.headerIcons}>
+          <HeaderIcons size={24} icon2="search" />
+          <Pressable onPress={() => router.push("/addBook")}>
+            <AppMaterialCommunityIcon name="square-edit-outline" />
+          </Pressable>
+        </View>
       ),
     });
   }, [navigation, router]);
@@ -147,7 +137,7 @@ const Books = () => {
       <Tab.Screen name="My Books">
         {() => <BookList user={user} filterType="saved" />}
       </Tab.Screen>
-      <Tab.Screen name="Saved Books">
+      <Tab.Screen name="Saved">
         {() => <BookList user={user} filterType="saved" />}
       </Tab.Screen>
     </Tab.Navigator>

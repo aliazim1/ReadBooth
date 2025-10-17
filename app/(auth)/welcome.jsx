@@ -21,16 +21,16 @@ const Welcome = () => {
       </View>
       <View style={styles.footer}>
         <AppButton
-          title="Sign Up"
-          textStyle={styles.btnTitle}
-          onPress={() => router.replace("/signup")}
-        />
-        <AppButton
           title="Sign In"
           hasShadow={true}
           containerStyle={styles.signinBtn}
           textStyle={[styles.btnTitle, { color: activeColors.black }]}
           onPress={() => router.replace("/login")}
+        />
+        <AppButton
+          title="Sign Up"
+          textStyle={styles.btnTitle}
+          onPress={() => router.replace("/signup")}
         />
       </View>
     </View>

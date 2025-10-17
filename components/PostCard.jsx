@@ -16,7 +16,8 @@ import {
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppPressableIoniconIcon from "./AppPressableIoniconIcon";
 import CustomAlert from "./CustomAlert";
-import PostOptionsModal from "./PostOptionasModal";
+import OptionsModal from "./OptionsModal";
+import PostHeader from "./PostHeader";
 
 const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
   const { styles, activeColors } = useComponentsStyles();
@@ -141,30 +142,19 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
 
   return (
     <View style={styles.container}>
-      {/* <PostHeader
+      <PostHeader
         item={item}
         createdAt={createdAt}
+        onNavigate={() => {
+          router.push({
+            pathname: "userDetails",
+            params: {
+              userId: item?.user?.id,
+            },
+          });
+        }}
         onPress={() => setMenuVisible(true)}
-      /> */}
-      <View style={styles.postHeader}>
-        <View style={styles.headerFirstRow}>
-          <Avatar size={hp(5)} uri={item?.user?.image} />
-          <View>
-            <Text style={styles.name}>{item?.user?.name}</Text>
-            <AppText style={styles.username}>@{item?.user?.username}</AppText>
-          </View>
-          <View style={styles.createdAtContainer}>
-            <AppText style={styles.createdAt}>{createdAt}</AppText>
-          </View>
-        </View>
-        <AppPressableIoniconIcon
-          onPress={() => setMenuVisible(true)}
-          name={"ellipsis-horizontal"}
-          size={hp(1.8)}
-          showLabel={false}
-          width={20}
-        />
-      </View>
+      />
 
       {/* container: post's caption */}
       {item?.body && (
@@ -221,7 +211,7 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
           name={saved ? "bookmark" : "bookmark-outline"}
         />
       </View>
-      <PostOptionsModal
+      <OptionsModal
         visible={menuVisible}
         homeScreen={homeScreen}
         owner={item?.user?.id == currentUser?.id}

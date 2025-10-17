@@ -5,7 +5,7 @@ import CustomAlert from "../components/CustomAlert";
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppText from "./AppText";
 import Avatar from "./Avatar";
-import HeaderRight from "./HeaderRight";
+import HeaderIcons from "./HeaderIcons";
 
 const CommentItem = ({
   item,
@@ -44,7 +44,7 @@ const CommentItem = ({
           </View>
         </View>
 
-        <HeaderRight
+        <HeaderIcons
           icon1="heart-outline"
           icon2={canDelete ? "trash" : ""}
           size={16}

@@ -49,11 +49,17 @@ export const useTabsStyles = () => {
           backgroundColor: activeColors.danger,
           color: "white",
         },
-        homeHeaderTItle: {
+        homeHeaderTitle: {
           fontSize: hp(2),
           marginLeft: 12,
           color: activeColors.text,
           fontWeight: appTheme.fonts.extraBold,
+        },
+        nbpHeaderTitle: {
+          // book, notification & profile header title
+          marginLeft: 12,
+          color: activeColors.text,
+          fontWeight: appTheme.fonts.bold,
         },
         tabBarIcons: {
           width: 40,
@@ -65,6 +71,12 @@ export const useTabsStyles = () => {
         },
 
         // home styles
+        headerIcons: {
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 10,
+          marginRight: 12,
+        },
         outerContainer: {
           flex: 1,
           backgroundColor: activeColors.background,
@@ -122,6 +134,17 @@ export const useTabsStyles = () => {
         },
 
         // profile styles
+        headerLeftContainer: {
+          gap: 5,
+          flexDirection: "row",
+          alignItems: "center",
+        },
+        online: {
+          width: 10,
+          height: 10,
+          borderRadius: 8,
+          backgroundColor: activeColors.primary,
+        },
         profileDetails: {
           marginTop: hp(2),
           alignItems: "center",
@@ -130,7 +153,11 @@ export const useTabsStyles = () => {
         profileColumn: {
           width: "100%",
           flexDirection: "row",
-          justifyContent: "flex-start",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+        },
+        imgNameRow: {
+          flexDirection: "row",
           alignItems: "center",
           gap: 10,
         },
@@ -144,7 +171,7 @@ export const useTabsStyles = () => {
         },
 
         bio: {
-          marginTop: 8,
+          marginTop: 10,
           fontSize: 14,
           color: activeColors.text,
         },
@@ -174,6 +201,14 @@ export const useTabsStyles = () => {
         activeTabText: {
           color: activeColors.text,
           fontWeight: appTheme.fonts.bold,
+        },
+
+        // user details screen styles
+        startLoadingContainer: {
+          alignItems: "center",
+          justifyContent: "center",
+          flex: 1,
+          backgroundColor: activeColors.background,
         },
       }),
     [theme]
