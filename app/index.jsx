@@ -1,10 +1,10 @@
 import { View } from "react-native";
 
 import Loading from "../components/Loading";
-import { modalsStyles } from "../styles/modalsStyles";
+import { useComponentsStyles } from "../styles/componentsStyles";
 
 const Index = () => {
-  const { activeColors } = modalsStyles();
+  const { activeColors } = useComponentsStyles();
   return (
     <View
       style={{

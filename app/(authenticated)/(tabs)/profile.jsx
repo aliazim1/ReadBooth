@@ -16,6 +16,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { hp, wp } from "../../../helpers/common";
 import { fetchBooks } from "../../../services/bookServices";
 import { fetchPosts, fetchSavedPosts } from "../../../services/postService";
+import { getFollows } from "../../../services/userService";
 import { useTabsStyles } from "../../../styles/tabsStyles";
 
 // global variable for the number of posts (limit)
@@ -32,6 +33,17 @@ const Profile = () => {
   const [hasMorePosts, setHasMorePosts] = useState(true);
   const [hasMoreBooks, setHasMoreBooks] = useState(true);
   const [activeTab, setActiveTab] = useState("posts");
+  const [followers, setFollowers] = useState([]);
+  const [following, setFollowing] = useState([]);
+
+  // function to load followers/following count
+  const loadFollowsCount = async () => {
+    const { success: s1, data: f1 } = await getFollows(user.id, "followers");
+    if (s1) setFollowers(f1);
+
+    const { success: s2, data: f2 } = await getFollows(user.id, "following");
+    if (s2) setFollowing(f2);
+  };
 
   const getPosts = async () => {
     if (!hasMorePosts) return null;
@@ -71,13 +83,11 @@ const Profile = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <View style={styles.headerLeftContainer}>
-          <AppText style={styles.nbpHeaderTitle}>
-            {user?.name ? user.name : "Profile"}
-          </AppText>
-          <View style={styles.online} />
-        </View>
+        <AppText style={styles.nbpHeaderTitle}>
+          {user?.username ? `@${user.username}` : "Profile"}
+        </AppText>
       ),
+
       headerRight: () => (
         <HeaderIcons
           icon2="menu"
@@ -92,6 +102,7 @@ const Profile = () => {
     getPosts();
     getBooks();
     getSavedPosts();
+    loadFollowsCount();
   }, [navigation, router]);
 
   // refresh when navigating back
@@ -100,6 +111,7 @@ const Profile = () => {
       getPosts();
       getBooks();
       getSavedPosts();
+      loadFollowsCount();
     }, [user?.id])
   );
 
@@ -141,8 +153,34 @@ const Profile = () => {
 
             <HorizontalPadding>
               <View style={styles.statRow}>
-                <StatsItem title="Followers" value="0" />
-                <StatsItem title="Following" value="0" />
+                <StatsItem
+                  title="Followers"
+                  value={followers.length}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/follows",
+                      params: {
+                        initialTab: "Followers",
+                        userId: user.id,
+                        username: user?.username,
+                      },
+                    })
+                  }
+                />
+                <StatsItem
+                  title="Following"
+                  value={following.length}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/follows",
+                      params: {
+                        initialTab: "Following",
+                        userId: user.id,
+                        username: user?.username,
+                      },
+                    })
+                  }
+                />
                 <StatsItem title="Posts" value={posts.length} />
                 <StatsItem title="Books" value={books.length} />
               </View>

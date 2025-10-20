@@ -9,7 +9,7 @@ import { NotificationsProvider } from "../contexts/NotificationsContext";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { supabase } from "../lib/supabase";
 import { getUserData } from "../services/userService";
-import { modalsStyles } from "../styles/modalsStyles";
+import { useComponentsStyles } from "../styles/componentsStyles";
 
 // keep the splashScreen visible while fetching the resources
 SplashScreen.preventAutoHideAsync();
@@ -57,7 +57,7 @@ const RootLayout = () => {
 };
 
 const MainLayout = () => {
-  const { activeColors } = modalsStyles();
+  const { activeColors } = useComponentsStyles();
   const router = useRouter();
   const { setAuth, setUserData } = useAuth();
 

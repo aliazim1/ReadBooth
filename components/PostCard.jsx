@@ -21,17 +21,21 @@ import PostHeader from "./PostHeader";
 
 const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
   const { styles, activeColors } = useComponentsStyles();
-  const [likes, setLikes] = useState([]);
+  const [likes, setLikes] = useState(item?.postLikes || []);
   const [saves, setSaves] = useState([]);
   const [menuVisible, setMenuVisible] = useState(false);
 
   useEffect(() => {
-    setLikes(item?.postLikes);
-    setSaves(item?.savedPosts);
+    // setLikes(item?.postLikes);
+    // setSaves(item?.savedPosts);
+    setLikes(item?.postLikes || []);
+    setSaves(item?.savedPosts || []);
   }, [item]);
 
   // funtion for liking a post
   const onLike = async () => {
+    if (!likes) setLikes([]);
+
     if (liked) {
       // remove the like
       let updatedLikes = likes.filter((like) => like.userId != currentUser?.id);
@@ -114,11 +118,8 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
   };
 
   // function to navigate to the EditPost
-  const onEditPost = async () => {
-    if (!homeScreen) {
-      router.back();
-    }
-
+  const onEditPost = () => {
+    setMenuVisible(false);
     router.push({ pathname: "editPost", params: { ...item } });
   };
 
@@ -131,9 +132,7 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
   const createdAt = moment(item?.created_at).fromNow();
 
   // toggle the like icon
-  const liked = likes.filter((like) => like.userId == currentUser?.id)[0]
-    ? true
-    : false;
+  const liked = (likes || []).some((like) => like.userId === currentUser?.id);
 
   // toggle the save icon
   const saved = saves.filter((save) => save.userId == currentUser?.id)[0]
@@ -196,7 +195,7 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
           />
           <AppPressableIoniconIcon
             name="chatbubble-outline"
-            label={item?.comments[0]?.count}
+            label={item?.comments?.[0]?.count || ""}
             onPress={homeScreen ? openPostComments : null}
           />
           <AppPressableIoniconIcon

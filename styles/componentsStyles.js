@@ -255,8 +255,15 @@ export const useComponentsStyles = () => {
           color: activeColors.mediumGrey,
           fontWeight: appTheme.fonts.medium,
         },
+        postHeaderRightIcons: {
+          flex: 1,
+          marginTop: -12,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        },
         createdAt: {
-          marginTop: -14,
+          marginBottom: 2,
           fontSize: hp(1.2),
           color: activeColors.mediumGrey,
         },
@@ -264,6 +271,7 @@ export const useComponentsStyles = () => {
           marginTop: hp(1),
           paddingHorizontal: wp(4),
         },
+
         postCardText: {
           fontSize: 16,
           color: activeColors.text,

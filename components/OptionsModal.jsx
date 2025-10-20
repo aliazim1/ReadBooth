@@ -36,13 +36,6 @@ const OptionsModal = ({
               onPress={onEdit}
             />
           )}
-          {!usedForUserDetails && owner && (
-            <SettingListItem
-              icon={"comment-edit"}
-              label={"Edit Post"}
-              onPress={onEdit}
-            />
-          )}
 
           {!usedForUserDetails && (
             <SettingListItem
@@ -84,8 +77,16 @@ const OptionsModal = ({
           {usedForUserDetails && (
             <SettingListItem
               chevron={false}
+              icon={"flag-outline"}
+              label={"Report user"}
+              onPress={onBlock}
+            />
+          )}
+          {usedForUserDetails && (
+            <SettingListItem
+              chevron={false}
               icon={"block-helper"}
-              label={"Block"}
+              label={"Block user"}
               iconColor={activeColors.danger}
               labelColor={activeColors.danger}
               onPress={onBlock}

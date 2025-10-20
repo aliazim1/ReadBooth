@@ -8,11 +8,11 @@ import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
+import AppButton from "../../../components/AppButton";
 import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
 import AppText from "../../../components/AppText";
 import Avatar from "../../../components/Avatar";
 import BookItem from "../../../components/BookItem";
-import FollowButton from "../../../components/FollowButton";
 import HorizontalPadding from "../../../components/HorizontalPadding";
 import Loading from "../../../components/Loading";
 import OptionsModal from "../../../components/OptionsModal";
@@ -22,9 +22,14 @@ import StatsItem from "../../../components/StatsItem";
 import { appTheme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
 import { hp } from "../../../helpers/common";
+import { supabase } from "../../../lib/supabase";
 import { fetchBooks } from "../../../services/bookServices";
 import { fetchPosts } from "../../../services/postService";
-import { getUserData } from "../../../services/userService";
+import {
+  getFollows,
+  getUserData,
+  toggleFollow,
+} from "../../../services/userService";
 import { useTabsStyles } from "../../../styles/tabsStyles";
 
 // global variable for the number of posts (limit)
@@ -36,23 +41,58 @@ const UserDetails = () => {
   const router = useRouter();
   const navigation = useNavigation();
   const { userId } = useLocalSearchParams();
-  const [follow, setFollow] = useState(false);
   const [posts, setPosts] = useState([]);
   const [menuVisible, setMenuVisible] = useState(false);
   const [userData, setUserData] = useState(null);
   const [startLoading, setStartLoading] = useState(true);
-  const [loadingFollow, setLoadingFollow] = useState(false);
   const [activeTab, setActiveTab] = useState("posts");
   const [hasMorePosts, setHasMorePosts] = useState(true);
   const [hasMoreBooks, setHasMoreBooks] = useState(true);
   const [books, setBooks] = useState([]);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [followers, setFollowers] = useState([]);
+  const [following, setFollowing] = useState([]);
 
-  // fetch user info on mount
+  // function to load followers/following count
+  const loadFollowsCount = async () => {
+    const { success: s1, data: f1 } = await getFollows(userId, "followers");
+    if (s1) setFollowers(f1);
+
+    const { success: s2, data: f2 } = await getFollows(userId, "following");
+    if (s2) setFollowing(f2);
+  };
+
+  // fetch user info on mount & check if already following
   useEffect(() => {
+    const checkFollowing = async () => {
+      const { data, error } = await supabase
+        .from("follows")
+        .select("id")
+        .eq("followerId", user.id)
+        .eq("followingId", userId)
+        .single();
+
+      if (!error && data) setIsFollowing(true);
+    };
+    if (user && userId) {
+      checkFollowing();
+      loadFollowsCount();
+    }
     fetchUserInfo();
     getPosts();
     getBooks();
-  }, [userId]);
+  }, [user, userId]);
+
+  // handle follow/unfollow
+  const handleFollow = async () => {
+    if (loading) return;
+    setLoading(true);
+    const res = await toggleFollow(user.id, userId, isFollowing);
+    if (res.success) setIsFollowing(res.following);
+
+    setLoading(false);
+  };
 
   // fetch the user details
   const fetchUserInfo = async () => {
@@ -97,6 +137,7 @@ const UserDetails = () => {
       headerTitle: userData?.name || "User Details",
       headerRight: () => (
         <AppIoniconTouchable
+          style={{ marginLeft: 7 }}
           size={20}
           name="ellipsis-horizontal"
           onPress={() => setMenuVisible(true)}
@@ -112,6 +153,7 @@ const UserDetails = () => {
     useCallback(() => {
       getPosts();
       getBooks();
+      loadFollowsCount();
     }, [userId])
   );
 
@@ -144,7 +186,8 @@ const UserDetails = () => {
   return (
     <SafeScreen>
       <FlatList
-        numColumns={3}
+        key={activeTab === "posts" ? "grid" : "list"}
+        numColumns={activeTab === "posts" ? 3 : 1}
         data={currentData}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingTop: 5 }}
@@ -169,20 +212,20 @@ const UserDetails = () => {
                 </View>
               </View>
 
-              <FollowButton
-                title={follow ? "Following" : "Follow"}
-                onPress={() => {
-                  setFollow(!follow);
-                  setLoadingFollow(!loadingFollow);
-                }}
-                // after the following is completed, tunr the loading to False
-                // isLoading={loadingFollow}
-                containerStyle={{
-                  backgroundColor: follow
-                    ? activeColors.primary
-                    : activeColors.mediumGrey,
-                }}
-              />
+              {user?.id != userId && (
+                <AppButton
+                  title={isFollowing ? "Following" : "Follow"}
+                  onPress={handleFollow}
+                  isLoading={loading}
+                  containerStyle={{
+                    marginTop: 10,
+                    height: 35,
+                    backgroundColor: isFollowing
+                      ? activeColors.mediumGrey
+                      : activeColors.primary,
+                  }}
+                />
+              )}
 
               {userData?.bio && (
                 <AppText style={styles.bio}>{userData.bio}</AppText>
@@ -191,8 +234,34 @@ const UserDetails = () => {
 
             <HorizontalPadding>
               <View style={styles.statRow}>
-                <StatsItem title="Followers" value="0" />
-                <StatsItem title="Following" value="0" />
+                <StatsItem
+                  title="Followers"
+                  value={followers.length}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/follows",
+                      params: {
+                        initialTab: "Followers",
+                        userId: userId,
+                        username: userData?.username,
+                      },
+                    })
+                  }
+                />
+                <StatsItem
+                  title="Following"
+                  value={following.length}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/follows",
+                      params: {
+                        initialTab: "Following",
+                        userId: userId,
+                        username: userData?.username,
+                      },
+                    })
+                  }
+                />
                 <StatsItem title="Posts" value={posts.length} />
                 <StatsItem title="Books" value={books.length} />
               </View>
@@ -268,7 +337,14 @@ const UserDetails = () => {
           activeTab == "posts" ? (
             <PostGridItem item={item} router={router} />
           ) : (
-            <BookItem item={item} router={router} currentUser={user} />
+            <HorizontalPadding style={{}}>
+              <BookItem
+                item={item}
+                router={router}
+                currentUser={user}
+                style={{ marginBottom: 10 }}
+              />
+            </HorizontalPadding>
           )
         }
         onEndReached={activeTab === "posts" ? getPosts : getBooks}
@@ -276,8 +352,8 @@ const UserDetails = () => {
       />
       <OptionsModal
         visible={menuVisible}
-        owner={userId == user?.id}
         usedForUserDetails={true}
+        owner={userId == user?.id}
         onClose={() => setMenuVisible(false)}
         onBlock={() => {}}
       />

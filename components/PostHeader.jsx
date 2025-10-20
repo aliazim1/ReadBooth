@@ -1,6 +1,6 @@
-import { Ionicons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
+import { Ionicons } from "@expo/vector-icons";
 import { hp } from "../helpers/common";
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppText from "./AppText";
@@ -15,6 +15,7 @@ const PostHeader = ({
   onPress,
 }) => {
   const { styles, activeColors } = useComponentsStyles();
+
   return (
     <Pressable onPress={onNavigate} style={[styles.postHeader, style]}>
       <View style={styles.headerFirstRow}>
@@ -29,20 +30,18 @@ const PostHeader = ({
           </AppText>
         </View>
         {forPostCard && (
-          <View style={styles.createdAtContainer}>
+          <View style={styles.postHeaderRightIcons}>
             <AppText style={styles.createdAt}>{createdAt}</AppText>
+            <Pressable onPress={onPress}>
+              <Ionicons
+                size={hp(1.8)}
+                color={activeColors.text}
+                name="ellipsis-horizontal"
+              />
+            </Pressable>
           </View>
         )}
       </View>
-      {forPostCard && (
-        <Pressable onPress={onPress}>
-          <Ionicons
-            size={hp(1.8)}
-            color={activeColors.text}
-            name="ellipsis-horizontal"
-          />
-        </Pressable>
-      )}
     </Pressable>
   );
 };

@@ -1,14 +1,14 @@
-import { Text, View } from "react-native";
+import { Pressable, Text } from "react-native";
 
 import { useComponentsStyles } from "../styles/componentsStyles";
 
-const StatsItem = ({ title, value }) => {
+const StatsItem = ({ title, value, onPress }) => {
   const { styles } = useComponentsStyles();
   return (
-    <View style={styles.column}>
+    <Pressable onPress={onPress} style={styles.column}>
       <Text style={styles.statLabel}>{title}</Text>
       <Text style={styles.value}>{value}</Text>
-    </View>
+    </Pressable>
   );
 };
 

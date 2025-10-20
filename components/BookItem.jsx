@@ -11,13 +11,13 @@ import AppPressableIoniconIcon from "./AppPressableIoniconIcon";
 import AppText from "./AppText";
 import BookOptionsModal from "./BookOptionsModal";
 
-const BookItem = ({ item, currentUser, onDeleteBook, router }) => {
+const BookItem = ({ item, currentUser, onDeleteBook, router, style }) => {
   const { styles, activeColors } = useComponentsStyles();
   const [menuVisible, setMenuVisible] = useState(false);
   const [saves, setSaves] = useState([]);
 
   // function to navigate to the EditBook
-  const onEditPost = () => {
+  const onEditBook = () => {
     setMenuVisible(false);
     router.push({ pathname: "editBook", params: { ...item } });
   };
@@ -55,7 +55,7 @@ const BookItem = ({ item, currentUser, onDeleteBook, router }) => {
     : false;
 
   return (
-    <View style={styles.bookContainer}>
+    <View style={[styles.bookContainer, style]}>
       <Image source={getSupabaseFileUrl(item?.file)} style={styles.image} />
       <View style={styles.bookNameContainer}>
         <AppText style={styles.bookName}>{item?.title}</AppText>
@@ -84,7 +84,7 @@ const BookItem = ({ item, currentUser, onDeleteBook, router }) => {
       <BookOptionsModal
         item={item}
         visible={menuVisible}
-        onEdit={onEditPost}
+        onEdit={onEditBook}
         onShare={onShare}
         onDelete={onDeleteBook}
         onSave={onSavePost}

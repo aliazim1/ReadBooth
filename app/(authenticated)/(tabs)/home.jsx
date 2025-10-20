@@ -97,7 +97,7 @@ const Home = () => {
       headerRight: () => (
         <View style={styles.headerIcons}>
           <HeaderIcons size={24} icon2="search" />
-          <Pressable onPress={() => router.push("/addBook")}>
+          <Pressable onPress={() => router.push("/createPost")}>
             <AppMaterialCommunityIcon name="square-edit-outline" />
           </Pressable>
         </View>

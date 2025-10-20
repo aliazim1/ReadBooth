@@ -12,6 +12,45 @@ export const useScreensStyles = () => {
   const styles = useMemo(
     () =>
       StyleSheet.create({
+        // postDetails
+        startLoadingContainer: {
+          alignItems: "center",
+          justifyContent: "center",
+          flex: 1,
+          backgroundColor: activeColors.background,
+        },
+        notFound: {
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        },
+        container: {
+          flex: 1,
+          backgroundColor: activeColors.background,
+        },
+        commentsListContainer: {
+          gap: 10,
+          marginVertical: 16,
+          paddingBottom: hp(5),
+        },
+        commentCountContainer: {
+          flexDirection: "row",
+          alignItems: "center",
+        },
+        commentCountLabel: {
+          fontSize: hp(1.4),
+          marginRight: 5,
+          paddingLeft: wp(4),
+          fontWeight: appTheme.fonts.bold,
+        },
+        commentCount: {
+          fontSize: hp(1.4),
+        },
+        beFirst: {
+          fontSize: hp(1.4),
+          paddingLeft: wp(4),
+        },
+
         // add book styles
         textInputs: {
           paddingVertical: 14,
@@ -117,6 +156,38 @@ export const useScreensStyles = () => {
         version: {
           alignItems: "center",
           marginVertical: hp(5),
+        },
+
+        // follows screen styles
+        headerIcons: {
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 10,
+          marginRight: 12,
+        },
+        tabBarIndicatorStyle: {
+          width: 172,
+          marginLeft: 18,
+          backgroundColor: activeColors.primary,
+        },
+        headerIconsContainer: {
+          gap: 12,
+          marginRight: 10,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        },
+
+        noNofiticationsContainer: {
+          alignItems: "center",
+          justifyContent: "center",
+          flex: 1,
+          gap: 10,
+        },
+        contentContainerStyle: {
+          paddingTop: 20,
+          gap: 14,
+          paddingHorizontal: wp(4),
         },
       }),
     [theme]

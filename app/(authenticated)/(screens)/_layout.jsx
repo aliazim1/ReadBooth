@@ -29,13 +29,8 @@ const ScreensLayout = () => {
           headerTitle: "Create Post",
         }}
       />
-      <Stack.Screen
-        name="userDetails"
-        options={{
-          title: "",
-          headerShown: true,
-        }}
-      />
+      <Stack.Screen name="userDetails" />
+      <Stack.Screen name="follows" />
       <Stack.Screen
         name="addBook"
         options={{

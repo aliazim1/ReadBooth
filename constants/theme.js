@@ -11,7 +11,7 @@ export const colors = {
     primary: "#007e5d",
     success: "#4B8B3B",
     textLight: "#7C7C7C",
-    background: "#eaf2ef",
+    background: "#FFFEFE",
     mediumGrey: "#999999",
     iconsColor: "#1C1C1E",
     dangerLight: "#f87171",

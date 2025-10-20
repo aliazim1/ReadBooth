@@ -48,9 +48,9 @@ export const updatePost = async ({ id, body }) => {
     const { data, error } = await supabase
       .from("posts")
       .update({ body })
-      .eq("id", Number(id)) // 👈 ensure it's a number if your DB column is int
+      .eq("id", Number(id)) // ensure it's a number if your DB column is int
       .select()
-      .maybeSingle(); // 👈 use maybeSingle to avoid crash if no rows
+      .maybeSingle(); // use maybeSingle to avoid crash if no rows
 
     if (error) {
       console.log("updatePost: ", error);

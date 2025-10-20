@@ -40,6 +40,8 @@ export const useTabsStyles = () => {
           paddingTop: 10,
           alignItems: "center",
           justifyContent: "center",
+          borderTopWidth: 0.2,
+          borderTopColor: activeColors.tabBarBorder,
           backgroundColor: activeColors.background,
         },
         headerStyle: {
@@ -55,10 +57,11 @@ export const useTabsStyles = () => {
           color: activeColors.text,
           fontWeight: appTheme.fonts.extraBold,
         },
+
+        //
+        // book, notification & profile header title
         nbpHeaderTitle: {
-          // book, notification & profile header title
           marginLeft: 12,
-          color: activeColors.text,
           fontWeight: appTheme.fonts.bold,
         },
         tabBarIcons: {
@@ -101,8 +104,8 @@ export const useTabsStyles = () => {
 
         // books styles
         tabBarIndicatorStyle: {
-          width: 35,
-          marginLeft: 55,
+          width: 100,
+          marginLeft: 18,
           alignSelf: "center",
           justifyContent: "center",
           backgroundColor: activeColors.primary,
@@ -138,12 +141,6 @@ export const useTabsStyles = () => {
           gap: 5,
           flexDirection: "row",
           alignItems: "center",
-        },
-        online: {
-          width: 10,
-          height: 10,
-          borderRadius: 8,
-          backgroundColor: activeColors.primary,
         },
         profileDetails: {
           marginTop: hp(2),

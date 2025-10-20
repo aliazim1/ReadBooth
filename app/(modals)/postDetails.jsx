@@ -17,10 +17,10 @@ import {
   removePostComment,
 } from "../../services/postService";
 import { getUserData } from "../../services/userService";
-import { modalsStyles } from "../../styles/modalsStyles";
+import { useScreensStyles } from "../../styles/screensStyles";
 
 const PostDetails = () => {
-  const { styles, activeColors } = modalsStyles();
+  const { styles } = useScreensStyles();
   const router = useRouter();
   const navigation = useNavigation();
   const { user } = useAuth();

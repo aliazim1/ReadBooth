@@ -1,56 +1,54 @@
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useEffect, useLayoutEffect, useState } from "react";
-import {
-  Alert,
-  Keyboard,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { Alert, Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import AppButton from "../../components/AppButton";
 import AppIoniconTouchable from "../../components/AppIoniconTouchable";
-import Avatar from "../../components/Avatar";
 import CustomInput from "../../components/CustomInput";
+import PostHeader from "../../components/PostHeader";
 import SafeScreen from "../../components/SafeScreen";
 import { useAuth } from "../../contexts/AuthContext";
 import { hp, wp } from "../../helpers/common";
 import { updatePost } from "../../services/postService";
-import { modalsStyles } from "../../styles/modalsStyles";
 
 const EditPost = () => {
-  const styles = modalsStyles();
   const post = useLocalSearchParams();
+  const navigation = useNavigation();
   const { user } = useAuth();
   const router = useRouter();
-  const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [bodyContent, setBodyContent] = useState("");
 
+  //   initially fill the textInputs with book's info
   useEffect(() => {
     if (post && post.id) {
       setBodyContent(post.body);
     }
-  }, [post.id, post.body]);
+  }, [post.body]);
 
   // function to publish the post
   const onSave = async () => {
+    // if user tries to post an empty post
     if (bodyContent.trim() === "") {
-      Alert.alert("Empty Post", "Your post can’t be empty.");
+      Alert.alert("Required Fields", "Please fill out the required fields.");
       return;
     }
 
+    // add the book to the shelve
     setLoading(true);
-    const res = await updatePost({ id: post.id, body: bodyContent.trim() });
+    let res = await updatePost({
+      id: post.id,
+      body: post.body,
+    });
     setLoading(false);
-
     if (res.success) {
       setBodyContent("");
-      router.back();
-      // router.replace("/home");
+      setTimeout(() => {
+        router.back();
+      }, 1000);
     } else {
-      Alert.alert("Post", res.msg);
+      Alert.alert("Edit Post", res.msg);
     }
   };
 
@@ -67,7 +65,7 @@ const EditPost = () => {
   }, [navigation, router]);
 
   return (
-    <SafeScreen style={{ paddingHorizontal: wp(3.9) }}>
+    <SafeScreen>
       <KeyboardAwareScrollView
         enableOnAndroid={true}
         extraScrollHeight={20}
@@ -79,14 +77,7 @@ const EditPost = () => {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View>
-            {/* the profile details  */}
-            <View style={styles.header}>
-              <Avatar uri={user?.image} size={hp(6.5)} />
-              <View>
-                <Text style={styles.name}>{user?.name}</Text>
-                <Text style={styles.publicText}>Public</Text>
-              </View>
-            </View>
+            <PostHeader item={user} forPostCard={false} />
 
             {/* the text-field with actions */}
             <CustomInput
@@ -95,13 +86,21 @@ const EditPost = () => {
               onChangeText={setBodyContent}
               multiline={true}
               numberOfLines={5}
-              style={styles.bodyContent}
+              style={{
+                height: hp(15),
+                marginHorizontal: 18,
+                marginVertical: hp(2),
+                textAlignVertical: "top",
+              }}
             />
-
-            <AppButton title="Update" onPress={onSave} isLoading={loading} />
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAwareScrollView>
+
+      {/* add button won't be scrollable  */}
+      <View style={{ paddingHorizontal: wp(4) }}>
+        <AppButton title="Update" onPress={onSave} isLoading={loading} />
+      </View>
     </SafeScreen>
   );
 };

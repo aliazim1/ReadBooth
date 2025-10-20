@@ -1,4 +1,4 @@
-import { Image, TouchableOpacity, View } from "react-native";
+import { Image, Pressable, View } from "react-native";
 
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppIonicon from "./AppIonicon";
@@ -26,7 +26,7 @@ const AppButton = ({
   }
 
   return (
-    <TouchableOpacity
+    <Pressable
       style={[styles.button, hasShadow && styles.shadowBtn, containerStyle]}
       onPress={onPress}
     >
@@ -42,7 +42,7 @@ const AppButton = ({
         <Image source={imageUri} resizeMode="contain" style={styles.image} />
       )}
       {title && <AppText style={[styles.text, textStyle]}>{title}</AppText>}
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
