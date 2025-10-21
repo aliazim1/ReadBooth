@@ -6,18 +6,19 @@ import AppButton from "./AppButton";
 import AppText from "./AppText";
 import Avatar from "./Avatar";
 
-const FollowsListItem = ({
-  item,
-  currentUserId,
-  onNavigate,
-  style,
-  onPress,
-}) => {
+const FollowsListItem = ({ item, router, currentUserId, style, onPress }) => {
   const { styles, activeColors } = useComponentsStyles();
 
   return (
     <Pressable
-      onPress={onNavigate}
+      onPress={() => {
+        router.push({
+          pathname: "userDetails",
+          params: {
+            userId: item?.id,
+          },
+        });
+      }}
       style={[
         styles.postHeader,
         { paddingHorizontal: 0, marginBottom: 5, alignItems: "center" },

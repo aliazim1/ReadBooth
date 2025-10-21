@@ -2,6 +2,7 @@ import { Image } from "expo-image";
 import { Alert, Pressable, Share, View } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
+import moment from "moment";
 import { useState } from "react";
 import { stripHtmlTags } from "../helpers/common";
 import { createSaveBook, removeSaveBook } from "../services/bookServices";
@@ -54,12 +55,18 @@ const BookItem = ({ item, currentUser, onDeleteBook, router, style }) => {
     ? true
     : false;
 
+  const date = moment(item?.created_at);
+  const createdAt = date.isSame(moment(), "day")
+    ? date.format("h:mm A")
+    : date.format("MM/DD/YYYY h:mm A");
+
   return (
     <View style={[styles.bookContainer, style]}>
       <Image source={getSupabaseFileUrl(item?.file)} style={styles.image} />
       <View style={styles.bookNameContainer}>
         <AppText style={styles.bookName}>{item?.title}</AppText>
         <AppText>By: {item?.author}</AppText>
+        <AppText>{createdAt}</AppText>
         <View style={styles.bottomRow}>
           <View style={styles.linkContainer}>
             {item?.link && (

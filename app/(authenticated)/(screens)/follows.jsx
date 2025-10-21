@@ -76,6 +76,7 @@ const UserList = ({ userId, filterType }) => {
         renderItem={({ item }) => (
           <FollowsListItem
             item={item}
+            router={router}
             currentUserId={user?.id}
             onPress={() => handleFollowToggle(item.id, item.followed)}
           />

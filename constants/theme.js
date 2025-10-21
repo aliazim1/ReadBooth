@@ -17,6 +17,7 @@ export const colors = {
     dangerLight: "#f87171",
     tabBarBorder: "#f1f1f1ff",
     veryLightGrey: "#f1f1f1ff",
+    claret: "#670626",
   },
   dark: {
     gray: "#e3e3e3",
@@ -37,6 +38,7 @@ export const colors = {
     dangerLight: "#f87171",
     commentBox: "#38383971",
     veryLightGrey: "#f1f1f1ff",
+    claret: "#670626",
   },
 };
 
@@ -61,5 +63,6 @@ export const appTheme = {
 // background: "#010313",
 // background: "#1A1A1A",
 // background: "#080808",
-// primary: "#912f56", // berry
+// primary: "#912f56", // Cerry
+// claret: "#670626", // Claret
 // background: "#0F181E", // Midnight Blue

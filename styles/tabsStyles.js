@@ -38,9 +38,10 @@ export const useTabsStyles = () => {
         tabBarStyles: {
           height: 80,
           paddingTop: 10,
-          alignItems: "center",
-          justifyContent: "center",
           borderTopWidth: 0.2,
+          alignItems: "center",
+          paddingHorizontal: 18,
+          justifyContent: "center",
           borderTopColor: activeColors.tabBarBorder,
           backgroundColor: activeColors.background,
         },

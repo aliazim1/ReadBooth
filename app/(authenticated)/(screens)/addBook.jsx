@@ -95,8 +95,16 @@ const AddBook = () => {
   // function to publish the post
   const onSubmit = async () => {
     // if user tries to post an empty post
-    if (title.trim() === "" || author.trim() === "" || !file) {
-      Alert.alert("Required Fields", "Please fill out the required fields.");
+    if (title.trim() === "") {
+      Alert.alert("Missing Title", "Please enter the book title.");
+      return;
+    }
+    if (author.trim() === "") {
+      Alert.alert("Missing Author", "Please enter the author's name.");
+      return;
+    }
+    if (!file) {
+      Alert.alert("Missing Image", "Please select a cover image for the book.");
       return;
     }
 
@@ -172,7 +180,7 @@ const AddBook = () => {
               autoCorrect={true}
               onChangeText={setLink}
               style={styles.textInputs}
-              placeholder="Enter link to the book"
+              placeholder="Enter link to the book (optional)"
             />
 
             {/* media will display here once selected */}

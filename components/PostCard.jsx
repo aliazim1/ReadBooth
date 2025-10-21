@@ -129,7 +129,11 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
   };
 
   // formats the created_at time as (min/hr ago)
-  const createdAt = moment(item?.created_at).fromNow();
+  // const createdAt = moment(item?.created_at).calendar(); // today/yesterday at time or date format
+  const date = moment(item?.created_at);
+  const createdAt = date.isSame(moment(), "day")
+    ? date.format("h:mm A")
+    : date.format("MM/DD/YYYY");
 
   // toggle the like icon
   const liked = (likes || []).some((like) => like.userId === currentUser?.id);
