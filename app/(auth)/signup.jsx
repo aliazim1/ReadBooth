@@ -21,6 +21,7 @@ import { authStyles } from ".././../styles/authStyles";
 const signup = () => {
   const { styles } = authStyles();
   const router = useRouter();
+  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [loadingverify, setLoadingVerify] = useState(false);
   const [fullName, setFullName] = useState("");
@@ -36,10 +37,10 @@ const signup = () => {
     const trimmedPassword = password.trim();
 
     // Validation
-    if (trimmedName.length < 2) {
-      setError("Name must be at least 2 characters.");
-      return;
-    }
+    // if (trimmedName.length < 2) {
+    //   setError("Name must be at least 2 characters.");
+    //   return;
+    // }
 
     if (!trimmedEmail.includes("@") || !trimmedEmail.includes(".")) {
       setError("Please enter a valid email.");
@@ -93,19 +94,9 @@ const signup = () => {
               title={"Join ReadBooth"}
               punchLine={"Discover. Share. Connect"}
             />
-
             <View>
               <CustomInput
-                label={"Full Name"}
-                placeholder="Enter your full name"
-                style={{ marginTop: 10 }}
-                value={fullName}
-                autoCapitalize="words"
-                onChangeText={setFullName}
-              />
-
-              <CustomInput
-                label={"email Address"}
+                label={"Email"}
                 placeholder="Enter your email address"
                 keyboardType="email-address"
                 style={{ marginTop: 10 }}
@@ -113,7 +104,6 @@ const signup = () => {
                 value={email}
                 onChangeText={setEmail}
               />
-
               <CustomInput
                 label={"Password"}
                 placeholder="Create a password"
