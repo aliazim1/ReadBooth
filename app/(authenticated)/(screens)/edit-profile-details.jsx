@@ -137,6 +137,7 @@ const EditProfileDetails = () => {
             <CustomInput
               placeholder={"Choose a username"}
               label={"Username"}
+              autoCapitalize={""}
               value={user.username}
               onChangeText={(value) => setUser({ ...user, username: value })}
             />

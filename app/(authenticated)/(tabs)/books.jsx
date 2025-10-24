@@ -1,6 +1,6 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useFocusEffect, useNavigation, useRouter } from "expo-router";
-import { useCallback, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { Alert, FlatList, Pressable, View } from "react-native";
 
 import AppMaterialCommunityIcon from "../../../components/AppMaterialCommunityIcon";
@@ -18,7 +18,7 @@ const Tab = createMaterialTopTabNavigator();
 var limit = 0;
 
 // reusable BookList component for each tab
-const BookList = ({ user, filterType }) => {
+const BookList = ({ user, filterType, saves, setSaves }) => {
   const { styles, activeColors } = useTabsStyles();
   const router = useRouter();
   const [books, setBooks] = useState([]);
@@ -27,16 +27,18 @@ const BookList = ({ user, filterType }) => {
   const getBooks = async () => {
     if (!hasMoreBooks) return;
     limit += 9;
-    let res = await fetchBooks(limit, user.id);
+    let res = await fetchBooks(filterType, user.id, limit);
     if (res.success) {
+      setBooks(res.data);
       if (books.length === res.data.length) setHasMoreBooks(false);
-      setBooks((prevBooks) => {
-        if (JSON.stringify(prevBooks) === JSON.stringify(res.data))
-          return prevBooks;
-        return res.data;
-      });
     }
   };
+
+  useEffect(() => {
+    if (filterType === "savedBook") {
+      getBooks();
+    }
+  }, [saves]);
 
   const onDeleteBook = async (item) => {
     const res = await deleteBook(item?.id);
@@ -54,28 +56,29 @@ const BookList = ({ user, filterType }) => {
     }, [user?.id])
   );
 
-  // Example of tab-based filtering (customize as needed)
-  // const filteredBooks =
-  //   filterType === "all"
-  //     ? books
-  //     : books.filter((b) =>
-  //         filterType === "saved" ? b.isSaved : b.isRecommended
-  //       );
+  const filteredBooks =
+    filterType === "savedBook"
+      ? books.filter((b) =>
+          saves.some((s) => s.bookId === b.id && s.userId === user.id)
+        )
+      : books;
 
   return (
     <SafeScreen>
-      {books.length > 0 ? (
+      {filteredBooks.length > 0 ? (
         <FlatList
-          data={books}
+          data={filteredBooks}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainerStyle}
           keyExtractor={(item) => item.id.toString()}
-          extraData={books}
+          extraData={saves}
           renderItem={({ item }) => (
             <BookItem
               item={item}
               router={router}
               currentUser={user}
+              saves={saves}
+              setSaves={setSaves}
               onDeleteBook={() => {
                 CustomAlert({
                   title: "Delete Book",
@@ -105,6 +108,7 @@ const Books = () => {
   const navigation = useNavigation();
   const router = useRouter();
   const { user } = useAuth();
+  const [saves, setSaves] = useState([]);
   const { activeColors, styles } = useTabsStyles();
 
   useLayoutEffect(() => {
@@ -132,13 +136,34 @@ const Books = () => {
       }}
     >
       <Tab.Screen name="For You">
-        {() => <BookList user={user} filterType="all" />}
+        {() => (
+          <BookList
+            user={user}
+            filterType="all"
+            saves={saves}
+            setSaves={setSaves}
+          />
+        )}
       </Tab.Screen>
       <Tab.Screen name="My Books">
-        {() => <BookList user={user} filterType="saved" />}
+        {() => (
+          <BookList
+            user={user}
+            filterType="myBook"
+            saves={saves}
+            setSaves={setSaves}
+          />
+        )}
       </Tab.Screen>
       <Tab.Screen name="Saved">
-        {() => <BookList user={user} filterType="saved" />}
+        {() => (
+          <BookList
+            user={user}
+            filterType="savedBook"
+            saves={saves}
+            setSaves={setSaves}
+          />
+        )}
       </Tab.Screen>
     </Tab.Navigator>
   );

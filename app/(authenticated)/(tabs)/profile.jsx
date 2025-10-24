@@ -14,7 +14,7 @@ import StatsItem from "../../../components/StatsItem";
 import { appTheme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
 import { hp, wp } from "../../../helpers/common";
-import { fetchBooks } from "../../../services/bookServices";
+import { fetchBooksCount } from "../../../services/bookServices";
 import { fetchPosts, fetchSavedPosts } from "../../../services/postService";
 import { getFollows } from "../../../services/userService";
 import { useTabsStyles } from "../../../styles/tabsStyles";
@@ -28,10 +28,9 @@ const Profile = () => {
   const router = useRouter();
   const navigation = useNavigation();
   const [posts, setPosts] = useState([]);
-  const [books, setBooks] = useState([]);
+  const [bookCount, setBookCount] = useState(0);
   const [savedPosts, setSavedPosts] = useState([]);
   const [hasMorePosts, setHasMorePosts] = useState(true);
-  const [hasMoreBooks, setHasMoreBooks] = useState(true);
   const [activeTab, setActiveTab] = useState("posts");
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
@@ -55,19 +54,10 @@ const Profile = () => {
     }
   };
 
-  const getBooks = async () => {
-    if (!hasMoreBooks) return null;
-    limit += 9;
-    let res = await fetchBooks(limit, user.id);
-    if (res.success) {
-      if (books.length === res.data.length) setHasMoreBooks(false);
-      setBooks((prevBooks) => {
-        // Only replace if data actually changed
-        if (JSON.stringify(prevBooks) === JSON.stringify(res.data))
-          return prevBooks;
-        return res.data;
-      });
-    }
+  // get the number of books I have listed
+  const getBookCount = async () => {
+    const count = await fetchBooksCount(user.id);
+    setBookCount(count);
   };
 
   const getSavedPosts = async () => {
@@ -100,7 +90,7 @@ const Profile = () => {
 
     // initial load for posts and savedPosts
     getPosts();
-    getBooks();
+    getBookCount();
     getSavedPosts();
     loadFollowsCount();
   }, [navigation, router]);
@@ -109,7 +99,7 @@ const Profile = () => {
   useFocusEffect(
     useCallback(() => {
       getPosts();
-      getBooks();
+      getBookCount();
       getSavedPosts();
       loadFollowsCount();
     }, [user?.id])
@@ -182,7 +172,7 @@ const Profile = () => {
                   }
                 />
                 <StatsItem title="Posts" value={posts.length} />
-                <StatsItem title="Books" value={books.length} />
+                <StatsItem title="Books" value={bookCount} />
               </View>
             </HorizontalPadding>
 

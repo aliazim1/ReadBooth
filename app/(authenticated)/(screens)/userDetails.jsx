@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import {
   useFocusEffect,
   useLocalSearchParams,
@@ -7,7 +8,6 @@ import {
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 
-import { Ionicons } from "@expo/vector-icons";
 import AppButton from "../../../components/AppButton";
 import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
 import AppText from "../../../components/AppText";
@@ -117,17 +117,12 @@ const UserDetails = () => {
   };
 
   const getBooks = async () => {
-    if (!hasMoreBooks) return null;
+    if (!hasMoreBooks) return;
     limit += 9;
-    let res = await fetchBooks(limit, userId);
+    let res = await fetchBooks("myBook", user.id, limit);
     if (res.success) {
+      setBooks(res.data);
       if (books.length === res.data.length) setHasMoreBooks(false);
-      setBooks((prevBooks) => {
-        // Only replace if data actually changed
-        if (JSON.stringify(prevBooks) === JSON.stringify(res.data))
-          return prevBooks;
-        return res.data;
-      });
     }
   };
 
@@ -217,6 +212,7 @@ const UserDetails = () => {
                   title={isFollowing ? "Following" : "Follow"}
                   onPress={handleFollow}
                   isLoading={loading}
+                  textStyle={{ fontSize: hp(1.6) }}
                   containerStyle={{
                     marginTop: 10,
                     height: 35,
@@ -340,6 +336,8 @@ const UserDetails = () => {
             <HorizontalPadding style={{}}>
               <BookItem
                 item={item}
+                saves={[]}
+                setSaves={() => {}}
                 router={router}
                 currentUser={user}
                 style={{ marginBottom: 10 }}

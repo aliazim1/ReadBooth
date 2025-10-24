@@ -21,26 +21,17 @@ import { authStyles } from ".././../styles/authStyles";
 const signup = () => {
   const { styles } = authStyles();
   const router = useRouter();
-  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [loadingverify, setLoadingVerify] = useState(false);
   const [fullName, setFullName] = useState("");
+  const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [pendingVerification, setPendingVerification] = useState(false);
-  const [code, setCode] = useState("");
   const [error, setError] = useState("");
 
   const onSubmit = async () => {
     const trimmedName = fullName.trim();
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
-
-    // Validation
-    // if (trimmedName.length < 2) {
-    //   setError("Name must be at least 2 characters.");
-    //   return;
-    // }
 
     if (!trimmedEmail.includes("@") || !trimmedEmail.includes(".")) {
       setError("Please enter a valid email.");
@@ -51,18 +42,19 @@ const signup = () => {
       setError("Password must be at least 8 characters.");
       return;
     }
+    if (trimmedName.length < 2) {
+      setError("Name cannot be one character");
+      return;
+    }
 
     setLoading(true);
 
     try {
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: trimmedEmail,
         password: trimmedPassword,
         options: {
-          data: { name: trimmedName, username: trimmedName },
+          data: { name: trimmedName },
         },
       });
 
@@ -96,6 +88,14 @@ const signup = () => {
             />
             <View>
               <CustomInput
+                label={"Full Name"}
+                placeholder="Enter your full name"
+                style={{ marginTop: 10 }}
+                autoCapitalize={"words"}
+                value={fullName}
+                onChangeText={setFullName}
+              />
+              <CustomInput
                 label={"Email"}
                 placeholder="Enter your email address"
                 keyboardType="email-address"
@@ -123,14 +123,14 @@ const signup = () => {
 
             <View style={styles.btn}>
               <AppButton
-                title={"Continue"}
+                title={"Submit"}
                 onPress={onSubmit}
                 isLoading={loading}
               />
             </View>
             <View style={styles.noAccountContainer}>
               <View style={styles.noAccountContainerRow}>
-                <AppText>Already have a ReadBooth account?</AppText>
+                <AppText>Already have an account?</AppText>
                 <TouchableOpacity onPress={() => router.replace("/login")}>
                   <AppText style={styles.primaryColorText}>Sign In</AppText>
                 </TouchableOpacity>

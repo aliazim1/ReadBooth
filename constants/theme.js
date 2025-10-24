@@ -31,8 +31,7 @@ export const colors = {
     success: "#4B8B3B",
     textLight: "#7C7C7C",
     tabBarBorder: "#333",
-    // background: "#1A1A1A", // dark
-    background: "#0F181E", // midnight blue
+    background: "#0F181E",
     iconsColor: "#FCFCFC",
     mediumGrey: "#999999",
     dangerLight: "#f87171",
@@ -60,9 +59,10 @@ export const appTheme = {
 };
 
 // Additional colors
-// background: "#010313",
-// background: "#1A1A1A",
-// background: "#080808",
 // primary: "#912f56", // Cerry
 // claret: "#670626", // Claret
-// background: "#0F181E", // Midnight Blue
+
+// background: "#080808", // deep dark 1
+// background: "#010313", // deep dark 2
+//  background: "#1A1A1A", // dark bg (fav)
+// background: "#0F181E", // midnight blue

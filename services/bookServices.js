@@ -3,7 +3,6 @@ import { uploadFile } from "./imageService";
 
 //
 // function to add a new book to the shelve including image, title, author, link
-//
 export const addBook = async (book) => {
   try {
     // if there’s a file, upload it first
@@ -41,44 +40,54 @@ export const addBook = async (book) => {
 };
 
 //
-// function to fetch all the books with a limit of 9 posts first
-//
-export const fetchBooks = async (limit = 9, userId) => {
+// function to fetch all the books based on active tab
+export const fetchBooks = async (filterType, userId, limit = 9) => {
   try {
-    if (userId) {
-      const { data, error } = await supabase
+    let data, error;
+
+    if (filterType === "all") {
+      // Fetch all general books (not owned by the user)
+      ({ data, error } = await supabase
         .from("books")
-        .select(`*`)
+        .select("*")
+        .neq("userId", userId)
+        .order("created_at", { ascending: false }));
+    } else if (filterType === "myBook") {
+      // Fetch only books created by the user
+      ({ data, error } = await supabase
+        .from("books")
+        .select("*")
+        .eq("userId", userId)
         .order("created_at", { ascending: false })
+        .limit(limit));
+    } else if (filterType === "savedBook") {
+      // Fetch saved book IDs first
+      const { data: saved, error: savedErr } = await supabase
+        .from("savedBooks")
+        .select("bookId")
         .eq("userId", userId)
         .limit(limit);
 
-      if (error) {
-        console.log("fetchBooks error: ", error);
-        return { success: false, msg: "Could not fetch the books" };
-      }
-      return { success: true, data: data };
-    } else {
-      const { data, error } = await supabase
-        .from("books")
-        .select(
-          `
-        *,
-        user: users (id, name, username, image ),
-        `
-        )
-        .order("created_at", { ascending: false })
-        .limit(limit);
+      if (savedErr) throw savedErr;
 
-      if (error) {
-        console.log("fetchBooks error: ", error);
-        return { success: false, msg: "Could not fetch the books" };
-      }
-      return { success: true, data: data };
+      const savedIds = saved.map((s) => s.bookId);
+      if (savedIds.length === 0) return { success: true, data: [] };
+
+      // Fetch the actual saved books
+      ({ data, error } = await supabase
+        .from("books")
+        .select("*")
+        .in("id", savedIds)
+        .order("created_at", { ascending: false })
+        .limit(limit));
     }
+
+    if (error) throw error;
+
+    return { success: true, data };
   } catch (error) {
-    console.log("fetchBooks error: ", error);
-    return { success: false, msg: "Could not fetch the books" };
+    console.error("fetchBooks error:", error.message);
+    return { success: false, msg: error.message };
   }
 };
 
@@ -128,11 +137,16 @@ export const deleteBook = async (bookId) => {
 
 //
 // function to save the post
-export const createSavePost = async (saveBook) => {
+export const createSaveBook = async (data) => {
   try {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("savedBooks")
-      .insert(saveBook)
+      .insert([
+        {
+          userId: data.userId,
+          bookId: data.bookId,
+        },
+      ])
       .select()
       .single();
 
@@ -144,6 +158,24 @@ export const createSavePost = async (saveBook) => {
   } catch (error) {
     console.log("saveBook error: ", error);
     return { success: false, msg: "Could save the book." };
+  }
+};
+
+//
+// function to check if the book was saved or not
+export const checkIfBookSaved = async (userId, bookId) => {
+  try {
+    const { data, error } = await supabase
+      .from("savedBooks")
+      .select("*")
+      .eq("userId", userId)
+      .eq("bookId", bookId);
+
+    if (error) throw error;
+    return { success: true, data };
+  } catch (error) {
+    console.log("checkIfBookSaved error:", error.message);
+    return { success: false, msg: error.message };
   }
 };
 
@@ -166,4 +198,19 @@ export const removeSaveBook = async (bookId, userId) => {
     console.log("unsaveBook error: ", error);
     return { success: false, msg: "Could not unsave the book." };
   }
+};
+
+//
+// function to get the numbero of books I've listed
+export const fetchBooksCount = async (userId) => {
+  const { count, error } = await supabase
+    .from("books")
+    .select("*", { count: "exact", head: true }) // head:true avoids returning data
+    .eq("userId", userId);
+
+  if (error) {
+    console.log("Error fetching book count:", error);
+    return 0;
+  }
+  return count;
 };

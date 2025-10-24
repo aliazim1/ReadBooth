@@ -105,8 +105,8 @@ export const useTabsStyles = () => {
 
         // books styles
         tabBarIndicatorStyle: {
-          width: 100,
-          marginLeft: 18,
+          // width: 100,
+          // marginLeft: 20,
           alignSelf: "center",
           justifyContent: "center",
           backgroundColor: activeColors.primary,

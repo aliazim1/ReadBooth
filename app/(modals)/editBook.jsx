@@ -1,21 +1,16 @@
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useEffect, useLayoutEffect, useState } from "react";
-import {
-  Alert,
-  Keyboard,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { Alert, Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import AppButton from "../../components/AppButton";
-import Avatar from "../../components/Avatar";
 import CustomInput from "../../components/CustomInput";
 import HeaderIcons from "../../components/HeaderIcons";
+import PostHeader from "../../components/PostHeader";
 import SafeScreen from "../../components/SafeScreen";
 import { useAuth } from "../../contexts/AuthContext";
-import { hp, wp } from "../../helpers/common";
+import { wp } from "../../helpers/common";
+
 import { editBook } from "../../services/bookServices";
 import { useScreensStyles } from ".././../styles/screensStyles";
 
@@ -86,13 +81,11 @@ const EditBook = () => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View>
             {/* the profile details  */}
-            <View style={styles.postHeader}>
-              <Avatar uri={user?.image} size={hp(6.5)} />
-              <View>
-                <Text style={styles.name}>{user?.name}</Text>
-                <Text style={styles.publicText}>Public</Text>
-              </View>
-            </View>
+            <PostHeader
+              item={user}
+              forPostCard={false}
+              style={{ paddingHorizontal: 0 }}
+            />
 
             {/* the text-field with actions */}
             <CustomInput
