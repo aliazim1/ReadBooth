@@ -12,7 +12,7 @@ import PostCard from "../../components/PostCard";
 import { useAuth } from "../../contexts/AuthContext";
 import { supabase } from "../../lib/supabase";
 import {
-  addNewCommentService,
+  addNewComment,
   fetchPostDetails,
   removePostComment,
 } from "../../services/postService";
@@ -78,7 +78,7 @@ const PostDetails = () => {
   };
 
   const onNewComment = async () => {
-    await addNewCommentService({
+    await addNewComment({
       user,
       post,
       comment,

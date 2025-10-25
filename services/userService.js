@@ -1,4 +1,5 @@
 import { supabase } from "../lib/supabase";
+import { removeNotification, sendNotification } from "./notificationService";
 
 export const getUserData = async (userId) => {
   try {
@@ -30,7 +31,6 @@ export const updateUserData = async (userId, data) => {
     }
     return { success: true, data };
   } catch (error) {
-    // display the error in the console
     console.log("Got Error: ", error);
     return { success: false, msg: error.message };
   }
@@ -47,16 +47,30 @@ export const toggleFollow = async (followerId, followingId, isFollowing) => {
         .delete()
         .eq("followerId", followerId)
         .eq("followingId", followingId);
-
       if (error) throw error;
+
+      const { error: notifError } = await removeNotification({
+        senderId: followerId,
+        receiverId: followingId,
+        type: "follow",
+      });
+
+      if (notifError) {
+        console.log("removeFollowNotification error:", notifError);
+      }
       return { success: true, following: false };
     } else {
-      // follow user (insert new record)
       const { error } = await supabase
         .from("follows")
         .insert([{ followerId, followingId }]);
-
       if (error) throw error;
+
+      sendNotification(
+        followerId, // sender id
+        followingId, // receiver id
+        "follow", // type
+        "started following you" // message
+      );
       return { success: true, following: true };
     }
   } catch (error) {
@@ -94,63 +108,3 @@ export const getFollows = async (userId, type) => {
     return { success: false, msg: err.message };
   }
 };
-
-// export const getFollows = async (userId, filterType, currentUserId) => {
-//   try {
-//     let query;
-
-//     if (filterType === "followers") {
-//       // users who follow this user
-//       query = supabase
-//         .from("follows")
-//         .select(
-//           `
-//           follower:followerId (
-//             id, name, username, image
-//           )
-//         `
-//         )
-//         .eq("followingId", userId);
-//     } else {
-//       // users this user follows
-//       query = supabase
-//         .from("follows")
-//         .select(
-//           `
-//           following:followingId (
-//             id, name, username, image
-//           )
-//         `
-//         )
-//         .eq("followerId", userId);
-//     }
-
-//     const { data, error } = await query;
-//     if (error) throw error;
-
-//     // Check if current user follows each person
-//     const withFollowStatus = await Promise.all(
-//       data.map(async (item) => {
-//         const targetUser =
-//           filterType === "followers" ? item.follower : item.following;
-
-//         const { data: followCheck } = await supabase
-//           .from("follows")
-//           .select("id")
-//           .eq("followerId", currentUserId)
-//           .eq("followingId", targetUser.id)
-//           .maybeSingle();
-
-//         return {
-//           ...targetUser,
-//           followed: !!followCheck,
-//         };
-//       })
-//     );
-
-//     return { success: true, data: withFollowStatus };
-//   } catch (e) {
-//     console.error("Error fetching follows:", e.message);
-//     return { success: false, msg: e.message };
-//   }
-// };

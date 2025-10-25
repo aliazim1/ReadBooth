@@ -1,8 +1,24 @@
 import { supabase } from "../lib/supabase";
 
-// function to create notification
-export const createNotification = async (notification) => {
+// helper Function: to create & send notifications (flexible for like, comment, follow)
+export const sendNotification = async (
+  senderId,
+  receiverId,
+  type,
+  message,
+  postId = null,
+  commentId = null
+) => {
+  if (senderId === receiverId) return; // don't notify myself
   try {
+    const notification = {
+      senderId: senderId,
+      receiverId: receiverId,
+      type: type,
+      message: message,
+      postId: postId,
+      commentId: commentId,
+    };
     const { data, error } = await supabase
       .from("notifications")
       .insert(notification)
@@ -23,31 +39,6 @@ export const createNotification = async (notification) => {
       success: false,
       msg: "Something went wrong while creating notification",
     };
-  }
-};
-
-// Helper Function: to send notifications (flexible for like, comment, follow)
-export const sendNotification = async (
-  senderId,
-  receiverId,
-  type,
-  message,
-  postId = null,
-  commentId = null
-) => {
-  if (senderId === receiverId) return; // don't notify yourself
-  try {
-    const notification = {
-      senderId: senderId,
-      receiverId: receiverId,
-      type: type,
-      message: message,
-      postId: postId,
-      commentId: commentId,
-    };
-    await createNotification(notification);
-  } catch (error) {
-    console.log("Notification error:", error);
   }
 };
 
@@ -77,20 +68,29 @@ export const fetchNotifications = async (receiverId) => {
 };
 
 // function to remove notification
-export const removeNotification = async (notificationId) => {
+export const removeNotification = async ({
+  notificationId,
+  senderId,
+  receiverId,
+  postId,
+  type, // "like", "comment", "follow"
+}) => {
   try {
-    const { error } = await supabase
-      .from("notifications")
-      .delete()
-      .eq("id", notificationId);
+    const query = supabase.from("notifications").delete();
 
-    if (error) {
-      console.log("removeNotification error: ", error);
-      return { success: false, msg: "Could not remove the notification" };
-    }
-    return { success: true, data: { notificationId } };
+    if (notificationId) query.eq("id", notificationId);
+    if (senderId) query.eq("senderId", senderId);
+    if (receiverId) query.eq("receiverId", receiverId);
+    if (postId) query.eq("postId", postId);
+    if (type) query.eq("type", type);
+
+    const { error } = await query;
+
+    if (error) throw error;
+
+    return { success: true };
   } catch (error) {
-    console.log("removeNotification error: ", error);
+    console.log("removeNotification error:", error.message);
     return { success: false, msg: "Could not remove the notification" };
   }
 };

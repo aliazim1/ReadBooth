@@ -21,13 +21,13 @@ export const getSupabaseFileUrl = (filePath) => {
 
 export const uploadFile = async (folderName, fileUri) => {
   try {
-    let fileName = getFilePath(folderName);
+    let fileName = `${folderName}/${new Date().getTime()}${".png"}`;
 
     const fileBase64 = await FileSystem.readAsStringAsync(fileUri, {
       encoding: FileSystem.EncodingType.Base64,
     });
 
-    // Convert base64 to Uint8Array
+    // convert base64 to Uint8Array
     const fileBytes = new Uint8Array(decode(fileBase64));
 
     let { data, error } = await supabase.storage
@@ -48,8 +48,4 @@ export const uploadFile = async (folderName, fileUri) => {
     console.log("file upload error: ", error);
     return { success: false, msg: "Could not upload media." };
   }
-};
-
-export const getFilePath = (folderName, isImage) => {
-  return `${folderName}/${new Date().getTime()}${".png"}`;
 };

@@ -1,6 +1,6 @@
 import { supabase } from "../lib/supabase";
 import { uploadFile } from "./imageService";
-import { sendNotification } from "./notificationService";
+import { removeNotification, sendNotification } from "./notificationService";
 import { getUserData } from "./userService";
 
 //
@@ -215,12 +215,11 @@ export const removePostLike = async (postId, userId) => {
     }
 
     // also remove the "like's" notification
-    const { error: notifError } = await supabase
-      .from("notifications")
-      .delete()
-      .eq("postId", postId)
-      .eq("senderId", userId)
-      .eq("type", "like");
+    const { error: notifError } = await removeNotification({
+      senderId: userId,
+      postId: postId,
+      type: "like",
+    });
 
     if (notifError) {
       console.log("remove like notification error:", notifError);
@@ -233,22 +232,68 @@ export const removePostLike = async (postId, userId) => {
 };
 
 //
-// function to add a new comment to the post
-export const createComment = async (comment) => {
+// Add new comment
+export const addNewComment = async ({
+  user,
+  post,
+  comment,
+  setPost,
+  setComment,
+  setLoadingSend,
+}) => {
+  if (!comment.trim()) return null;
+
+  const commentData = {
+    userId: user.id,
+    postId: post.id,
+    text: comment,
+  };
+
   try {
+    setLoadingSend(true);
     const { data, error } = await supabase
       .from("comments")
-      .insert(comment)
+      .insert(commentData)
       .select()
       .single();
 
-    if (error) {
-      console.log("comment error: ", error);
-      return { success: false, msg: "Could not create the comment" };
+    if (error) throw error;
+    setComment("");
+    setLoadingSend(false);
+
+    // send notification only if commenting on someone else’s post
+    if (post.userId !== user.id) {
+      await sendNotification(
+        user.id, // senderId
+        post.userId, // receiverId
+        "comment", // type
+        "commented on your post", // message
+        post.id, // postId
+        data.id // commentId
+      );
     }
-    return { success: true, data: data };
+
+    // fetch comment user data
+    const userRes = await getUserData(data.userId);
+    const newComment = {
+      ...data,
+      user: userRes.success ? userRes.data : {},
+    };
+
+    // update post state
+    setPost((prevPost) => {
+      if (prevPost.comments.some((c) => c.id === newComment.id))
+        return prevPost;
+      return {
+        ...prevPost,
+        comments: [newComment, ...prevPost.comments],
+      };
+    });
+
+    return { success: true, data };
   } catch (error) {
-    console.log("comment error: ", error);
+    console.log("addNewComment error:", error.message);
+    setLoadingSend(false);
     return { success: false, msg: "Could not create the comment" };
   }
 };
@@ -282,68 +327,6 @@ export const removePostComment = async (commentId, setPost) => {
     return { success: false, msg: "Could not remove the comment" };
   }
 };
-
-//
-// Add new comment
-export const addNewCommentService = async ({
-  user,
-  post,
-  comment,
-  setPost,
-  setComment,
-  setLoadingSend,
-}) => {
-  if (comment.trim() === "") return null;
-
-  const commentData = {
-    userId: user?.id,
-    postId: post?.id,
-    text: comment,
-  };
-
-  try {
-    setLoadingSend(true);
-    let res = await createComment(commentData);
-    setLoadingSend(false);
-    setComment("");
-
-    if (!res.success) {
-      Alert.alert("Comment", res.msg);
-      return;
-    }
-
-    // send notification
-    sendNotification(
-      user.id, // sender id
-      post.userId, // receiver id
-      "comment", // type
-      "commented on your post", // message
-      post.id, // postId
-      res?.data?.id // commentId
-    );
-
-    // fetch comment user data
-    let userRes = await getUserData(res.data.userId);
-    let newComment = {
-      ...res.data,
-      user: userRes.success ? userRes.data : {},
-    };
-
-    // update post state
-    setPost((prevPost) => {
-      if (prevPost.comments.some((c) => c.id === newComment.id))
-        return prevPost;
-      return {
-        ...prevPost,
-        comments: [newComment, ...prevPost.comments],
-      };
-    });
-  } catch (err) {
-    console.log("addNewCommentService error:", err);
-    setLoadingSend(false);
-  }
-};
-
 //
 // function to save the post
 export const createSavePost = async (savePost) => {

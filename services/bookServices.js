@@ -162,24 +162,6 @@ export const createSaveBook = async (data) => {
 };
 
 //
-// function to check if the book was saved or not
-export const checkIfBookSaved = async (userId, bookId) => {
-  try {
-    const { data, error } = await supabase
-      .from("savedBooks")
-      .select("*")
-      .eq("userId", userId)
-      .eq("bookId", bookId);
-
-    if (error) throw error;
-    return { success: true, data };
-  } catch (error) {
-    console.log("checkIfBookSaved error:", error.message);
-    return { success: false, msg: error.message };
-  }
-};
-
-//
 // gets all the saved books for the user (by userId)
 export const getSavedBookIdsForUser = async (userId) => {
   try {
