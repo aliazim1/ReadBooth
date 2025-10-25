@@ -10,7 +10,11 @@ import CustomAlert from "../../../components/CustomAlert";
 import HeaderIcons from "../../../components/HeaderIcons";
 import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
-import { deleteBook, fetchBooks } from "../../../services/bookServices";
+import {
+  deleteBook,
+  fetchBooks,
+  getSavedBookIdsForUser,
+} from "../../../services/bookServices";
 import { useTabsStyles } from "../../../styles/tabsStyles";
 const Tab = createMaterialTopTabNavigator();
 
@@ -58,9 +62,7 @@ const BookList = ({ user, filterType, saves, setSaves }) => {
 
   const filteredBooks =
     filterType === "savedBook"
-      ? books.filter((b) =>
-          saves.some((s) => s.bookId === b.id && s.userId === user.id)
-        )
+      ? books.filter((b) => saves.includes(b.id))
       : books;
 
   return (
@@ -75,9 +77,9 @@ const BookList = ({ user, filterType, saves, setSaves }) => {
           renderItem={({ item }) => (
             <BookItem
               item={item}
+              saves={saves}
               router={router}
               currentUser={user}
-              saves={saves}
               setSaves={setSaves}
               onDeleteBook={() => {
                 CustomAlert({
@@ -123,6 +125,15 @@ const Books = () => {
       ),
     });
   }, [navigation, router]);
+
+  useEffect(() => {
+    const loadSavedBooks = async () => {
+      const res = await getSavedBookIdsForUser(user.id);
+      if (res.success) setSaves(res.data); // array of saved bookIds
+    };
+
+    loadSavedBooks();
+  }, [user]);
 
   return (
     <Tab.Navigator

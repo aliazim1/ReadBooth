@@ -32,7 +32,7 @@ const OptionsModal = ({
           {!usedForUserDetails && owner && (
             <SettingListItem
               icon={"comment-edit"}
-              label={"Edit Post"}
+              label={"Edit post"}
               onPress={onEdit}
             />
           )}
@@ -40,7 +40,7 @@ const OptionsModal = ({
           {!usedForUserDetails && (
             <SettingListItem
               icon={"share"}
-              label={"Share Post"}
+              label={"Share post"}
               onPress={onShare}
             />
           )}
@@ -48,7 +48,7 @@ const OptionsModal = ({
             <SettingListItem
               chevron={false}
               icon={"eye-off"}
-              label={"Hide Post"}
+              label={"Hide post"}
               onPress={onHide}
             />
           )}
@@ -56,7 +56,7 @@ const OptionsModal = ({
           {!usedForUserDetails && !owner && (
             <SettingListItem
               icon={"flag"}
-              label={"Report Post"}
+              label={"Report post"}
               onPress={onReport}
             />
           )}
@@ -66,7 +66,7 @@ const OptionsModal = ({
             <SettingListItem
               chevron={false}
               icon={"trash-can"}
-              label={"Delete Post"}
+              label={"Delete post"}
               iconColor={activeColors.danger}
               labelColor={activeColors.danger}
               onPress={onDelete}

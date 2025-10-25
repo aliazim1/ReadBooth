@@ -23,7 +23,6 @@ const signup = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [fullName, setFullName] = useState("");
-  const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -50,7 +49,7 @@ const signup = () => {
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email: trimmedEmail,
         password: trimmedPassword,
         options: {

@@ -180,6 +180,25 @@ export const checkIfBookSaved = async (userId, bookId) => {
 };
 
 //
+// gets all the saved books for the user (by userId)
+export const getSavedBookIdsForUser = async (userId) => {
+  try {
+    const { data, error } = await supabase
+      .from("savedBooks")
+      .select("bookId")
+      .eq("userId", userId);
+
+    if (error) throw error;
+
+    // return just an array of bookIds
+    return { success: true, data: data.map((b) => b.bookId) };
+  } catch (error) {
+    console.log("getSavedBookIdsForUser error:", error.message);
+    return { success: false, msg: error.message };
+  }
+};
+
+//
 // function to unsave the book
 export const removeSaveBook = async (bookId, userId) => {
   try {
@@ -205,7 +224,7 @@ export const removeSaveBook = async (bookId, userId) => {
 export const fetchBooksCount = async (userId) => {
   const { count, error } = await supabase
     .from("books")
-    .select("*", { count: "exact", head: true }) // head:true avoids returning data
+    .select("*", { count: "exact", head: true })
     .eq("userId", userId);
 
   if (error) {

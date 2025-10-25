@@ -12,7 +12,7 @@ const TabLayout = () => {
   return (
     <Tabs
       screenOptions={{
-        tabBarShowLabel: false,
+        // tabBarShowLabel: false,
         headerShadowVisible: false,
         headerStyle: styles.headerStyle,
         tabBarStyle: styles.tabBarStyles,

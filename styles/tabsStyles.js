@@ -36,8 +36,7 @@ export const useTabsStyles = () => {
         //   shadowColor: "hsla(0, 0.00%, 0.00%, 0.30)",
         // },
         tabBarStyles: {
-          height: 80,
-          paddingTop: 10,
+          paddingTop: 8,
           borderTopWidth: 0.2,
           alignItems: "center",
           paddingHorizontal: 18,

@@ -23,7 +23,10 @@ import { appTheme } from "../../../constants/theme";
 import { useAuth } from "../../../contexts/AuthContext";
 import { hp } from "../../../helpers/common";
 import { supabase } from "../../../lib/supabase";
-import { fetchBooks } from "../../../services/bookServices";
+import {
+  fetchBooks,
+  getSavedBookIdsForUser,
+} from "../../../services/bookServices";
 import { fetchPosts } from "../../../services/postService";
 import {
   getFollows,
@@ -53,6 +56,7 @@ const UserDetails = () => {
   const [loading, setLoading] = useState(false);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
+  const [saves, setSaves] = useState([]);
 
   // function to load followers/following count
   const loadFollowsCount = async () => {
@@ -82,7 +86,14 @@ const UserDetails = () => {
     fetchUserInfo();
     getPosts();
     getBooks();
+    getSavedBooks();
   }, [user, userId]);
+
+  const getSavedBooks = async () => {
+    if (!user?.id) return;
+    const res = await getSavedBookIdsForUser(user.id);
+    if (res.success) setSaves(res.data); // res.data = [bookId, bookId, ...]
+  };
 
   // handle follow/unfollow
   const handleFollow = async () => {
@@ -119,7 +130,7 @@ const UserDetails = () => {
   const getBooks = async () => {
     if (!hasMoreBooks) return;
     limit += 9;
-    let res = await fetchBooks("myBook", user.id, limit);
+    let res = await fetchBooks("myBook", userId, limit);
     if (res.success) {
       setBooks(res.data);
       if (books.length === res.data.length) setHasMoreBooks(false);
@@ -141,6 +152,8 @@ const UserDetails = () => {
     });
     getPosts();
     getBooks();
+    getSavedBooks();
+    loadFollowsCount();
   }, [navigation, router, userData, posts, books]);
 
   // refresh when navigating back
@@ -148,6 +161,7 @@ const UserDetails = () => {
     useCallback(() => {
       getPosts();
       getBooks();
+      getSavedBooks();
       loadFollowsCount();
     }, [userId])
   );
@@ -333,13 +347,13 @@ const UserDetails = () => {
           activeTab == "posts" ? (
             <PostGridItem item={item} router={router} />
           ) : (
-            <HorizontalPadding style={{}}>
+            <HorizontalPadding>
               <BookItem
                 item={item}
-                saves={[]}
-                setSaves={() => {}}
+                saves={saves}
                 router={router}
                 currentUser={user}
+                setSaves={setSaves}
                 style={{ marginBottom: 10 }}
               />
             </HorizontalPadding>

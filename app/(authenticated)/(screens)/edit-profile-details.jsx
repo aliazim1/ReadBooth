@@ -138,6 +138,7 @@ const EditProfileDetails = () => {
               placeholder={"Choose a username"}
               label={"Username"}
               autoCapitalize={""}
+              autoCorrect={false}
               value={user.username}
               onChangeText={(value) => setUser({ ...user, username: value })}
             />
