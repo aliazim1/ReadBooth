@@ -1,6 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 
-import { hp } from "../helpers/common";
+import { hp } from "../lib/common";
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppButton from "./AppButton";
 import AppText from "./AppText";

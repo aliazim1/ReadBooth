@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 import { getData, storeData } from "../config/asyncstorage";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
-import { NotificationsProvider } from "../contexts/NotificationsContext";
+import { BadgeProvider } from "../contexts/BadgeContext";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { supabase } from "../lib/supabase";
 import { getUserData } from "../services/userService";
@@ -47,10 +47,10 @@ const RootLayout = () => {
   return (
     <ThemeContext.Provider value={{ theme, updateTheme }}>
       <AuthProvider>
-        <NotificationsProvider>
+        <BadgeProvider>
           <StatusBar style={theme.mode === "dark" ? "light" : "dark"} />
           <MainLayout />
-        </NotificationsProvider>
+        </BadgeProvider>
       </AuthProvider>
     </ThemeContext.Provider>
   );

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Alert, Linking, Pressable, Share, View } from "react-native";
 import ParsedText from "react-native-parsed-text";
 
-import { stripHtmlTags } from "../helpers/common";
+import { stripHtmlTags } from "../lib/common";
 import { getSupabaseFileUrl } from "../services/imageService";
 import {
   createPostLike,

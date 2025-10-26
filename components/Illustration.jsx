@@ -1,5 +1,5 @@
 import { Image, StyleSheet } from "react-native";
-import { hp, wp } from "../helpers/common";
+import { hp, wp } from "../lib/common";
 
 const Illustration = ({ source }) => {
   return <Image style={styles.image} resizeMode="contain" source={source} />;

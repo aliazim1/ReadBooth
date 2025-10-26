@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import moment from "moment";
 import { Pressable, Text, TouchableOpacity, View } from "react-native";
 
-import { hp } from "../helpers/common";
+import { hp } from "../lib/common";
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppText from "./AppText";
 import Avatar from "./Avatar";

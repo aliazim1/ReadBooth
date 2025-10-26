@@ -1,4 +1,5 @@
 import { StyleSheet, View } from "react-native";
+
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppText from "./AppText";
 
@@ -9,7 +10,6 @@ export default function OrDivider({
   lineStyle,
 }) {
   const { activeColors } = useComponentsStyles();
-
   return (
     <View style={[styles.row, containerStyle]}>
       <View style={[styles.line, lineStyle]} />

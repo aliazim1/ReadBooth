@@ -4,7 +4,7 @@ import moment from "moment";
 import { useState } from "react";
 import { Alert, Pressable, Share, View } from "react-native";
 
-import { stripHtmlTags } from "../helpers/common";
+import { stripHtmlTags } from "../lib/common";
 import { createSaveBook, removeSaveBook } from "../services/bookServices";
 import { getSupabaseFileUrl } from "../services/imageService";
 import { useComponentsStyles } from "../styles/componentsStyles";

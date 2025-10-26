@@ -9,7 +9,7 @@ import HeaderIcons from "../../components/HeaderIcons";
 import PostHeader from "../../components/PostHeader";
 import SafeScreen from "../../components/SafeScreen";
 import { useAuth } from "../../contexts/AuthContext";
-import { wp } from "../../helpers/common";
+import { wp } from "../../lib/common";
 
 import { editBook } from "../../services/bookServices";
 import { useScreensStyles } from ".././../styles/screensStyles";

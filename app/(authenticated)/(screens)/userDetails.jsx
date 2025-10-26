@@ -19,9 +19,9 @@ import OptionsModal from "../../../components/OptionsModal";
 import PostGridItem from "../../../components/PostGridItem";
 import SafeScreen from "../../../components/SafeScreen";
 import StatsItem from "../../../components/StatsItem";
-import { appTheme } from "../../../constants/theme";
+import { appTheme } from "../../../config/theme";
 import { useAuth } from "../../../contexts/AuthContext";
-import { hp } from "../../../helpers/common";
+import { hp } from "../../../lib/common";
 import { supabase } from "../../../lib/supabase";
 import {
   fetchBooks,

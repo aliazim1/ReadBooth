@@ -60,10 +60,45 @@ export const fetchNotifications = async (receiverId) => {
       console.log("fetchNotifications error: ", error);
       return { success: false, msg: "Could not fetch notification" };
     }
-    return { success: true, data: data };
+    return { success: true, data };
   } catch (error) {
     console.log("fetchNotifications error: ", error);
-    return { success: false, msg: "Could not fetch notification" };
+    return { success: false, msg: error.message };
+  }
+};
+
+//
+//  mark a single notification as read
+export const markNotificationRead = async (notificationId) => {
+  try {
+    const { error } = await supabase
+      .from("notifications")
+      .update({ isRead: true })
+      .eq("id", notificationId);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (error) {
+    console.log("markNotificationRead error:", error.message);
+    return { success: false };
+  }
+};
+
+//
+// mark all notifications as read
+export const markAllNotificationsRead = async (userId) => {
+  try {
+    const { error } = await supabase
+      .from("notifications")
+      .update({ isRead: true })
+      .eq("receiverId", userId)
+      .eq("isRead", false);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (error) {
+    console.log("markAllNotificationsRead error:", error.message);
+    return { success: false };
   }
 };
 

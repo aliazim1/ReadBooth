@@ -1,110 +1,71 @@
-import { Ionicons } from "@expo/vector-icons";
-import { useNavigation, useRouter } from "expo-router";
-import { useEffect, useLayoutEffect } from "react";
-import { Alert, ScrollView, View } from "react-native";
+import { useFocusEffect } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
 
-import AppText from "../../../components/AppText";
-import CustomAlert from "../../../components/CustomAlert";
-import HeaderIcons from "../../../components/HeaderIcons";
-import NotificationItem from "../../../components/NotificationItem";
 import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
-import { useNotifications } from "../../../contexts/NotificationsContext";
-import { removeNotification } from "../../../services/notificationService";
+import { useTabBadge } from "../../../contexts/BadgeContext";
+import { supabase } from "../../../lib/supabase";
 import { useTabsStyles } from "../../../styles/tabsStyles";
 
 const Notifications = () => {
-  const { styles, activeColors } = useTabsStyles();
+  const { styles } = useTabsStyles();
   const { user } = useAuth();
-  const router = useRouter();
-  const navigation = useNavigation();
-  const { notifications, setNotifications, clearBadge, loadNotifications } =
-    useNotifications();
+  const { setBadgeCount } = useTabBadge();
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    if (user?.id) loadNotifications(user.id);
-  }, [user]);
+    fetchNotifications();
+  }, []);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      clearBadge();
-    });
-    return unsubscribe;
-  }, [navigation]);
+  useFocusEffect(
+    useCallback(() => {
+      setBadgeCount(0);
+    }, [])
+  );
 
-  const deleteNotification = async (id) => {
-    let res = await removeNotification(id);
-    if (res.success) {
-      setNotifications((prev) => prev.filter((n) => n.id !== id));
-    } else {
-      Alert.alert("Notificaiton", res.msg || "Failed to delete notification");
-    }
+  const fetchNotifications = async () => {
+    const { data, error } = await supabase
+      .from("notifications")
+      .select("*")
+      .eq("receiverId", user.id)
+      .order("created_at", { ascending: false });
+
+    if (!error) setNotifications(data);
+    else console.log("fetchNotifications error:", error);
   };
 
-  const onDeleteNotification = ({ id }) => {
-    CustomAlert({
-      title: "Delete Notification",
-      message: "Are you sure you want to delete this notification?",
-      onConfirm: () => deleteNotification(id),
-    });
+  const handleNotificationPress = async (id) => {
+    await supabase.from("notifications").update({ isRead: true }).eq("id", id);
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
+    );
   };
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderIcons
-          icon2="filter"
-          size={24}
-          style={{ marginRight: 10 }}
-          onPress2={() =>
-            notifications.length === 0
-              ? null
-              : CustomAlert({
-                  title: "Clear All Notifications",
-                  message: "Are you sure you want to delete all notifications?",
-                  onConfirm: async () => {
-                    try {
-                      await Promise.all(
-                        notifications.map((n) => removeNotification(n.id))
-                      );
-                      setNotifications([]);
-                    } catch (error) {
-                      Alert.alert("Error", "Failed to clear notifications.");
-                    }
-                  },
-                })
-          }
-        />
-      ),
-    });
-  }, [notifications, navigation, router]);
+  const renderNotification = ({ item }) => (
+    <TouchableOpacity
+      onPress={() => handleNotificationPress(item.id)}
+      style={{
+        backgroundColor: item.isRead ? "#fff" : "#e6f0ff", // different color for new notifications
+        padding: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: "#eee",
+      }}
+    >
+      <Text style={styles.text}>{item.message}</Text>
+    </TouchableOpacity>
+  );
 
   return (
     <SafeScreen>
-      {notifications.length > 0 ? (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.container}
-        >
-          {notifications.map((item) => (
-            <NotificationItem
-              item={item}
-              key={item?.id}
-              router={router}
-              onDeleteNotification={() => onDeleteNotification({ id: item.id })}
-            />
-          ))}
-        </ScrollView>
-      ) : (
-        <View style={styles.noNofiticationsContainer}>
-          <Ionicons
-            size={30}
-            color={activeColors.text}
-            name="notifications-outline"
-          />
-          <AppText>No notifications yet</AppText>
-        </View>
-      )}
+      <View style={{ flex: 1 }}>
+        <FlatList
+          data={notifications}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderNotification}
+          contentContainerStyle={{ paddingVertical: 10 }}
+        />
+      </View>
     </SafeScreen>
   );
 };

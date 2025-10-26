@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { memo } from "react";
 import { Switch, TouchableOpacity, View } from "react-native";
 
-import { hp } from "../helpers/common";
+import { hp } from "../lib/common";
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppText from "./AppText";
 
@@ -15,6 +15,7 @@ const SettingListItem = ({
   toggle = false,
   description,
   value,
+  labelStyle,
   onValueChange,
   onPress,
   style,
@@ -70,10 +71,13 @@ const SettingListItem = ({
           />
         )}
         <AppText
-          style={{
-            color: labelColor || activeColors.text,
-            fontSize: hp(1.8),
-          }}
+          style={[
+            {
+              color: labelColor || activeColors.text,
+              fontSize: hp(1.8),
+            },
+            labelStyle,
+          ]}
         >
           {label}
         </AppText>

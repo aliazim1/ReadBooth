@@ -16,7 +16,7 @@ import AppIonicon from "../../../components/AppIonicon";
 import CustomInput from "../../../components/CustomInput";
 import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
-import { wp } from "../../../helpers/common";
+import { wp } from "../../../lib/common";
 import { getUserImageSrc, uploadFile } from "../../../services/imageService";
 import { updateUserData } from "../../../services/userService";
 import { useScreensStyles } from "../../../styles/screensStyles";

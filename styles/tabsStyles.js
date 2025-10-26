@@ -1,9 +1,9 @@
 import { useContext, useMemo } from "react";
 import { StyleSheet } from "react-native";
 
-import { appTheme, colors } from "../constants/theme";
+import { appTheme, colors } from "../config/theme";
 import { ThemeContext } from "../contexts/ThemeContext";
-import { hp, wp } from "../helpers/common";
+import { hp, wp } from "../lib/common";
 
 export const useTabsStyles = () => {
   const { theme } = useContext(ThemeContext);

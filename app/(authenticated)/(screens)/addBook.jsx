@@ -19,7 +19,7 @@ import CustomInput from "../../../components/CustomInput";
 import PostHeader from "../../../components/PostHeader";
 import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
-import { wp } from "../../../helpers/common";
+import { wp } from "../../../lib/common";
 import { addBook } from "../../../services/bookServices";
 import { getSupabaseFileUrl } from "../../../services/imageService";
 import { useScreensStyles } from ".././../../styles/screensStyles";

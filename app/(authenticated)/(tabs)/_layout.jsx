@@ -1,18 +1,60 @@
 import { Ionicons, MaterialIcons, Octicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
+import { useEffect, useState } from "react";
 
 import AppText from "../../../components/AppText";
-import { useNotifications } from "../../../contexts/NotificationsContext";
+import { useAuth } from "../../../contexts/AuthContext";
+import { useTabBadge } from "../../../contexts/BadgeContext";
+import { supabase } from "../../../lib/supabase";
 import { useTabsStyles } from "../../../styles/tabsStyles";
 
 const TabLayout = () => {
   const { styles, activeColors } = useTabsStyles();
-  const { badgeCount } = useNotifications();
+  const { user } = useAuth();
+  const { badgeCount, setBadgeCount } = useTabBadge();
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    // fetch initial unread count
+    const fetchUnreadCount = async () => {
+      const { count, error } = await supabase
+        .from("notifications")
+        .select("*", { count: "exact", head: true })
+        .eq("receiverId", user.id)
+        .eq("isRead", false);
+      if (error) console.error("fetchUnreadCount error:", error);
+      else setBadgeCount(count ?? 0);
+    };
+
+    fetchUnreadCount();
+    // subscribe to new notification inserts
+    const channel = supabase
+      .channel("notifications_channel")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "notifications",
+          filter: `receiverId=eq.${user.id}`,
+        },
+        (payload) => {
+          setNotifications((prev) => [payload.new, ...prev]);
+          setBadgeCount((prev) => prev + 1);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user?.id]);
 
   return (
     <Tabs
       screenOptions={{
-        // tabBarShowLabel: false,
         headerShadowVisible: false,
         headerStyle: styles.headerStyle,
         tabBarStyle: styles.tabBarStyles,
@@ -63,19 +105,19 @@ const TabLayout = () => {
           title: "Notifications",
           headerTitle: "",
           tabBarBadge: badgeCount > 0 ? badgeCount : undefined,
-          // tabBarBadgeStyle: styles.tabBarBadge,
           headerLeft: () => (
             <AppText style={styles.nbpHeaderTitle}>Notifications</AppText>
           ),
           tabBarIcon: ({ focused }) => (
             <Ionicons
-              name={"notifications"}
+              name="notifications"
               size={28}
               color={focused ? activeColors.text : activeColors.mediumGrey}
             />
           ),
         }}
       />
+
       <Tabs.Screen
         name="profile"
         options={{
@@ -83,7 +125,7 @@ const TabLayout = () => {
           headerTitle: "",
           tabBarIcon: ({ focused }) => (
             <Ionicons
-              name={"person"}
+              name="person"
               size={28}
               color={focused ? activeColors.text : activeColors.mediumGrey}
             />
@@ -95,17 +137,3 @@ const TabLayout = () => {
 };
 
 export default TabLayout;
-{
-  /* 
-  // screenOptions={{
-      //   tabBarShowLabel: false,
-      //   headerShadowVisible: false,
-      //   tabBarStyle: styles.tabBarStyle,
-      //   headerStyle: styles.headerStyle,
-      //   tabBarBadgeStyle: styles.tabBarBadge,
-      //   headerTintColor: activeColors.text,
-      //   tabBarActiveTintColor: activeColors.text,
-      //   tabBarInactiveTintColor: activeColors.mediumGrey,
-      // }}
-  */
-}

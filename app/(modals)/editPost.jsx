@@ -9,7 +9,7 @@ import CustomInput from "../../components/CustomInput";
 import PostHeader from "../../components/PostHeader";
 import SafeScreen from "../../components/SafeScreen";
 import { useAuth } from "../../contexts/AuthContext";
-import { hp, wp } from "../../helpers/common";
+import { hp, wp } from "../../lib/common";
 import { updatePost } from "../../services/postService";
 
 const EditPost = () => {

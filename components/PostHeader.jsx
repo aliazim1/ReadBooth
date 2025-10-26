@@ -1,7 +1,7 @@
 import { Pressable, Text, View } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
-import { hp } from "../helpers/common";
+import { hp } from "../lib/common";
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppText from "./AppText";
 import Avatar from "./Avatar";

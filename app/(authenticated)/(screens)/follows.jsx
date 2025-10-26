@@ -7,7 +7,7 @@ import AppText from "../../../components/AppText";
 import FollowsListItem from "../../../components/FollowsListItem";
 import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
-import { hp } from "../../../helpers/common";
+import { hp } from "../../../lib/common";
 import { supabase } from "../../../lib/supabase";
 import { getFollows } from "../../../services/userService";
 import { useScreensStyles } from "../../../styles/screensStyles";

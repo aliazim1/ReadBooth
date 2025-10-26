@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
-import { appTheme } from "../constants/theme";
-import { hp } from "../helpers/common";
+import { appTheme } from "../config/theme";
+import { hp } from "../lib/common";
 import AppText from "./AppText";
 
 const HeaderPunchLine = ({ title, punchLine }) => {

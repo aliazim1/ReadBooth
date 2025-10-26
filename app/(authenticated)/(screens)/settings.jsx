@@ -82,6 +82,7 @@ const Settings = () => {
           iconColor={activeColors.danger}
           labelColor={activeColors.danger}
           style={{ paddingVertical: 16 }}
+          labelStyle={{ fontWeight: "bold" }}
           onPress={() => handleLogOutBtn()}
         />
 

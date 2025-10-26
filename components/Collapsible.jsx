@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 
-// Enable smooth animation on Android
+// enable smooth animation on Android
 if (
   Platform.OS === "android" &&
   UIManager.setLayoutAnimationEnabledExperimental

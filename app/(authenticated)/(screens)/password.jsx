@@ -6,7 +6,7 @@ import AppButton from "../../../components/AppButton";
 import CustomInput from "../../../components/CustomInput";
 import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
-import { wp } from "../../../helpers/common";
+import { wp } from "../../../lib/common";
 import { useScreensStyles } from "../../../styles/screensStyles";
 
 const ChangePassword = () => {
