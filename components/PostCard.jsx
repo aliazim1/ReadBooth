@@ -147,6 +147,7 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
     <View style={styles.container}>
       <PostHeader
         item={item}
+        verifyBadge={true}
         createdAt={createdAt}
         onNavigate={() => {
           router.push({
@@ -195,7 +196,7 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
             size={21}
             label={likes?.length}
             name={liked ? "heart" : "heart-outline"}
-            color={liked ? activeColors.danger : activeColors.teiconsColorxt}
+            color={liked ? activeColors.danger : activeColors.iconsColor}
           />
           <AppPressableIoniconIcon
             name="chatbubble-outline"

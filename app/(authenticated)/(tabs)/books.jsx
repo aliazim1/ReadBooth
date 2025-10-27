@@ -113,6 +113,15 @@ const Books = () => {
   const [saves, setSaves] = useState([]);
   const { activeColors, styles } = useTabsStyles();
 
+  useEffect(() => {
+    if (!user?.id) return; // prevent crash when user logs out
+    const loadSavedBooks = async () => {
+      const res = await getSavedBookIdsForUser(user.id);
+      if (res.success) setSaves(res.data);
+    };
+    loadSavedBooks();
+  }, [user?.id]);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -126,14 +135,8 @@ const Books = () => {
     });
   }, [navigation, router]);
 
-  useEffect(() => {
-    const loadSavedBooks = async () => {
-      const res = await getSavedBookIdsForUser(user.id);
-      if (res.success) setSaves(res.data); // array of saved bookIds
-    };
-
-    loadSavedBooks();
-  }, [user]);
+  // if user is null (logged out), don’t render anything
+  if (!user) return null;
 
   return (
     <Tab.Navigator

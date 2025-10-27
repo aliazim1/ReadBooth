@@ -126,41 +126,6 @@ const CreatePost = () => {
     }
   };
 
-  // const onSubmit = async () => {
-  //   if (bodyContent.trim() === "" && !file) {
-  //     Alert.alert("Empty Post", "Your post can’t be empty.");
-  //     return;
-  //   }
-
-  //   let postData = {
-  //     file,
-  //     body: bodyContent,
-  //     userId: user?.id,
-  //   };
-
-  //   // Ensure comments array exists to prevent PostCard crash
-  //   const newPost = {
-  //     ...postData,
-  //     comments: [],
-  //   };
-
-  //   setLoading(true);
-  //   let res = await createPost(newPost);
-  //   setLoading(false);
-
-  //   if (res.success) {
-  //     setFile(null);
-  //     setBodyContent("");
-  //     setShowSuccess(true);
-  //     setTimeout(() => {
-  //       setShowSuccess(false);
-  //       router.back();
-  //     }, 2000);
-  //   } else {
-  //     Alert.alert("Post", res.msg);
-  //   }
-  // };
-
   return (
     <SafeScreen>
       <KeyboardAwareScrollView
@@ -187,6 +152,7 @@ const CreatePost = () => {
               onChangeText={setBodyContent}
               multiline={true}
               autoCorrect={true}
+              autoCapitalize={"sentences"}
               numberOfLines={5}
               style={styles.bio}
             />

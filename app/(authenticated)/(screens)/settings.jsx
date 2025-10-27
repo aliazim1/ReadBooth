@@ -30,6 +30,7 @@ const Settings = () => {
       if (error) {
         Alert.alert("Sign Out", "Error signing out");
       }
+      router.replace("/welcome");
     } catch (err) {
       Alert.alert("Sign Out", "Something went wrong. Please try again.");
     }

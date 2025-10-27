@@ -25,12 +25,22 @@ const signup = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
   const onSubmit = async () => {
     const trimmedName = fullName.trim();
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
+    const trimmedConfrimPassword = confirmPassword.trim();
+
+    if (trimmedName === "") {
+      setError("Please enter your name.");
+      return;
+    } else if (trimmedName.length < 2) {
+      setError("Name cannot be one character");
+      return;
+    }
 
     if (!trimmedEmail.includes("@") || !trimmedEmail.includes(".")) {
       setError("Please enter a valid email.");
@@ -41,8 +51,12 @@ const signup = () => {
       setError("Password must be at least 8 characters.");
       return;
     }
-    if (trimmedName.length < 2) {
-      setError("Name cannot be one character");
+    if (trimmedConfrimPassword.length < 8) {
+      setError("Password must be at least 8 characters.");
+      return;
+    }
+    if (trimmedPassword != trimmedConfrimPassword) {
+      setError("Passwords do not match.");
       return;
     }
 
@@ -89,7 +103,6 @@ const signup = () => {
               <CustomInput
                 label={"Full Name"}
                 placeholder="Enter your full name"
-                style={{ marginTop: 10 }}
                 autoCapitalize={"words"}
                 value={fullName}
                 onChangeText={setFullName}
@@ -98,7 +111,6 @@ const signup = () => {
                 label={"Email"}
                 placeholder="Enter your email address"
                 keyboardType="email-address"
-                style={{ marginTop: 10 }}
                 autoCapitalize=""
                 value={email}
                 onChangeText={setEmail}
@@ -107,9 +119,15 @@ const signup = () => {
                 label={"Password"}
                 placeholder="Create a password"
                 secureTextEntry={true}
-                style={{ marginTop: 10 }}
                 value={password}
                 onChangeText={setPassword}
+              />
+              <CustomInput
+                label={"Confirm Password"}
+                placeholder="Confirm password"
+                secureTextEntry={true}
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
               />
             </View>
 
@@ -122,7 +140,7 @@ const signup = () => {
 
             <View style={styles.btn}>
               <AppButton
-                title={"Submit"}
+                title={"Sign Up"}
                 onPress={onSubmit}
                 isLoading={loading}
               />

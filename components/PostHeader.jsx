@@ -1,6 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { hp } from "../lib/common";
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppText from "./AppText";
@@ -10,6 +10,7 @@ const PostHeader = ({
   item,
   createdAt,
   onNavigate,
+  verifyBadge = false,
   forPostCard = true,
   style,
   onPress,
@@ -21,10 +22,17 @@ const PostHeader = ({
       <View style={styles.headerFirstRow}>
         <Avatar size={hp(5)} uri={item?.user?.image || item?.image} />
         <View>
-          <Text style={styles.name}>
-            {forPostCard ? item?.user?.name : item?.name}
-          </Text>
-
+          <View style={styles.nameAndMark}>
+            <Text style={styles.name}>
+              {forPostCard ? item?.user?.name : item?.name}
+            </Text>
+            {verifyBadge && (
+              <MaterialCommunityIcons
+                name={"check-decagram"}
+                color={activeColors.blue}
+              />
+            )}
+          </View>
           <AppText style={styles.username}>
             {forPostCard ? `@${item?.user?.username}` : "Public"}
           </AppText>

@@ -60,22 +60,32 @@ const MainLayout = () => {
   const { activeColors } = useComponentsStyles();
   const router = useRouter();
   const { setAuth, setUserData } = useAuth();
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        setAuth(session?.user);
-        updateUserData(session?.user, session?.user?.email);
-        router.replace("/home");
-      } else {
-        setAuth(null);
-        router.replace("/welcome");
+    setIsMounted(true);
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (!isMounted) return; // ensures layout is ready before navigating
+
+        if (session) {
+          setAuth(session.user);
+          updateUserData(session.user, session.user.email);
+          router.replace("/home");
+        } else {
+          setAuth(null);
+          router.replace("/welcome");
+        }
       }
-    });
-  }, []);
+    );
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, [isMounted]);
 
   const updateUserData = async (user, email) => {
-    let res = await getUserData(user?.id);
+    const res = await getUserData(user?.id);
     if (res.success) setUserData({ ...res.data, email });
   };
 

@@ -190,6 +190,7 @@ export const useComponentsStyles = () => {
         //  custom input styles
         inputLabel: {
           marginTop: 20,
+          marginBottom: 4,
           fontWeight: appTheme.fonts.bold,
         },
         textInput: {
@@ -202,10 +203,11 @@ export const useComponentsStyles = () => {
         // notification item styles
         notificationContaienr: {
           flex: 1,
+          paddingVertical: 10,
           flexDirection: "row",
           alignItems: "center",
+          paddingHorizontal: wp(4),
           justifyContent: "space-between",
-          marginVertical: 10,
         },
         row: {
           gap: 8,
@@ -231,6 +233,19 @@ export const useComponentsStyles = () => {
           width: 20,
           justifyContent: "flex-end",
         },
+        notificationTypeIcon: {
+          position: "absolute",
+          bottom: -7,
+          right: -2,
+          padding: 2,
+          borderRadius: 30,
+          backgroundColor: activeColors.background,
+        },
+        notificationMsgContainer: {
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 3,
+        },
 
         //
         // post card styles
@@ -250,6 +265,11 @@ export const useComponentsStyles = () => {
           alignItems: "center",
           justifyContent: "space-between",
         },
+        nameAndMark: {
+          gap: 5,
+          flexDirection: "row",
+          alignItems: "center",
+        },
         username: {
           fontSize: hp(1.5),
           color: activeColors.mediumGrey,
@@ -257,10 +277,11 @@ export const useComponentsStyles = () => {
         },
         postHeaderRightIcons: {
           flex: 1,
+          gap: 15,
           marginTop: -12,
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
         },
         createdAt: {
           marginBottom: 2,

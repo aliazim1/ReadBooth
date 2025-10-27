@@ -117,19 +117,20 @@ export const useScreensStyles = () => {
         // edit profile details styles
         contentContainerStyle: {
           flexGrow: 1,
-          marginTop: 10,
           marginBottom: 20,
           paddingHorizontal: wp(4),
         },
         profileDetails: {
-          marginTop: hp(1),
           alignItems: "center",
           justifyContent: "center",
         },
         add: {
           position: "absolute",
-          bottom: -10,
-          left: wp(8.5),
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 3,
+          bottom: -4,
+          alignSelf: "center",
           borderRadius: 50,
           paddingVertical: 1,
           paddingHorizontal: 8,
@@ -139,6 +140,10 @@ export const useScreensStyles = () => {
           shadowOpacity: 1,
           shadowRadius: 5,
           elevation: 5,
+        },
+        uploadLabel: {
+          fontSize: hp(1.4),
+          color: activeColors.text,
         },
         avatar: {
           width: 100,

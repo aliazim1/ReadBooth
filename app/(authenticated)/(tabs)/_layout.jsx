@@ -46,7 +46,6 @@ const TabLayout = () => {
         }
       )
       .subscribe();
-
     return () => {
       supabase.removeChannel(channel);
     };
@@ -85,10 +84,10 @@ const TabLayout = () => {
         name="books"
         options={{
           title: "Books",
-          headerTitle: "",
-          headerLeft: () => (
-            <AppText style={styles.nbpHeaderTitle}>Book Shelf</AppText>
-          ),
+          headerTitle: "Book Shelf",
+          // headerLeft: () => (
+          //   <AppText style={styles.nbpHeaderTitle}>Book Shelf</AppText>
+          // ),
           tabBarIcon: ({ focused }) => (
             <MaterialIcons
               name="menu-book"
@@ -103,11 +102,11 @@ const TabLayout = () => {
         name="notifications"
         options={{
           title: "Notifications",
-          headerTitle: "",
+          headerTitle: "Notifications",
           tabBarBadge: badgeCount > 0 ? badgeCount : undefined,
-          headerLeft: () => (
-            <AppText style={styles.nbpHeaderTitle}>Notifications</AppText>
-          ),
+          // headerLeft: () => (
+          //   <AppText style={styles.nbpHeaderTitle}>Notifications</AppText>
+          // ),
           tabBarIcon: ({ focused }) => (
             <Ionicons
               name="notifications"

@@ -81,7 +81,6 @@ export default function login() {
                 label={"Email"}
                 placeholder="Enter your email address"
                 keyboardType="email-address"
-                style={{ marginTop: 10 }}
                 value={email}
                 autoCapitalize=""
                 autoCorrect={false}
@@ -92,7 +91,6 @@ export default function login() {
                 label={"Password"}
                 placeholder="Enter your password"
                 secureTextEntry={true}
-                style={{ marginTop: 10 }}
                 value={password}
                 onChangeText={setPassword}
               />

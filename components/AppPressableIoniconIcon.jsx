@@ -11,6 +11,7 @@ const AppPressableIoniconIcon = ({
   onPress,
   size = 19,
   width = 60,
+  useForPostFooter = true,
   showLabel = true,
   color,
   style,
@@ -19,7 +20,11 @@ const AppPressableIoniconIcon = ({
   return (
     <Pressable
       onPress={onPress}
-      style={[styles.footerBtnContainer, { width: width }, style]}
+      style={[
+        styles.footerBtnContainer,
+        { width: useForPostFooter && width },
+        style,
+      ]}
     >
       {name && (
         <Ionicons

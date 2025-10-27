@@ -104,8 +104,6 @@ export const useTabsStyles = () => {
 
         // books styles
         tabBarIndicatorStyle: {
-          // width: 100,
-          // marginLeft: 20,
           alignSelf: "center",
           justifyContent: "center",
           backgroundColor: activeColors.primary,
@@ -131,10 +129,7 @@ export const useTabsStyles = () => {
         },
 
         // notifications styles
-        container: {
-          flex: 1,
-          paddingHorizontal: wp(4),
-        },
+        container: { flex: 1, paddingHorizontal: wp(4) },
 
         // profile styles
         headerLeftContainer: {
@@ -157,6 +152,20 @@ export const useTabsStyles = () => {
           flexDirection: "row",
           alignItems: "center",
           gap: 10,
+        },
+        followBtnContainer: {
+          bottom: -10,
+          borderRadius: 30,
+          alignSelf: "center",
+          position: "absolute",
+          alignItems: "center",
+          paddingHorizontal: 5,
+          justifyContent: "center",
+          backgroundColor: activeColors.background,
+        },
+        followLabel: {
+          fontSize: hp(1.2),
+          fontWeight: "bold",
         },
         statRow: {
           flexDirection: "row",

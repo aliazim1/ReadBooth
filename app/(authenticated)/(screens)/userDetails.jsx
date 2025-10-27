@@ -8,8 +8,8 @@ import {
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 
-import AppButton from "../../../components/AppButton";
 import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
+import AppPressableIoniconIcon from "../../../components/AppPressableIoniconIcon";
 import AppText from "../../../components/AppText";
 import Avatar from "../../../components/Avatar";
 import BookItem from "../../../components/BookItem";
@@ -137,18 +137,19 @@ const UserDetails = () => {
     }
   };
 
-  // used for header + icons
+  // used for header + icons (only show if not own profile)
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: userData?.name || "User Details",
-      headerRight: () => (
-        <AppIoniconTouchable
-          style={{ marginLeft: 7 }}
-          size={20}
-          name="ellipsis-horizontal"
-          onPress={() => setMenuVisible(true)}
-        />
-      ),
+      headerRight: () =>
+        userId !== user.id ? (
+          <AppIoniconTouchable
+            style={{ marginLeft: 7 }}
+            size={20}
+            name={"ellipsis-horizontal"}
+            onPress={() => setMenuVisible(true)}
+          />
+        ) : null,
     });
     getPosts();
     getBooks();
@@ -206,7 +207,22 @@ const UserDetails = () => {
             <HorizontalPadding>
               <View style={styles.profileColumn}>
                 <View style={styles.imgNameRow}>
-                  <Avatar uri={userData?.image} />
+                  <View style={{}}>
+                    <Avatar uri={userData?.image} />
+                    {user?.id != userId && (
+                      <AppPressableIoniconIcon
+                        useForPostFooter={false}
+                        label={isFollowing ? "Following " : "Follow"}
+                        name={isFollowing ? "checkmark-circle" : "add-circle"}
+                        color={
+                          isFollowing ? activeColors.success : activeColors.text
+                        }
+                        onPress={handleFollow}
+                        labelStyle={styles.followLabel}
+                        style={styles.followBtnContainer}
+                      />
+                    )}
+                  </View>
                   <View style={{ flex: 1 }}>
                     <AppText style={{ fontWeight: appTheme.fonts.extraBold }}>
                       {userData?.name}
@@ -221,21 +237,22 @@ const UserDetails = () => {
                 </View>
               </View>
 
-              {user?.id != userId && (
+              {/* {user?.id != userId && (
                 <AppButton
-                  title={isFollowing ? "Following" : "Follow"}
+                  title={isFollowing ? "Following " : "Follow"}
                   onPress={handleFollow}
                   isLoading={loading}
                   textStyle={{ fontSize: hp(1.6) }}
                   containerStyle={{
                     marginTop: 10,
                     height: 35,
+                    width: wp(42),
                     backgroundColor: isFollowing
                       ? activeColors.mediumGrey
                       : activeColors.primary,
                   }}
                 />
-              )}
+              )} */}
 
               {userData?.bio && (
                 <AppText style={styles.bio}>{userData.bio}</AppText>
@@ -365,9 +382,9 @@ const UserDetails = () => {
       <OptionsModal
         visible={menuVisible}
         usedForUserDetails={true}
-        owner={userId == user?.id}
+        owner={userId === user?.id}
         onClose={() => setMenuVisible(false)}
-        onBlock={() => {}}
+        onBlock={handleBlock}
       />
     </SafeScreen>
   );

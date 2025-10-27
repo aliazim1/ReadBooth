@@ -6,6 +6,7 @@ import {
   Alert,
   Keyboard,
   Pressable,
+  Text,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -125,6 +126,7 @@ const EditProfileDetails = () => {
                 )}
                 <Pressable onPress={addProfilePic} style={styles.add}>
                   <AppIonicon name="camera" size={20} />
+                  <Text style={styles.uploadLabel}>Upload</Text>
                 </Pressable>
               </View>
             </View>
