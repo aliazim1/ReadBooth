@@ -6,10 +6,9 @@ import {
   useRouter,
 } from "expo-router";
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, TouchableOpacity, View } from "react-native";
+import { FlatList, Pressable, TouchableOpacity, View } from "react-native";
 
 import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
-import AppPressableIoniconIcon from "../../../components/AppPressableIoniconIcon";
 import AppText from "../../../components/AppText";
 import Avatar from "../../../components/Avatar";
 import BookItem from "../../../components/BookItem";
@@ -119,7 +118,7 @@ const UserDetails = () => {
 
   const getPosts = async () => {
     if (!hasMorePosts) return null;
-    limit += 9;
+    limit += 10;
     let res = await fetchPosts(limit, userId);
     if (res.success) {
       if (posts.length === res.data.length) setHasMorePosts(false);
@@ -207,22 +206,25 @@ const UserDetails = () => {
             <HorizontalPadding>
               <View style={styles.profileColumn}>
                 <View style={styles.imgNameRow}>
-                  <View style={{}}>
+                  <Pressable onPress={handleFollow}>
                     <Avatar uri={userData?.image} />
                     {user?.id != userId && (
-                      <AppPressableIoniconIcon
-                        useForPostFooter={false}
-                        label={isFollowing ? "Following " : "Follow"}
-                        name={isFollowing ? "checkmark-circle" : "add-circle"}
-                        color={
-                          isFollowing ? activeColors.success : activeColors.text
-                        }
-                        onPress={handleFollow}
-                        labelStyle={styles.followLabel}
-                        style={styles.followBtnContainer}
-                      />
+                      <View style={styles.followBtnContainer}>
+                        <Ionicons
+                          name={isFollowing ? "checkmark-circle" : "add-circle"}
+                          color={
+                            isFollowing
+                              ? activeColors.success
+                              : activeColors.text
+                          }
+                          size={18}
+                        />
+                        <AppText style={styles.followLabel}>
+                          {`${isFollowing ? "Following " : "Follow"}`}
+                        </AppText>
+                      </View>
                     )}
-                  </View>
+                  </Pressable>
                   <View style={{ flex: 1 }}>
                     <AppText style={{ fontWeight: appTheme.fonts.extraBold }}>
                       {userData?.name}
@@ -237,25 +239,15 @@ const UserDetails = () => {
                 </View>
               </View>
 
-              {/* {user?.id != userId && (
-                <AppButton
-                  title={isFollowing ? "Following " : "Follow"}
-                  onPress={handleFollow}
-                  isLoading={loading}
-                  textStyle={{ fontSize: hp(1.6) }}
-                  containerStyle={{
-                    marginTop: 10,
-                    height: 35,
-                    width: wp(42),
-                    backgroundColor: isFollowing
-                      ? activeColors.mediumGrey
-                      : activeColors.primary,
-                  }}
-                />
-              )} */}
-
               {userData?.bio && (
-                <AppText style={styles.bio}>{userData.bio}</AppText>
+                <AppText
+                  style={[
+                    styles.bio,
+                    { marginTop: user?.id != userId ? 20 : 10 },
+                  ]}
+                >
+                  {userData.bio}
+                </AppText>
               )}
             </HorizontalPadding>
 

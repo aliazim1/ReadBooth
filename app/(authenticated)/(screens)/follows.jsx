@@ -1,13 +1,12 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, View } from "react-native";
+import { FlatList } from "react-native";
 
-import AppText from "../../../components/AppText";
 import FollowsListItem from "../../../components/FollowsListItem";
+import NotExist from "../../../components/NotExist";
 import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
-import { hp } from "../../../lib/common";
 import { supabase } from "../../../lib/supabase";
 import { getFollows } from "../../../services/userService";
 import { useScreensStyles } from "../../../styles/screensStyles";
@@ -83,15 +82,11 @@ const UserList = ({ userId, filterType }) => {
         )}
         ListEmptyComponent={
           !loading && (
-            <View
-              style={{
-                marginTop: hp(30),
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <AppText>No user found.</AppText>
-            </View>
+            <NotExist
+              ioniconIcon={true}
+              iconName={"people"}
+              message={"No user found"}
+            />
           )
         }
       />

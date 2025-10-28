@@ -51,14 +51,16 @@ const CommentItem = ({
           onPress2={handleDelete}
         />
       </View>
+
       {/* comment body text */}
       {
         <AppText
           style={[
             styles.body,
             {
-              backgroundColor:
-                (highlight && activeColors.primary) || activeColors.commentBox,
+              backgroundColor: highlight
+                ? activeColors.mediumGrey
+                : activeColors.commentBox,
             },
           ]}
         >

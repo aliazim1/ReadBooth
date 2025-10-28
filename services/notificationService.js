@@ -43,28 +43,28 @@ export const sendNotification = async (
 };
 
 // function to fetch notifications
-export const fetchNotifications = async (receiverId) => {
-  try {
-    const { data, error } = await supabase
-      .from("notifications")
-      .select(
+export const fetchNotifications = async (receiverId, setNotifications) => {
+  const { data, error } = await supabase
+    .from("notifications")
+    .select(
+      `
+         id,
+          created_at,
+          message,
+          type,
+          isRead,
+          type,
+          message,
+          postId,
+          commentId,
+          sender:senderId ( id, name, username, image )
         `
-        *,
-        sender: senderId(id, name, username, image)
-        `
-      )
-      .eq("receiverId", receiverId)
-      .order("created_at", { ascending: false });
+    )
+    .eq("receiverId", receiverId)
+    .order("created_at", { ascending: false });
 
-    if (error) {
-      console.log("fetchNotifications error: ", error);
-      return { success: false, msg: "Could not fetch notification" };
-    }
-    return { success: true, data };
-  } catch (error) {
-    console.log("fetchNotifications error: ", error);
-    return { success: false, msg: error.message };
-  }
+  if (!error) setNotifications(data);
+  else console.log("fetchNotifications error:", error);
 };
 
 //
@@ -103,29 +103,62 @@ export const markAllNotificationsRead = async (userId) => {
 };
 
 // function to remove notification
-export const removeNotification = async ({
+export const deleteNotification = async ({
   notificationId,
   senderId,
   receiverId,
   postId,
-  type, // "like", "comment", "follow"
+  type,
 }) => {
   try {
-    const query = supabase.from("notifications").delete();
+    // step 1: Build query for matching notifications
+    let query = supabase.from("notifications").select("id");
 
-    if (notificationId) query.eq("id", notificationId);
-    if (senderId) query.eq("senderId", senderId);
-    if (receiverId) query.eq("receiverId", receiverId);
-    if (postId) query.eq("postId", postId);
-    if (type) query.eq("type", type);
+    if (notificationId) query = query.eq("id", notificationId);
+    if (senderId) query = query.eq("senderId", senderId);
+    if (receiverId) query = query.eq("receiverId", receiverId);
+    if (postId) query = query.eq("postId", postId);
+    if (type) query = query.eq("type", type);
 
-    const { error } = await query;
+    const { data, error: selectError } = await query;
 
-    if (error) throw error;
+    // if query failed, throw it
+    if (selectError) throw selectError;
+
+    // step 2: If nothing found, return success silently
+    if (!data || data.length === 0) {
+      return { success: true, msg: "No notification to delete" };
+    }
+
+    // step 3: Delete found notification(s)
+    const { error: deleteError } = await supabase
+      .from("notifications")
+      .delete()
+      .in(
+        "id",
+        data.map((n) => n.id)
+      );
+
+    if (deleteError) throw deleteError;
 
     return { success: true };
   } catch (error) {
     console.log("removeNotification error:", error.message);
     return { success: false, msg: "Could not remove the notification" };
+  }
+};
+
+export const clearAllNotifications = async (userId) => {
+  try {
+    const { error } = await supabase
+      .from("notifications")
+      .delete()
+      .eq("receiverId", userId);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (error) {
+    console.log("clearAllNotifications error:", error.message);
+    return { success: false };
   }
 };

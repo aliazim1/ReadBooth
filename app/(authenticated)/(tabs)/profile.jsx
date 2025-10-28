@@ -237,13 +237,7 @@ const Profile = () => {
             }}
           >
             <AppText style={{ color: activeColors.mediumGrey, fontSize: 16 }}>
-              No{" "}
-              {activeTab === "posts"
-                ? "posts"
-                : activeTab === "saved"
-                ? "saved posts"
-                : "saved books"}{" "}
-              yet
+              No {activeTab === "posts" ? "posts" : "saved posts"} yet
             </AppText>
           </View>
         }

@@ -12,7 +12,6 @@ const OptionsModal = ({
   onShare = () => {},
   onEdit = () => {},
   onHide = () => {},
-  onReport = () => {},
   onDelete = () => {},
   onBlock = () => {},
   item,
@@ -50,14 +49,6 @@ const OptionsModal = ({
               icon={"eye-off"}
               label={"Hide post"}
               onPress={onHide}
-            />
-          )}
-          {/* Report post: only others' posts */}
-          {!usedForUserDetails && !owner && (
-            <SettingListItem
-              icon={"flag"}
-              label={"Report post"}
-              onPress={onReport}
             />
           )}
 

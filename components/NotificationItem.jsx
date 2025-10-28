@@ -6,14 +6,20 @@ import { hp } from "../lib/common";
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppText from "./AppText";
 import Avatar from "./Avatar";
+import CustomAlert from "./CustomAlert";
 
 const NotificationItem = ({ item, onPress, onDeleteNotification }) => {
   const { styles, activeColors } = useComponentsStyles();
   const createdAt = moment(item?.created_at).fromNow();
-  // const handleNotificationTap = () => {
-  //   let { postId, commentId } = JSON.parse(item?.data);
-  //   router.push({ pathname: "postDetails", params: { postId, commentId } });
-  // };
+
+  // Delete the comment, receives the onDelete function from parent
+  const handleDeleteNotification = () => {
+    CustomAlert({
+      title: "Delete Comment",
+      message: "Are you sure you want to delete this comment?",
+      onConfirm: onDeleteNotification,
+    });
+  };
 
   return (
     <TouchableOpacity
@@ -61,7 +67,7 @@ const NotificationItem = ({ item, onPress, onDeleteNotification }) => {
           <AppText style={styles.notificationCreatedAt}>{createdAt}</AppText>
         </View>
       </View>
-      <Pressable onPress={onDeleteNotification} style={styles.action}>
+      <Pressable onPress={handleDeleteNotification} style={styles.action}>
         <Ionicons
           name={"ellipsis-horizontal"}
           color={activeColors.iconsColor}

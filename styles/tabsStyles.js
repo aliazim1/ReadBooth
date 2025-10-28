@@ -115,13 +115,6 @@ export const useTabsStyles = () => {
           alignItems: "center",
           justifyContent: "space-between",
         },
-
-        noNofiticationsContainer: {
-          alignItems: "center",
-          justifyContent: "center",
-          flex: 1,
-          gap: 10,
-        },
         contentContainerStyle: {
           paddingTop: 20,
           gap: 14,
@@ -153,20 +146,7 @@ export const useTabsStyles = () => {
           alignItems: "center",
           gap: 10,
         },
-        followBtnContainer: {
-          bottom: -10,
-          borderRadius: 30,
-          alignSelf: "center",
-          position: "absolute",
-          alignItems: "center",
-          paddingHorizontal: 5,
-          justifyContent: "center",
-          backgroundColor: activeColors.background,
-        },
-        followLabel: {
-          fontSize: hp(1.2),
-          fontWeight: "bold",
-        },
+
         statRow: {
           flexDirection: "row",
           justifyContent: "space-between",
@@ -211,10 +191,25 @@ export const useTabsStyles = () => {
 
         // user details screen styles
         startLoadingContainer: {
+          flex: 1,
           alignItems: "center",
           justifyContent: "center",
-          flex: 1,
           backgroundColor: activeColors.background,
+        },
+        followBtnContainer: {
+          bottom: -12,
+          borderRadius: 30,
+          flexDirection: "row",
+          alignSelf: "center",
+          position: "absolute",
+          alignItems: "center",
+          paddingHorizontal: 5,
+          justifyContent: "center",
+          backgroundColor: activeColors.background,
+        },
+        followLabel: {
+          fontSize: hp(1.2),
+          fontWeight: "bold",
         },
       }),
     [theme]

@@ -1,5 +1,5 @@
 import { supabase } from "../lib/supabase";
-import { removeNotification, sendNotification } from "./notificationService";
+import { deleteNotification, sendNotification } from "./notificationService";
 
 export const getUserData = async (userId) => {
   try {
@@ -49,7 +49,7 @@ export const toggleFollow = async (followerId, followingId, isFollowing) => {
         .eq("followingId", followingId);
       if (error) throw error;
 
-      const { error: notifError } = await removeNotification({
+      const { error: notifError } = await deleteNotification({
         senderId: followerId,
         receiverId: followingId,
         type: "follow",

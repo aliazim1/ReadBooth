@@ -1,6 +1,6 @@
 import { supabase } from "../lib/supabase";
 import { uploadFile } from "./imageService";
-import { removeNotification, sendNotification } from "./notificationService";
+import { deleteNotification, sendNotification } from "./notificationService";
 import { getUserData } from "./userService";
 
 //
@@ -215,7 +215,7 @@ export const removePostLike = async (postId, userId) => {
     }
 
     // also remove the "like's" notification
-    const { error: notifError } = await removeNotification({
+    const { error: notifError } = await deleteNotification({
       senderId: userId,
       postId: postId,
       type: "like",

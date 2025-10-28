@@ -413,6 +413,15 @@ export const useComponentsStyles = () => {
           color: activeColors.text,
           fontWeight: appTheme.fonts.extraBold,
         },
+
+        // not exist style
+        noNofiticationsContainer: {
+          alignItems: "center",
+          justifyContent: "center",
+          flex: 1,
+          gap: 10,
+          marginTop: hp(30),
+        },
       }),
     [theme]
   );

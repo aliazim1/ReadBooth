@@ -4,10 +4,10 @@ import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { Alert, FlatList, Pressable, View } from "react-native";
 
 import AppMaterialCommunityIcon from "../../../components/AppMaterialCommunityIcon";
-import AppText from "../../../components/AppText";
 import BookItem from "../../../components/BookItem";
 import CustomAlert from "../../../components/CustomAlert";
 import HeaderIcons from "../../../components/HeaderIcons";
+import NotExist from "../../../components/NotExist";
 import SafeScreen from "../../../components/SafeScreen";
 import { useAuth } from "../../../contexts/AuthContext";
 import {
@@ -23,7 +23,7 @@ var limit = 0;
 
 // reusable BookList component for each tab
 const BookList = ({ user, filterType, saves, setSaves }) => {
-  const { styles, activeColors } = useTabsStyles();
+  const { styles } = useTabsStyles();
   const router = useRouter();
   const [books, setBooks] = useState([]);
   const [hasMoreBooks, setHasMoreBooks] = useState(true);
@@ -67,41 +67,34 @@ const BookList = ({ user, filterType, saves, setSaves }) => {
 
   return (
     <SafeScreen>
-      {filteredBooks.length > 0 ? (
-        <FlatList
-          data={filteredBooks}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.contentContainerStyle}
-          keyExtractor={(item) => item.id.toString()}
-          extraData={saves}
-          renderItem={({ item }) => (
-            <BookItem
-              item={item}
-              saves={saves}
-              router={router}
-              currentUser={user}
-              setSaves={setSaves}
-              onDeleteBook={() => {
-                CustomAlert({
-                  title: "Delete Book",
-                  message: "Are you sure you want to delete this book?",
-                  onConfirm: () => onDeleteBook(item),
-                });
-              }}
-            />
-          )}
-          onEndReached={getBooks}
-          onEndReachedThreshold={0}
-        />
-      ) : (
-        <View style={styles.noNofiticationsContainer}>
-          <AppMaterialCommunityIcon
-            name="bookshelf"
-            color={activeColors.text}
+      <FlatList
+        data={filteredBooks}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.contentContainerStyle}
+        keyExtractor={(item) => item.id.toString()}
+        extraData={saves}
+        renderItem={({ item }) => (
+          <BookItem
+            item={item}
+            saves={saves}
+            router={router}
+            currentUser={user}
+            setSaves={setSaves}
+            onDeleteBook={() => {
+              CustomAlert({
+                title: "Delete Book",
+                message: "Are you sure you want to delete this book?",
+                onConfirm: () => onDeleteBook(item),
+              });
+            }}
           />
-          <AppText>No books to display</AppText>
-        </View>
-      )}
+        )}
+        onEndReached={getBooks}
+        onEndReachedThreshold={0}
+        ListEmptyComponent={
+          <NotExist iconName={"bookshelf"} message="No books to display" />
+        }
+      />
     </SafeScreen>
   );
 };

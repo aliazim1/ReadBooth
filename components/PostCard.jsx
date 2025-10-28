@@ -26,8 +26,6 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
   const [menuVisible, setMenuVisible] = useState(false);
 
   useEffect(() => {
-    // setLikes(item?.postLikes);
-    // setSaves(item?.savedPosts);
     setLikes(item?.postLikes || []);
     setSaves(item?.savedPosts || []);
   }, [item]);
@@ -223,7 +221,6 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
         onShare={onShare}
         onEdit={onEditPost}
         onHide={() => {}}
-        onReport={() => {}}
         onDelete={handleDeletePost}
         item={item}
       />
