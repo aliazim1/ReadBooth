@@ -22,6 +22,7 @@ const CustomInput = ({
         {...props}
         value={value}
         onChangeText={onChangeText}
+        autoFocus={props.autoFocus}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         placeholder={placeholder}

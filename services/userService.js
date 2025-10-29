@@ -108,3 +108,18 @@ export const getFollows = async (userId, type) => {
     return { success: false, msg: err.message };
   }
 };
+
+export const searchUsers = async (query) => {
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .select("id, name, username, image") // select only what you need
+      .or(`name.ilike.%${query}%,username.ilike.%${query}%`)
+      .limit(20);
+    if (error) throw error;
+    return { success: true, data };
+  } catch (error) {
+    console.error("Error searching users:", error);
+    return { success: false, error };
+  }
+};

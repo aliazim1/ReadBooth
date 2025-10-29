@@ -10,16 +10,24 @@ import {
   createPostLike,
   createSavePost,
   deletePost,
+  hidePost,
   removePostLike,
   removeSavePost,
 } from "../services/postService";
 import { useComponentsStyles } from "../styles/componentsStyles";
-import AppPressableIoniconIcon from "./AppPressableIoniconIcon";
 import CustomAlert from "./CustomAlert";
 import OptionsModal from "./OptionsModal";
+import PostFooter from "./PostFooter";
 import PostHeader from "./PostHeader";
 
-const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
+const PostCard = ({
+  item,
+  router,
+  currentUser,
+  setPosts,
+  homeScreen = true,
+  comingFromUserDetails = false,
+}) => {
   const { styles, activeColors } = useComponentsStyles();
   const [likes, setLikes] = useState(item?.postLikes || []);
   const [saves, setSaves] = useState([]);
@@ -121,6 +129,14 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
     router.push({ pathname: "editPost", params: { ...item } });
   };
 
+  const onHidePost = async () => {
+    let res = await hidePost(item?.id, currentUser.id);
+    if (!res.success) Alert.alert("Hide Post", "Could not hide the post.");
+    if (res.success) {
+      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== item?.id));
+    }
+  };
+
   // function to open the link if the post caption hsa a link
   const handleUrlPress = (url) => {
     Linking.openURL(url);
@@ -147,6 +163,7 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
         item={item}
         verifyBadge={true}
         createdAt={createdAt}
+        comingFromUserDetails={comingFromUserDetails}
         onNavigate={() => {
           router.push({
             pathname: "userDetails",
@@ -186,33 +203,22 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
         </Pressable>
       )}
 
-      {/* row container: post's footer (interactions: like, comment, save, share) */}
-      <View style={styles.postFooterContainer}>
-        <View style={{ flexDirection: "row" }}>
-          <AppPressableIoniconIcon
-            onPress={onLike}
-            size={21}
-            label={likes?.length}
-            name={liked ? "heart" : "heart-outline"}
-            color={liked ? activeColors.danger : activeColors.iconsColor}
-          />
-          <AppPressableIoniconIcon
-            name="chatbubble-outline"
-            label={item?.comments?.[0]?.count || ""}
-            onPress={homeScreen ? openPostComments : null}
-          />
-          <AppPressableIoniconIcon
-            onPress={onShare}
-            label={"Save"}
-            name="arrow-redo-outline"
-          />
-        </View>
-        <AppPressableIoniconIcon
-          onPress={onSavePost}
-          label={saved ? "Saved" : "Save"}
-          name={saved ? "bookmark" : "bookmark-outline"}
-        />
-      </View>
+      {/* post's footer (like, comment, save, share ,hide) */}
+      <PostFooter
+        item={item}
+        likes={likes}
+        liked={liked}
+        saved={saved}
+        onLike={onLike}
+        onShare={onShare}
+        onHidePost={onHidePost}
+        homeScreen={homeScreen}
+        onSavePost={onSavePost}
+        owner={item?.user?.id == currentUser?.id}
+        openPostComments={openPostComments}
+        comingFromUserDetails={comingFromUserDetails}
+      />
+
       <OptionsModal
         visible={menuVisible}
         homeScreen={homeScreen}
@@ -220,7 +226,13 @@ const PostCard = ({ item, router, currentUser, homeScreen = true }) => {
         onClose={() => setMenuVisible(false)}
         onShare={onShare}
         onEdit={onEditPost}
-        onHide={() => {}}
+        onHide={() => {
+          CustomAlert({
+            title: "Hide this post?",
+            message: "You won’t see this post in your feed anymore.",
+            onConfirm: onHidePost,
+          });
+        }}
         onDelete={handleDeletePost}
         item={item}
       />

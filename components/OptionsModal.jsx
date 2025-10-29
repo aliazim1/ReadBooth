@@ -43,14 +43,15 @@ const OptionsModal = ({
               onPress={onShare}
             />
           )}
-          {!usedForUserDetails && (
-            <SettingListItem
-              chevron={false}
-              icon={"eye-off"}
-              label={"Hide post"}
-              onPress={onHide}
-            />
-          )}
+          {usedForUserDetails ||
+            (!owner && (
+              <SettingListItem
+                chevron={false}
+                icon={"eye-off"}
+                label={"Hide post"}
+                onPress={onHide}
+              />
+            ))}
 
           {/* Delete post: if it's in postDetails screen & is owner */}
           {!usedForUserDetails && !homeScreen && owner && (

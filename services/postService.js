@@ -87,50 +87,80 @@ export const deletePost = async (postId) => {
 
 //
 // function to fetch all the posts with a limit of 10 posts first
-export const fetchPosts = async (limit = 9, userId) => {
+export const fetchPosts = async (limit = 9, currentUserId) => {
   try {
-    if (userId) {
-      const { data, error } = await supabase
-        .from("posts")
-        .select(
-          `
+    // 1️⃣ Get all users the current user is following
+    const { data: following, error: followingError } = await supabase
+      .from("follows") // your follows table
+      .select("followingId")
+      .eq("followerId", currentUserId);
+
+    if (followingError) throw followingError;
+
+    const followingIds = following?.map((f) => f.followingId) || [];
+
+    // Include the user's own posts too
+    followingIds.push(currentUserId);
+
+    // 2️⃣ Get all hidden posts for this user
+    const { data: hidden, error: hiddenError } = await supabase
+      .from("hiddenPosts")
+      .select("postId")
+      .eq("userId", currentUserId);
+
+    if (hiddenError) throw hiddenError;
+
+    const hiddenIds = hidden?.map((h) => h.postId) || [];
+
+    // 3️⃣ Fetch posts only from followed users, excluding hidden posts
+    const { data, error } = await supabase
+      .from("posts")
+      .select(
+        `
         *,
         user: users (id, name, username, image ),
         postLikes(*),
         savedPosts(*),
         comments(count)
         `
-        )
-        .order("created_at", { ascending: false })
-        .eq("userId", userId)
-        .limit(limit);
+      )
+      .in("userId", followingIds.length ? followingIds : [null]) // prevent empty array error
+      .not("id", "in", `(${hiddenIds.join(",") || 0})`) // exclude hidden posts
+      .order("created_at", { ascending: false })
+      .limit(limit);
 
-      if (error) {
-        console.log("fetchPosts error: ", error);
-        return { success: false, msg: "Could not fetch the posts" };
-      }
-      return { success: true, data: data };
-    } else {
-      const { data, error } = await supabase
-        .from("posts")
-        .select(
-          `
+    if (error) throw error;
+
+    return { success: true, data };
+  } catch (error) {
+    console.log("fetchPosts error:", error.message);
+    return { success: false, msg: "Could not fetch the posts" };
+  }
+};
+
+export const fetchPostsByUserId = async (limit = 9, userId) => {
+  try {
+    if (!userId) return null;
+    const { data, error } = await supabase
+      .from("posts")
+      .select(
+        `
         *,
         user: users (id, name, username, image ),
         postLikes(*),
         savedPosts(*),
         comments(count)
         `
-        )
-        .order("created_at", { ascending: false })
-        .limit(limit);
+      )
+      .order("created_at", { ascending: false })
+      .eq("userId", userId)
+      .limit(limit);
 
-      if (error) {
-        console.log("fetchPosts error: ", error);
-        return { success: false, msg: "Could not fetch the posts" };
-      }
-      return { success: true, data: data };
+    if (error) {
+      console.log("fetchPosts error: ", error);
+      return { success: false, msg: "Could not fetch the posts" };
     }
+    return { success: true, data: data };
   } catch (error) {
     console.log("fetchPosts error: ", error);
     return { success: false, msg: "Could not fetch the posts" };
@@ -167,6 +197,41 @@ export const fetchPostDetails = async (postId) => {
   }
 };
 
+//
+// function to hide the post
+export const hidePost = async (postId, userId) => {
+  try {
+    const { error } = await supabase
+      .from("hiddenPosts")
+      .insert([{ userId, postId }]);
+
+    if (error) throw error;
+
+    return { success: true };
+  } catch (error) {
+    console.log("Error hiding post:", error.message);
+    return { success: false, message: error.message };
+  }
+};
+
+//
+// function to unhide the post
+export const unhidePost = async (postId, userId) => {
+  try {
+    const { error } = await supabase
+      .from("hiddenPosts")
+      .delete()
+      .eq("postId", postId)
+      .eq("userId", userId);
+
+    if (error) throw error;
+
+    return { success: true };
+  } catch (error) {
+    console.log("Error unhiding post:", error.message);
+    return { success: false, message: error.message };
+  }
+};
 //
 // function to like the post and create a notification
 // in notifications table for it

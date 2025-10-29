@@ -3,10 +3,18 @@ import { Pressable, Text, View } from "react-native";
 import { hp } from "../lib/common";
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppButton from "./AppButton";
+import AppIonicon from "./AppIonicon";
 import AppText from "./AppText";
 import Avatar from "./Avatar";
 
-const FollowsListItem = ({ item, router, currentUserId, style, onPress }) => {
+const FollowsListItem = ({
+  item,
+  router,
+  currentUserId,
+  showFollowBtn = true,
+  style,
+  onPress,
+}) => {
   const { styles, activeColors } = useComponentsStyles();
 
   return (
@@ -21,7 +29,11 @@ const FollowsListItem = ({ item, router, currentUserId, style, onPress }) => {
       }}
       style={[
         styles.postHeader,
-        { paddingHorizontal: 0, marginBottom: 5, alignItems: "center" },
+        {
+          paddingHorizontal: 0,
+          marginBottom: 5,
+          alignItems: "center",
+        },
         style,
       ]}
     >
@@ -33,7 +45,7 @@ const FollowsListItem = ({ item, router, currentUserId, style, onPress }) => {
           <AppText style={styles.username}>{item?.username}</AppText>
         </View>
       </View>
-      {currentUserId != item?.id && (
+      {showFollowBtn && currentUserId != item?.id && (
         <AppButton
           title={item.followed ? "Following" : "Follow"}
           containerStyle={{
@@ -47,6 +59,8 @@ const FollowsListItem = ({ item, router, currentUserId, style, onPress }) => {
           onPress={onPress}
         />
       )}
+
+      {!showFollowBtn && <AppIonicon name={"chevron-forward"} size={20} />}
     </Pressable>
   );
 };

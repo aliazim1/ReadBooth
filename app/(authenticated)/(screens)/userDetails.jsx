@@ -26,7 +26,7 @@ import {
   fetchBooks,
   getSavedBookIdsForUser,
 } from "../../../services/bookServices";
-import { fetchPosts } from "../../../services/postService";
+import { fetchPostsByUserId } from "../../../services/postService";
 import {
   getFollows,
   getUserData,
@@ -119,7 +119,7 @@ const UserDetails = () => {
   const getPosts = async () => {
     if (!hasMorePosts) return null;
     limit += 10;
-    let res = await fetchPosts(limit, userId);
+    let res = await fetchPostsByUserId(limit, userId);
     if (res.success) {
       if (posts.length === res.data.length) setHasMorePosts(false);
       setPosts(res.data);

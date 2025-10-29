@@ -15,7 +15,10 @@ import { appTheme } from "../../../config/theme";
 import { useAuth } from "../../../contexts/AuthContext";
 import { hp, wp } from "../../../lib/common";
 import { fetchBooksCount } from "../../../services/bookServices";
-import { fetchPosts, fetchSavedPosts } from "../../../services/postService";
+import {
+  fetchPostsByUserId,
+  fetchSavedPosts,
+} from "../../../services/postService";
 import { getFollows } from "../../../services/userService";
 import { useTabsStyles } from "../../../styles/tabsStyles";
 
@@ -47,7 +50,7 @@ const Profile = () => {
   const getPosts = async () => {
     if (!hasMorePosts) return null;
     limit += 9;
-    let res = await fetchPosts(limit, user.id);
+    let res = await fetchPostsByUserId(limit, user.id);
     if (res.success) {
       if (posts.length === res.data.length) setHasMorePosts(false);
       setPosts(res.data);

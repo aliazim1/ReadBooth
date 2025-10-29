@@ -119,7 +119,11 @@ const Books = () => {
     navigation.setOptions({
       headerRight: () => (
         <View style={styles.headerIcons}>
-          <HeaderIcons size={24} icon2="search" />
+          <HeaderIcons
+            size={24}
+            icon2="search"
+            onPress2={() => router.push("/searchScreen")}
+          />
           <Pressable onPress={() => router.push("/addBook")}>
             <AppMaterialCommunityIcon name="square-edit-outline" />
           </Pressable>

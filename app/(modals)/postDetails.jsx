@@ -25,7 +25,7 @@ const PostDetails = () => {
   const navigation = useNavigation();
   const { user } = useAuth();
   const [post, setPost] = useState(null);
-  const { postId, commentId } = useLocalSearchParams();
+  const { postId, commentId, comingFromUserDetails } = useLocalSearchParams();
   const [startLoading, setStartLoading] = useState(true);
   const [loadingSend, setLoadingSend] = useState(false);
   const [comment, setComment] = useState("");
@@ -135,6 +135,7 @@ const PostDetails = () => {
               currentUser={user}
               router={router}
               homeScreen={false}
+              comingFromUserDetails={comingFromUserDetails}
             />
 
             {/*  text-input & btn to add comment */}

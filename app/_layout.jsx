@@ -133,6 +133,15 @@ const MainLayout = () => {
           headerShown: true,
         }}
       />
+      <Stack.Screen
+        name="(modals)/searchScreen"
+        options={{
+          headerTitle: "",
+          presentation: "modal",
+          animation: "fade",
+          // headerShown: true,
+        }}
+      />
     </Stack>
   );
 };

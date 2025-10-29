@@ -8,12 +8,13 @@ import Avatar from "./Avatar";
 
 const PostHeader = ({
   item,
-  createdAt,
-  onNavigate,
-  verifyBadge = false,
-  forPostCard = true,
   style,
   onPress,
+  createdAt,
+  onNavigate,
+  forPostCard = true,
+  verifyBadge = false,
+  comingFromUserDetails = false,
 }) => {
   const { styles, activeColors } = useComponentsStyles();
 
@@ -37,12 +38,14 @@ const PostHeader = ({
             {forPostCard ? `@${item?.user?.username}` : "Public"}
           </AppText>
         </View>
-        {forPostCard && (
+
+        {/* don't display 3-dots if coming from userDetails screen */}
+        {forPostCard && !comingFromUserDetails && (
           <View style={styles.postHeaderRightIcons}>
             <AppText style={styles.createdAt}>{createdAt}</AppText>
             <Pressable onPress={onPress}>
               <Ionicons
-                size={hp(1.8)}
+                size={hp(2.2)}
                 color={activeColors.text}
                 name="ellipsis-horizontal"
               />

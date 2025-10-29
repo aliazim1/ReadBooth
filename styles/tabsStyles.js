@@ -212,6 +212,7 @@ export const useTabsStyles = () => {
           fontWeight: "bold",
         },
       }),
+
     [theme]
   );
   return { styles, activeColors };

@@ -84,7 +84,7 @@ const Home = () => {
     if (!hasMorePosts) return null;
     // increase the number of posts to fetch
     limit = limit + 10;
-    let res = await fetchPosts(limit); // call the API here
+    let res = await fetchPosts(limit, user?.id); // call the API here
     if (res.success) {
       if (posts.length == res.data.length) setHasMorePosts(false);
       setPosts(res.data);
@@ -96,7 +96,11 @@ const Home = () => {
     navigation.setOptions({
       headerRight: () => (
         <View style={styles.headerIcons}>
-          <HeaderIcons size={24} icon2="search" />
+          <HeaderIcons
+            size={24}
+            icon2="search"
+            onPress2={() => router.push("/searchScreen")}
+          />
           <Pressable onPress={() => router.push("/createPost")}>
             <AppMaterialCommunityIcon name="square-edit-outline" />
           </Pressable>
@@ -118,6 +122,7 @@ const Home = () => {
             currentUser={user}
             router={router}
             homeScreen={true}
+            setPosts={setPosts}
           />
         )}
         ItemSeparatorComponent={() => (

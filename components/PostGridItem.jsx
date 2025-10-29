@@ -15,7 +15,7 @@ const PostGridItem = ({ item, router }) => {
           onPress={() =>
             router.push({
               pathname: "postDetails",
-              params: { postId: post?.id },
+              params: { postId: post?.id, comingFromUserDetails: true },
             })
           }
         >

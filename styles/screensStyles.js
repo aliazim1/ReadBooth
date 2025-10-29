@@ -194,6 +194,12 @@ export const useScreensStyles = () => {
           gap: 14,
           paddingHorizontal: wp(4),
         },
+
+        // search users screen style
+        contentContainerStyer: {
+          flexGrow: 1,
+          paddingHorizontal: 24,
+        },
       }),
     [theme]
   );

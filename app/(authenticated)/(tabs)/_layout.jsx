@@ -85,9 +85,6 @@ const TabLayout = () => {
         options={{
           title: "Books",
           headerTitle: "Book Shelf",
-          // headerLeft: () => (
-          //   <AppText style={styles.nbpHeaderTitle}>Book Shelf</AppText>
-          // ),
           tabBarIcon: ({ focused }) => (
             <MaterialIcons
               name="menu-book"
