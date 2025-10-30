@@ -31,6 +31,7 @@ export const colors = {
     success: "#66BB6A",
     textLight: "#7C7C7C",
     tabBarBorder: "#333",
+    // background: "#1A1A1A",
     background: "#0F181E",
     iconsColor: "#FCFCFC",
     mediumGrey: "#999999",

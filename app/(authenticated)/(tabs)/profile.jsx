@@ -121,7 +121,6 @@ const Profile = () => {
         numColumns={3}
         data={currentData}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingTop: 5 }}
         keyExtractor={(item) => item.id.toString()}
         ListHeaderComponent={
           <View style={styles.profileDetails}>
@@ -160,6 +159,7 @@ const Profile = () => {
                     })
                   }
                 />
+
                 <StatsItem
                   title="Following"
                   value={following.length}
@@ -174,7 +174,9 @@ const Profile = () => {
                     })
                   }
                 />
+
                 <StatsItem title="Posts" value={posts.length} />
+
                 <StatsItem title="Books" value={bookCount} />
               </View>
             </HorizontalPadding>

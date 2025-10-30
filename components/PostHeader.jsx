@@ -1,6 +1,6 @@
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { hp } from "../lib/common";
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppText from "./AppText";

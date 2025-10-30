@@ -215,3 +215,20 @@ export const fetchBooksCount = async (userId) => {
   }
   return count;
 };
+
+//
+// function to search for books (by author / title)
+export const searchBooks = async (query) => {
+  try {
+    const { data, error } = await supabase
+      .from("books")
+      .select("id, title, author, file") // select only what you need
+      .or(`title.ilike.%${query}%,author.ilike.%${query}%`)
+      .limit(20);
+    if (error) throw error;
+    return { success: true, data };
+  } catch (error) {
+    console.error("Error searching books:", error);
+    return { success: false, error };
+  }
+};

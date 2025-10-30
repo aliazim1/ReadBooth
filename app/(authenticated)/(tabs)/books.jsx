@@ -122,7 +122,12 @@ const Books = () => {
           <HeaderIcons
             size={24}
             icon2="search"
-            onPress2={() => router.push("/searchScreen")}
+            onPress2={() =>
+              router.push({
+                pathname: "/searchScreen",
+                params: { searchingForBooks: true },
+              })
+            }
           />
           <Pressable onPress={() => router.push("/addBook")}>
             <AppMaterialCommunityIcon name="square-edit-outline" />

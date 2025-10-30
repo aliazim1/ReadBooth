@@ -139,11 +139,6 @@ const Home = () => {
             ) : (
               <AppText style={styles.noMorePost}>No more posts</AppText>
             )}
-            {/* ) : ( 
-              <View style={styles.noPostContainer}>
-                <Text>No posts yet.</Text>
-              </View>
-            )}*/}
           </View>
         }
       />

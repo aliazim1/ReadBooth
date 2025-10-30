@@ -180,7 +180,7 @@ const PostCard = ({
         <View style={styles.captionContainer}>
           <Pressable onPress={homeScreen ? openPostDetails : () => {}}>
             <ParsedText
-              style={styles.postCardText}
+              style={styles.appText}
               parse={[
                 { type: "url", style: styles.link, onPress: handleUrlPress },
               ]}

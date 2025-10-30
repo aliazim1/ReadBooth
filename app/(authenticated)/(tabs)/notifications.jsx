@@ -32,6 +32,47 @@ const Notifications = () => {
     if (!user?.id) return;
     // call the function to fetch all the notifications
     fetchNotifications(user.id, setNotifications);
+
+    const channel = supabase
+      .channel("notifications-changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "*", // you can use "INSERT" only if you only care about new ones
+          schema: "public",
+          table: "notifications",
+          filter: `receiverId=eq.${user.id}`,
+        },
+        async (payload) => {
+          // payload.new contains the new/updated row
+          if (payload.eventType === "INSERT") {
+            const { data, error } = await supabase
+              .from("notifications")
+              .select(`*, sender:senderId(id, name, username, image)`)
+              .eq("id", payload.new.id)
+              .single();
+
+            if (!error && data) {
+              setNotifications((prev) => [data, ...prev]);
+            }
+          } else if (payload.eventType === "UPDATE") {
+            setNotifications((prev) =>
+              prev.map((n) =>
+                n.id === payload.new.id ? { ...n, ...payload.new } : n
+              )
+            );
+          } else if (payload.eventType === "DELETE") {
+            setNotifications((prev) =>
+              prev.filter((n) => n.id !== payload.old.id)
+            );
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [user?.id]);
 
   useFocusEffect(

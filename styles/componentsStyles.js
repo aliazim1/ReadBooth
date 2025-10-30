@@ -292,11 +292,6 @@ export const useComponentsStyles = () => {
           marginTop: hp(1),
           paddingHorizontal: wp(4),
         },
-
-        postCardText: {
-          fontSize: 16,
-          color: activeColors.text,
-        },
         link: {
           color: "blue",
           textDecorationLine: "underline",
@@ -399,11 +394,15 @@ export const useComponentsStyles = () => {
         //
         // stats item styles
         column: {
-          width: 90,
-          gap: 5,
-          paddingVertical: 7,
+          gap: 2,
+          width: wp(22),
+          borderWidth: 1,
+          borderRadius: 12,
+          paddingVertical: 2,
           alignItems: "center",
           justifyContent: "center",
+          borderColor: activeColors.tabBarBorder,
+          backgroundColor: activeColors.commentBox,
         },
         statLabel: {
           fontSize: 14,

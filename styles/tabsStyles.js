@@ -13,28 +13,6 @@ export const useTabsStyles = () => {
     () =>
       StyleSheet.create({
         // tabs _layout styles
-
-        // THIS IS FOR FLOATING TAB BAR...
-        // tabBarStyle: {
-        //   bottom: 20,
-        //   height: 63,
-        //   paddingTop: 10,
-        //   borderWidth: 1,
-        //   borderRadius: 50,
-        //   borderTopWidth: 1,
-        //   position: "absolute",
-        //   alignItems: "center",
-        //   borderColor: activeColors.tabBarBorder,
-        //   borderTopColor: activeColors.tabBarBorder,
-        //   justifyContent: "center",
-        //   marginHorizontal: wp(14),
-        //   backgroundColor: activeColors.background,
-        //   elevation: 5,
-        //   shadowRadius: 3,
-        //   shadowOpacity: 0.7,
-        //   shadowOffset: { width: 0, height: 1 },
-        //   shadowColor: "hsla(0, 0.00%, 0.00%, 0.30)",
-        // },
         tabBarStyles: {
           paddingTop: 8,
           borderTopWidth: 0.2,
@@ -131,7 +109,7 @@ export const useTabsStyles = () => {
           alignItems: "center",
         },
         profileDetails: {
-          marginTop: hp(2),
+          marginTop: hp(1),
           alignItems: "center",
           justifyContent: "center",
         },
@@ -150,10 +128,9 @@ export const useTabsStyles = () => {
         statRow: {
           flexDirection: "row",
           justifyContent: "space-between",
-          gap: 10,
           width: "100%",
           alignItems: "center",
-          marginVertical: hp(1.5),
+          marginVertical: 12,
         },
 
         bio: {
@@ -168,18 +145,23 @@ export const useTabsStyles = () => {
           justifyContent: "center",
         },
         tabsContainer: {
-          flexDirection: "row",
-          justifyContent: "space-between",
+          gap: 5,
           marginBottom: 10,
+          flexDirection: "row",
+          paddingHorizontal: wp(4),
+          justifyContent: "space-between",
         },
         tabButton: {
-          paddingVertical: 10,
           flex: 1,
+          borderWidth: 1,
+          borderRadius: 12,
+          paddingVertical: 10,
           alignItems: "center",
+          justifyContent: "center",
+          borderColor: activeColors.tabBarBorder,
         },
         activeTabButton: {
-          borderBottomWidth: 3,
-          borderColor: activeColors.text,
+          backgroundColor: activeColors.commentBox,
         },
         tabText: {
           color: activeColors.mediumGrey,
