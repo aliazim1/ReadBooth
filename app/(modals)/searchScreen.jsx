@@ -7,7 +7,6 @@ import BookSerachListItem from "../../components/BookSerachListItem";
 import CustomInput from "../../components/CustomInput";
 import FollowsListItem from "../../components/FollowsListItem";
 import SafeScreen from "../../components/SafeScreen";
-import { useAuth } from "../../contexts/AuthContext";
 import { searchBooks } from "../../services/bookServices";
 import { searchUsers } from "../../services/userService";
 import { useScreensStyles } from "../../styles/screensStyles";
@@ -18,10 +17,9 @@ import { useScreensStyles } from "../../styles/screensStyles";
 //
 const SearchScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const { searchingForBooks } = useLocalSearchParams();
+  const { searchingForBooks, currentUserId } = useLocalSearchParams();
   const [results, setResults] = useState([]);
   const router = useRouter();
-  const { user } = useAuth();
   const { styles } = useScreensStyles();
 
   // debounced function that calls the API
@@ -79,7 +77,7 @@ const SearchScreen = () => {
             ) : (
               <FollowsListItem
                 item={item}
-                currentUserId={user.id}
+                currentUserId={currentUserId}
                 router={router}
                 showFollowBtn={false}
               />

@@ -25,7 +25,7 @@ import { createPost } from "../../../services/postService";
 import { useScreensStyles } from ".././../../styles/screensStyles";
 
 const CreatePost = () => {
-  const { styles, activeColors } = useScreensStyles();
+  const { styles } = useScreensStyles();
   const { user } = useAuth();
   const router = useRouter();
   const [file, setFile] = useState(null);

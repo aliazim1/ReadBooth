@@ -31,7 +31,6 @@ export const colors = {
     success: "#66BB6A",
     textLight: "#7C7C7C",
     tabBarBorder: "#333",
-    // background: "#1A1A1A",
     background: "#0F181E",
     iconsColor: "#FCFCFC",
     mediumGrey: "#999999",
@@ -58,12 +57,3 @@ export const appTheme = {
     xxl: 22,
   },
 };
-
-// Additional colors
-// primary: "#912f56", // Cerry
-// claret: "#670626", // Claret
-
-// background: "#080808", // deep dark 1
-// background: "#010313", // deep dark 2
-//  background: "#1A1A1A", // dark bg (fav)
-// background: "#0F181E", // midnight blue

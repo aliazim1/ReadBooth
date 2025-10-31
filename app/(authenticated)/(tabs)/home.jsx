@@ -54,6 +54,7 @@ const Home = () => {
   };
 
   useEffect(() => {
+    if (!user?.id) return;
     getPosts(); // fetch posts once on mount
 
     // refresh posts when the screen is focused

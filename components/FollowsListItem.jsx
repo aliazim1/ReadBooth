@@ -16,7 +16,6 @@ const FollowsListItem = ({
   onPress,
 }) => {
   const { styles, activeColors } = useComponentsStyles();
-
   return (
     <Pressable
       onPress={() => {

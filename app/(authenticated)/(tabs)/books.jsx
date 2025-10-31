@@ -39,6 +39,7 @@ const BookList = ({ user, filterType, saves, setSaves }) => {
   };
 
   useEffect(() => {
+    if (!user?.id) return;
     if (filterType === "savedBook") {
       getBooks();
     }

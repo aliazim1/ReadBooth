@@ -38,6 +38,8 @@ const Profile = () => {
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
 
+  if (!user?.id) return;
+
   // function to load followers/following count
   const loadFollowsCount = async () => {
     const { success: s1, data: f1 } = await getFollows(user.id, "followers");
