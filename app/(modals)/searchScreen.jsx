@@ -63,9 +63,7 @@ const SearchScreen = () => {
           ListHeaderComponent={
             <CustomInput
               placeholder={
-                searchingForBooks
-                  ? "Search by Title or Author..."
-                  : "Search by name or username..."
+                searchingForBooks ? "Search books..." : "Search people..."
               }
               value={searchQuery}
               autoFocus={true}

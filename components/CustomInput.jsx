@@ -28,8 +28,8 @@ const CustomInput = ({
             flexDirection: "row",
             alignItems: "center",
             borderColor: isFocused
-              ? activeColors.primary
-              : activeColors.mediumGrey,
+              ? activeColors.mediumGrey
+              : activeColors.tabBarBorder,
           },
           style,
         ]}

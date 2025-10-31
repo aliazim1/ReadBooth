@@ -25,10 +25,12 @@ const PostDetails = () => {
   const navigation = useNavigation();
   const { user } = useAuth();
   const [post, setPost] = useState(null);
-  const { postId, commentId, comingFromUserDetails } = useLocalSearchParams();
+  const { postId, commentId, show3dots } = useLocalSearchParams();
   const [startLoading, setStartLoading] = useState(true);
   const [loadingSend, setLoadingSend] = useState(false);
   const [comment, setComment] = useState("");
+
+  const showDots = show3dots === "true";
 
   const handleNewComment = async (payload) => {
     if (payload.new) {
@@ -132,10 +134,10 @@ const PostDetails = () => {
           <View style={{ flex: 1 }}>
             <PostCard
               item={{ ...post, comments: [{ count: post.comments.length }] }}
-              currentUser={user}
               router={router}
+              currentUser={user}
               homeScreen={false}
-              comingFromUserDetails={comingFromUserDetails}
+              show3dots={showDots}
             />
 
             {/*  text-input & btn to add comment */}

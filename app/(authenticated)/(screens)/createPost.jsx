@@ -141,6 +141,7 @@ const CreatePost = () => {
 
             <PostHeader
               item={user}
+              show3dots={false}
               forPostCard={false}
               style={{ paddingHorizontal: 0, marginBottom: 20 }}
             />

@@ -122,6 +122,7 @@ const Home = () => {
             currentUser={user}
             router={router}
             homeScreen={true}
+            show3dots={true}
             setPosts={setPosts}
           />
         )}

@@ -18,7 +18,7 @@ const PostFooter = memo(
     onSavePost,
     owner = false,
     openPostComments,
-    comingFromUserDetails = false,
+    showHideOption = true,
   }) => {
     const { styles, activeColors } = useComponentsStyles();
 
@@ -34,7 +34,7 @@ const PostFooter = memo(
           />
           <AppPressableIoniconIcon
             name="chatbubble-outline"
-            label={item?.comments?.[0]?.count || ""}
+            label={item?.comments?.[0]?.count || "0"}
             onPress={homeScreen ? openPostComments : null}
           />
           <AppPressableIoniconIcon
@@ -44,7 +44,7 @@ const PostFooter = memo(
           />
 
           {/* only allow to hide psot if not post owner & is in home feeds */}
-          {!owner && !comingFromUserDetails && (
+          {!owner && showHideOption && (
             <AppPressableIoniconIcon
               onPress={() => {
                 CustomAlert({
@@ -58,7 +58,6 @@ const PostFooter = memo(
             />
           )}
         </View>
-        {/* {item?.user?.id != currentUser?.id && ( */}
         {!owner && (
           <AppPressableIoniconIcon
             onPress={onSavePost}

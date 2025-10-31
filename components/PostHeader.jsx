@@ -14,7 +14,7 @@ const PostHeader = ({
   onNavigate,
   forPostCard = true,
   verifyBadge = false,
-  comingFromUserDetails = false,
+  show3dots = false,
 }) => {
   const { styles, activeColors } = useComponentsStyles();
 
@@ -40,7 +40,7 @@ const PostHeader = ({
         </View>
 
         {/* don't display 3-dots if coming from userDetails screen */}
-        {forPostCard && !comingFromUserDetails && (
+        {show3dots && (
           <View style={styles.postHeaderRightIcons}>
             <AppText style={styles.createdAt}>{createdAt}</AppText>
             <Pressable onPress={onPress}>

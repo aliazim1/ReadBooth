@@ -149,6 +149,7 @@ const AddBook = () => {
             <PostHeader
               item={user}
               forPostCard={false}
+              show3dots={false}
               style={{ paddingHorizontal: 0 }}
             />
 

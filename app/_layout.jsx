@@ -139,7 +139,6 @@ const MainLayout = () => {
           headerTitle: "",
           presentation: "modal",
           animation: "fade",
-          // headerShown: true,
         }}
       />
     </Stack>

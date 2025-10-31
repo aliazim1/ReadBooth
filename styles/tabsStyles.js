@@ -63,7 +63,7 @@ export const useTabsStyles = () => {
           backgroundColor: activeColors.background,
         },
         homeContentContainerStyle: {
-          paddingTop: 20,
+          paddingTop: hp(1),
           paddingBottom: hp(2),
         },
         ItemSeparatorComponent: {
@@ -84,6 +84,8 @@ export const useTabsStyles = () => {
         tabBarIndicatorStyle: {
           alignSelf: "center",
           justifyContent: "center",
+          width: wp(25),
+          marginLeft: wp(4),
           backgroundColor: activeColors.primary,
         },
         headerIconsContainer: {

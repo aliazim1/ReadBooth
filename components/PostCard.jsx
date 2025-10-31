@@ -26,9 +26,9 @@ const PostCard = ({
   currentUser,
   setPosts,
   homeScreen = true,
-  comingFromUserDetails = false,
+  show3dots = false,
 }) => {
-  const { styles, activeColors } = useComponentsStyles();
+  const { styles } = useComponentsStyles();
   const [likes, setLikes] = useState(item?.postLikes || []);
   const [saves, setSaves] = useState([]);
   const [menuVisible, setMenuVisible] = useState(false);
@@ -85,7 +85,10 @@ const PostCard = ({
   const openPostDetails = () => {
     router.push({
       pathname: "postDetails",
-      params: { postId: item?.id },
+      params: {
+        postId: item?.id,
+        show3dots: item?.user?.id === currentUser?.id,
+      },
     });
   };
 
@@ -163,7 +166,7 @@ const PostCard = ({
         item={item}
         verifyBadge={true}
         createdAt={createdAt}
-        comingFromUserDetails={comingFromUserDetails}
+        show3dots={show3dots}
         onNavigate={() => {
           router.push({
             pathname: "userDetails",
@@ -216,7 +219,7 @@ const PostCard = ({
         onSavePost={onSavePost}
         owner={item?.user?.id == currentUser?.id}
         openPostComments={openPostComments}
-        comingFromUserDetails={comingFromUserDetails}
+        showHideOption={show3dots}
       />
 
       <OptionsModal

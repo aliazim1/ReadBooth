@@ -8,7 +8,6 @@ import {
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { FlatList, Pressable, TouchableOpacity, View } from "react-native";
 
-import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
 import AppText from "../../../components/AppText";
 import Avatar from "../../../components/Avatar";
 import BookItem from "../../../components/BookItem";
@@ -140,15 +139,15 @@ const UserDetails = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: userData?.name || "User Details",
-      headerRight: () =>
-        userId !== user.id ? (
-          <AppIoniconTouchable
-            style={{ marginLeft: 7 }}
-            size={20}
-            name={"ellipsis-horizontal"}
-            onPress={() => setMenuVisible(true)}
-          />
-        ) : null,
+      // headerRight: () =>
+      //   userId !== user.id ? (
+      //     <AppIoniconTouchable
+      //       style={{ marginLeft: 7 }}
+      //       size={20}
+      //       name={"ellipsis-horizontal"}
+      //       onPress={() => setMenuVisible(true)}
+      //     />
+      //   ) : null,
     });
     getPosts();
     getBooks();

@@ -5,7 +5,7 @@ import { getSupabaseFileUrl } from "../services/imageService";
 import { useComponentsStyles } from "../styles/componentsStyles";
 import AppText from "./AppText";
 
-const PostGridItem = ({ item, router }) => {
+const PostGridItem = ({ item, router, show3dots = false }) => {
   const post = item?.post || item;
   const { styles } = useComponentsStyles();
   return (
@@ -15,7 +15,10 @@ const PostGridItem = ({ item, router }) => {
           onPress={() =>
             router.push({
               pathname: "postDetails",
-              params: { postId: post?.id, comingFromUserDetails: true },
+              params: {
+                postId: post?.id,
+                show3dots: show3dots,
+              },
             })
           }
         >

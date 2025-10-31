@@ -246,7 +246,9 @@ const Profile = () => {
             </AppText>
           </View>
         }
-        renderItem={({ item }) => <PostGridItem item={item} router={router} />}
+        renderItem={({ item }) => (
+          <PostGridItem item={item} router={router} show3dots={true} />
+        )}
         onEndReached={getPosts}
         onEndReachedThreshold={0}
       />
