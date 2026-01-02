@@ -1,50 +1,120 @@
-# Welcome to your Expo app 👋
+# 📚 ReadBooth
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+ReadBooth is a social media platform built **for book lovers**. It allows readers to discover books, share reviews, track reading activity, and connect with others through a shared love of reading.
 
-## Get started
+Designed with a clean, modern UI and a community-first mindset, ReadBooth blends the familiarity of social media with meaningful literary discussion.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## 🚀 Features
 
-2. Start the app
+* **User Profiles**
+  Create a personalized reader profile with favorite genres, currently reading books, and past reviews.
 
-   ```bash
-   npx expo start
-   ```
+* **Book Reviews & Ratings**
+  Post reviews, rate books, and share thoughts with the community.
 
-In the output, you'll find options to open the app in a
+* **Social Feed**
+  See reviews and posts from other readers in a scrolling feed, similar to modern social platforms.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+* **Book Discovery**
+  Explore trending books and popular reviews.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+* **Engagement Tools**
+  Like, comment, share, bookmark posts, and interact with other readers’ reviews.
 
-## Get a fresh project
+* **Reading Progress Sharing**
+  Share what you’re currently reading and track progress.
 
-When you're ready, run:
+* **Theme**
+  Light/Dark mode
+
+---
+
+## 🛠 Tech Stack
+
+* **Frontend:** React Native / Expo
+* **Backend:** Supabase
+* **State Management:** Context API
+* **Styling:** Custom components / modern mobile UI patterns
+
+---
+
+## 📱 Screens & UI (Planned / Implemented)
+
+* Home feed with book reviews
+* Book detail screen (reviews, ratings, description)
+* Create post / write review flow
+* User profile screen
+* Authentication (Sign up / Login)
+
+---
+
+## 🧠 Motivation
+
+Many existing reading platforms focus heavily on tracking and statistics. ReadBooth was built to **emphasize community and expression**—giving readers a space to talk about books the same way people talk about music or fashion on social media.
+
+This project was created to explore:
+
+* Mobile-first UI/UX design
+* Social feed architecture
+* User-generated content workflows
+* Real-world app structure and scalability
+
+---
+
+## 📦 Installation
 
 ```bash
-npm run reset-project
+# Clone the repository
+git clone https://github.com/aliazim1/readbooth.git
+
+# Navigate to the project
+cd readbooth
+
+# Install dependencies
+npm install
+
+# Start the app
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 🔒 Environment Variables
 
-To learn more about developing your project with Expo, look at the following resources:
+Create a `.env` file and add your Supabase configuration:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```env
+EXPO_PUBLIC_SUPABASE_URL=your_expo_public_supabase_url
+EXPO_PUBLIC_SUPABASE_ANON_KEY=your_expo_public_supabase_anon_key
+```
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
+## 🧪 Future Improvements
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+* Book clubs & group discussions
+* In-app messaging between readers
+* Advanced recommendation engine
+
+---
+
+## 📄 License
+
+This project is open-source and available under the **MIT License**.
+
+---
+
+## 👤 Author
+
+**Ali Azimi**
+Mobile & Web App Developer
+
+## 🗨️ Contacts
+* 📧 emailtoazimi@gmail.com
+* 💼 [LinkedIn](https://www.linkedin.com/in/aliazim1/)
+
+---
+
+⭐ If you like this project, feel free to star the repository and share feedback!

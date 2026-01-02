@@ -107,7 +107,6 @@ const EditProfileDetails = () => {
       : getUserImageSrc(user.image);
 
   return (
-    // <SafeScreen bg={theme.colors.white}>
     <SafeScreen>
       <KeyboardAwareScrollView
         enableOnAndroid={true}
