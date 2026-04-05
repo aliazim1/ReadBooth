@@ -44,7 +44,7 @@ export const useComponentsStyles = () => {
         text: {
           fontSize: hp(2),
           color: activeColors.white,
-          fontWeight: appTheme.fonts.bold,
+          fontWeight: appTheme.fonts.semibold,
         },
         image: {
           height: 25,

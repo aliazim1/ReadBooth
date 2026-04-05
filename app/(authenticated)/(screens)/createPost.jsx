@@ -12,12 +12,6 @@ import LottieView from "lottie-react-native";
 import * as ImagePicker from "expo-image-picker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import { wp } from "../../../lib/common";
-import { useAuth } from "../../../contexts/AuthContext";
-import { createPost } from "../../../services/postService";
-import { useScreensStyles } from ".././../../styles/screensStyles";
-import { getSupabaseFileUrl } from "../../../services/imageService";
-
 import {
   AppButton,
   AppText,
@@ -25,7 +19,12 @@ import {
   CustomInput,
   PostHeader,
   SafeScreen,
-} from "../../components";
+} from "../../../components";
+import { wp } from "../../../lib/common";
+import { useAuth } from "../../../contexts/AuthContext";
+import { createPost } from "../../../services/postService";
+import { useScreensStyles } from ".././../../styles/screensStyles";
+import { getSupabaseFileUrl } from "../../../services/imageService";
 
 const CreatePost = () => {
   const { styles } = useScreensStyles();

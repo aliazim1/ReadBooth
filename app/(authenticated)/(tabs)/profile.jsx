@@ -12,7 +12,7 @@ import {
   PostGridItem,
   StatsItem,
   SafeScreen,
-} from "../../components";
+} from "../../../components";
 import {
   fetchPostsByUserId,
   fetchSavedPosts,

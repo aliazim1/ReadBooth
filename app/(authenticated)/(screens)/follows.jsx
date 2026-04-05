@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-import { FollowsListItem, NotExist, SafeScreen } from "../../components";
+import { FollowsListItem, NotExist, SafeScreen } from "../../../components";
 import { supabase } from "../../../lib/supabase";
 import { useAuth } from "../../../contexts/AuthContext";
 import { getFollows } from "../../../services/userService";

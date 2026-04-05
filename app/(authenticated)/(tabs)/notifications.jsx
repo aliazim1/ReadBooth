@@ -9,7 +9,7 @@ import {
   NotificationItem,
   NotificationOptionsModal,
   SafeScreen,
-} from "../../components";
+} from "../../../components";
 import {
   clearAllNotifications,
   deleteNotification,
@@ -31,7 +31,7 @@ const Notifications = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    if (!user?.id) return;
+    if (!user || !user.id) return;
     // call the function to fetch all the notifications
     fetchNotifications(user.id, setNotifications);
 

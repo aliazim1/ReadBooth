@@ -10,7 +10,7 @@ import {
   HeaderIcons,
   NotExist,
   SafeScreen,
-} from "../../components";
+} from "../../../components";
 import {
   deleteBook,
   fetchBooks,

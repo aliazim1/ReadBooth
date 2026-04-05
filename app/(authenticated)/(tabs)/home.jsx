@@ -8,7 +8,7 @@ import {
   HeaderIcons,
   Loading,
   PostCard,
-} from "../../components";
+} from "../../../components";
 import { supabase } from "../../../lib/supabase";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useTabsStyles } from "../../../styles/tabsStyles";

@@ -17,9 +17,8 @@ import {
   OptionsModal,
   PostGridItem,
   StatsItem,
-  AppText,
   SafeScreen,
-} from "../../components";
+} from "../../../components";
 import {
   fetchBooks,
   getSavedBookIdsForUser,

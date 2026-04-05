@@ -17,7 +17,7 @@ import {
   AppIonicon,
   CustomInput,
   SafeScreen,
-} from "../../components";
+} from "../../../components";
 import { wp } from "../../../lib/common";
 import { useAuth } from "../../../contexts/AuthContext";
 import { updateUserData } from "../../../services/userService";

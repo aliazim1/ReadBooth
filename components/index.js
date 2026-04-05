@@ -1,4 +1,4 @@
-import AddComments from "./AddComments";
+import AddComment from "./AddComment";
 import AppButton from "./AppButton";
 import AppIonicon from "./AppIonicon";
 import AppIoniconTouchable from "./AppIoniconTouchable";
@@ -8,10 +8,10 @@ import AppText from "./AppText";
 import Avatar from "./Avatar";
 import BookItem from "./BookItem";
 import BookOptionsModal from "./BookOptionsModal";
-import BookSearchListItem from "./BookSearchListItem";
+import BookSerachListItem from "./BookSerachListItem";
 import Collapsible from "./Collapsible";
 import CommentItem from "./CommentItem";
-import CustomAlert from "./CustomtAlert";
+import CustomAlert from "./CustomAlert";
 import CustomInput from "./CustomInput";
 import FollowsListItem from "./FollowsListItem";
 import HeaderIcons from "./HeaderIcons";
@@ -33,7 +33,7 @@ import SettingListItem from "./SettingListItem";
 import StatsItem from "./StatsItem";
 
 export {
-  AddComments,
+  AddComment,
   AppButton,
   AppIonicon,
   AppIoniconTouchable,
@@ -43,7 +43,7 @@ export {
   Avatar,
   BookItem,
   BookOptionsModal,
-  BookSearchListItem,
+  BookSerachListItem,
   Collapsible,
   CommentItem,
   CustomAlert,

@@ -5,7 +5,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { wp } from "../../../lib/common";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useScreensStyles } from "../../../styles/screensStyles";
-import { AppButton, CustomInput, SafeScreen } from "../../components";
+import { AppButton, CustomInput, SafeScreen } from "../../../components";
 
 const ChangePassword = () => {
   const { styles, activeColors } = useScreensStyles();

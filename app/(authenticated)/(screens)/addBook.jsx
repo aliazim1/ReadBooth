@@ -19,7 +19,7 @@ import {
   CustomInput,
   PostHeader,
   SafeScreen,
-} from "../../components";
+} from "../../../components";
 import { wp } from "../../../lib/common";
 import { useAuth } from "../../../contexts/AuthContext";
 import { addBook } from "../../../services/bookServices";

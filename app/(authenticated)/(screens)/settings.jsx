@@ -7,7 +7,7 @@ import {
   CustomAlert,
   SettingListItem,
   SafeScreen,
-} from "../../components";
+} from "../../../components";
 import { supabase } from "../../../lib/supabase";
 import { useAuth } from "../../../contexts/AuthContext";
 import { ThemeContext } from "../../../contexts/ThemeContext";
