@@ -1,14 +1,14 @@
+import { useEffect, useState } from "react";
+import { StatusBar } from "expo-status-bar";
 import { Stack, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
 
-import { getData, storeData } from "../config/asyncstorage";
-import { AuthProvider, useAuth } from "../contexts/AuthContext";
-import { BadgeProvider } from "../contexts/BadgeContext";
-import { ThemeContext } from "../contexts/ThemeContext";
 import { supabase } from "../lib/supabase";
 import { getUserData } from "../services/userService";
+import { ThemeContext } from "../contexts/ThemeContext";
+import { BadgeProvider } from "../contexts/BadgeContext";
+import { getData, storeData } from "../config/asyncstorage";
+import { AuthProvider, useAuth } from "../contexts/AuthContext";
 import { useComponentsStyles } from "../styles/componentsStyles";
 
 // keep the splashScreen visible while fetching the resources
@@ -76,7 +76,7 @@ const MainLayout = () => {
           setAuth(null);
           router.replace("/welcome");
         }
-      }
+      },
     );
 
     return () => {

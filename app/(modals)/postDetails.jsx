@@ -1,21 +1,24 @@
-import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useEffect, useLayoutEffect, useState } from "react";
+import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { Keyboard, Text, TouchableWithoutFeedback, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import AddComment from "../../components/AddComment";
-import AppIoniconTouchable from "../../components/AppIoniconTouchable";
-import AppText from "../../components/AppText";
-import CommentItem from "../../components/CommentItem";
-import Loading from "../../components/Loading";
-import PostCard from "../../components/PostCard";
-import { useAuth } from "../../contexts/AuthContext";
-import { supabase } from "../../lib/supabase";
+import {
+  AddComment,
+  AppIoniconTouchable,
+  AppText,
+  CommentItem,
+  Loading,
+  PostCard,
+} from "../../components";
 import {
   addNewComment,
   fetchPostDetails,
   removePostComment,
 } from "../../services/postService";
+
+import { supabase } from "../../lib/supabase";
+import { useAuth } from "../../contexts/AuthContext";
 import { getUserData } from "../../services/userService";
 import { useScreensStyles } from "../../styles/screensStyles";
 
@@ -62,7 +65,7 @@ const PostDetails = () => {
           table: "comments",
           filter: `postId=eq.${postId}`,
         },
-        handleNewComment
+        handleNewComment,
       )
       .subscribe();
     getPostDetails();

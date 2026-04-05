@@ -1,6 +1,6 @@
 import { View } from "react-native";
 
-import Loading from "../components/Loading";
+import { Loading } from "../components";
 import { useComponentsStyles } from "../styles/componentsStyles";
 
 const Index = () => {

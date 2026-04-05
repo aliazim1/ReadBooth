@@ -1,9 +1,9 @@
-import { useContext, useMemo } from "react";
 import { StyleSheet } from "react-native";
+import { useContext, useMemo } from "react";
 
+import { hp, wp } from "../lib/common";
 import { appTheme, colors } from "../config/theme";
 import { ThemeContext } from "../contexts/ThemeContext";
-import { hp, wp } from "../lib/common";
 
 export const useScreensStyles = () => {
   const { theme } = useContext(ThemeContext);
@@ -201,7 +201,7 @@ export const useScreensStyles = () => {
           paddingHorizontal: 24,
         },
       }),
-    [theme]
+    [theme],
   );
   return { styles, activeColors };
 };

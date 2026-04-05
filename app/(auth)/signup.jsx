@@ -9,14 +9,16 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import AppButton from "../../components/AppButton";
-import AppText from "../../components/AppText";
-import CustomInput from "../../components/CustomInput";
-import HeaderPunchLine from "../../components/HeaderPunchLine";
-import Illustration from "../../components/Illustration";
-import SafeScreen from "../../components/SafeScreen";
 import { supabase } from "../../lib/supabase";
 import { authStyles } from ".././../styles/authStyles";
+import {
+  AppButton,
+  AppText,
+  CustomInput,
+  HeaderPunchLine,
+  Illustration,
+  SafeScreen,
+} from "../../components";
 
 const signup = () => {
   const { styles } = authStyles();

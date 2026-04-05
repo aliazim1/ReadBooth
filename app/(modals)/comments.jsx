@@ -1,33 +1,35 @@
-import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useEffect, useLayoutEffect, useState } from "react";
+import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { Keyboard, Text, TouchableWithoutFeedback, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import AddComment from "../../components/AddComment";
-import AppText from "../../components/AppText";
-import CommentItem from "../../components/CommentItem";
-import HeaderIcons from "../../components/HeaderIcons";
-import Loading from "../../components/Loading";
-import { useAuth } from "../../contexts/AuthContext";
-import { supabase } from "../../lib/supabase";
+import {
+  AppText,
+  AddComment,
+  CommentItem,
+  HeaderIcons,
+  Loading,
+} from "../../components";
 import {
   addNewComment,
   fetchPostDetails,
   removePostComment,
 } from "../../services/postService";
+import { supabase } from "../../lib/supabase";
+import { useAuth } from "../../contexts/AuthContext";
 import { getUserData } from "../../services/userService";
 import { useScreensStyles } from "../../styles/screensStyles";
 
 const Comments = () => {
-  const { styles } = useScreensStyles();
   const { user } = useAuth();
   const router = useRouter();
   const navigation = useNavigation();
-  const { postId } = useLocalSearchParams();
+  const { styles } = useScreensStyles();
   const [post, setPost] = useState(null);
-  const [startLoading, setStartLoading] = useState(true);
-  const [loadingSend, setLoadingSend] = useState(false);
+  const { postId } = useLocalSearchParams();
   const [comment, setComment] = useState("");
+  const [loadingSend, setLoadingSend] = useState(false);
+  const [startLoading, setStartLoading] = useState(true);
 
   const handleNewComment = async (payload) => {
     if (payload.new) {
@@ -59,7 +61,7 @@ const Comments = () => {
           table: "comments",
           filter: `postId=eq.${postId}`,
         },
-        handleNewComment
+        handleNewComment,
       )
       .subscribe();
     getPostDetails();

@@ -1,13 +1,11 @@
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
-import { useEffect, useLayoutEffect, useState } from "react";
 import { FlatList } from "react-native";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-import FollowsListItem from "../../../components/FollowsListItem";
-import NotExist from "../../../components/NotExist";
-import SafeScreen from "../../../components/SafeScreen";
-import { useAuth } from "../../../contexts/AuthContext";
+import { FollowsListItem, NotExist, SafeScreen } from "../../components";
 import { supabase } from "../../../lib/supabase";
+import { useAuth } from "../../../contexts/AuthContext";
 import { getFollows } from "../../../services/userService";
 import { useScreensStyles } from "../../../styles/screensStyles";
 
@@ -42,7 +40,7 @@ const UserList = ({ userId, filterType }) => {
             .maybeSingle();
 
           return { ...userObj, followed: !!followCheck };
-        })
+        }),
       );
       setList(formatted);
     }

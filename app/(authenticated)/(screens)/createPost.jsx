@@ -1,8 +1,3 @@
-import { Image } from "expo-image";
-import * as ImagePicker from "expo-image-picker";
-import { useRouter } from "expo-router";
-import LottieView from "lottie-react-native";
-import { useState } from "react";
 import {
   Alert,
   Keyboard,
@@ -10,19 +5,27 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { useState } from "react";
+import { Image } from "expo-image";
+import { useRouter } from "expo-router";
+import LottieView from "lottie-react-native";
+import * as ImagePicker from "expo-image-picker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import AppButton from "../../../components/AppButton";
-import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
-import AppText from "../../../components/AppText";
-import CustomInput from "../../../components/CustomInput";
-import PostHeader from "../../../components/PostHeader";
-import SafeScreen from "../../../components/SafeScreen";
-import { useAuth } from "../../../contexts/AuthContext";
 import { wp } from "../../../lib/common";
-import { getSupabaseFileUrl } from "../../../services/imageService";
+import { useAuth } from "../../../contexts/AuthContext";
 import { createPost } from "../../../services/postService";
 import { useScreensStyles } from ".././../../styles/screensStyles";
+import { getSupabaseFileUrl } from "../../../services/imageService";
+
+import {
+  AppButton,
+  AppText,
+  AppIoniconTouchable,
+  CustomInput,
+  PostHeader,
+  SafeScreen,
+} from "../../components";
 
 const CreatePost = () => {
   const { styles } = useScreensStyles();

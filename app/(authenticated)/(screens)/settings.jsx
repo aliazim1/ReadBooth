@@ -2,13 +2,15 @@ import { useRouter } from "expo-router";
 import { useContext, useState } from "react";
 import { Alert, ScrollView, View } from "react-native";
 
-import AppText from "../../../components/AppText";
-import CustomAlert from "../../../components/CustomAlert";
-import SafeScreen from "../../../components/SafeScreen";
-import SettingListItem from "../../../components/SettingListItem";
+import {
+  AppText,
+  CustomAlert,
+  SettingListItem,
+  SafeScreen,
+} from "../../components";
+import { supabase } from "../../../lib/supabase";
 import { useAuth } from "../../../contexts/AuthContext";
 import { ThemeContext } from "../../../contexts/ThemeContext";
-import { supabase } from "../../../lib/supabase";
 import { useScreensStyles } from ".././../../styles/screensStyles";
 
 const Settings = () => {

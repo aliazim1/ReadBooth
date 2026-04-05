@@ -1,7 +1,3 @@
-import { Image } from "expo-image";
-import * as ImagePicker from "expo-image-picker";
-import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
 import {
   Alert,
   Keyboard,
@@ -10,17 +6,23 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { Image } from "expo-image";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import * as ImagePicker from "expo-image-picker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import AppButton from "../../../components/AppButton";
-import AppIonicon from "../../../components/AppIonicon";
-import CustomInput from "../../../components/CustomInput";
-import SafeScreen from "../../../components/SafeScreen";
-import { useAuth } from "../../../contexts/AuthContext";
+import {
+  AppButton,
+  AppIonicon,
+  CustomInput,
+  SafeScreen,
+} from "../../components";
 import { wp } from "../../../lib/common";
-import { getUserImageSrc, uploadFile } from "../../../services/imageService";
+import { useAuth } from "../../../contexts/AuthContext";
 import { updateUserData } from "../../../services/userService";
 import { useScreensStyles } from "../../../styles/screensStyles";
+import { getUserImageSrc, uploadFile } from "../../../services/imageService";
 
 const EditProfileDetails = () => {
   const { styles } = useScreensStyles();

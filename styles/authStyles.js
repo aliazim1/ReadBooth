@@ -1,9 +1,9 @@
 import { useContext, useMemo } from "react";
 import { StyleSheet } from "react-native";
 
+import { hp, wp } from "../lib/common";
 import { appTheme, colors } from "../config/theme";
 import { ThemeContext } from "../contexts/ThemeContext";
-import { hp, wp } from "../lib/common";
 
 export const authStyles = () => {
   const { theme } = useContext(ThemeContext);
@@ -68,7 +68,7 @@ export const authStyles = () => {
           justifyContent: "space-between",
         },
       }),
-    [theme]
+    [theme],
   );
   return { styles, activeColors };
 };

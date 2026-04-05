@@ -1,21 +1,24 @@
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { Alert, FlatList, Pressable, View } from "react-native";
 import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { Alert, FlatList, Pressable, View } from "react-native";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-import AppMaterialCommunityIcon from "../../../components/AppMaterialCommunityIcon";
-import BookItem from "../../../components/BookItem";
-import CustomAlert from "../../../components/CustomAlert";
-import HeaderIcons from "../../../components/HeaderIcons";
-import NotExist from "../../../components/NotExist";
-import SafeScreen from "../../../components/SafeScreen";
-import { useAuth } from "../../../contexts/AuthContext";
+import {
+  AppMaterialCommunityIcon,
+  BookItem,
+  CustomAlert,
+  HeaderIcons,
+  NotExist,
+  SafeScreen,
+} from "../../components";
 import {
   deleteBook,
   fetchBooks,
   getSavedBookIdsForUser,
 } from "../../../services/bookServices";
+import { useAuth } from "../../../contexts/AuthContext";
 import { useTabsStyles } from "../../../styles/tabsStyles";
+
 const Tab = createMaterialTopTabNavigator();
 
 // global variable for the number of posts (limit)
@@ -23,8 +26,8 @@ var limit = 0;
 
 // reusable BookList component for each tab
 const BookList = ({ user, filterType, saves, setSaves }) => {
-  const { styles } = useTabsStyles();
   const router = useRouter();
+  const { styles } = useTabsStyles();
   const [books, setBooks] = useState([]);
   const [hasMoreBooks, setHasMoreBooks] = useState(true);
 
@@ -58,7 +61,7 @@ const BookList = ({ user, filterType, saves, setSaves }) => {
   useFocusEffect(
     useCallback(() => {
       getBooks();
-    }, [user?.id])
+    }, [user?.id]),
   );
 
   const filteredBooks =

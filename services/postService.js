@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabase";
 import { uploadFile } from "./imageService";
-import { deleteNotification, sendNotification } from "./notificationService";
 import { getUserData } from "./userService";
+import { deleteNotification, sendNotification } from "./notificationService";
 
 //
 // function to create a new post including image & caption
@@ -122,7 +122,7 @@ export const fetchPosts = async (limit = 9, currentUserId) => {
         postLikes(*),
         savedPosts(*),
         comments(count)
-        `
+        `,
       )
       .in("userId", followingIds.length ? followingIds : [null]) // prevent empty array error
       .not("id", "in", `(${hiddenIds.join(",") || 0})`) // exclude hidden posts
@@ -150,7 +150,7 @@ export const fetchPostsByUserId = async (limit = 9, userId) => {
         postLikes(*),
         savedPosts(*),
         comments(count)
-        `
+        `,
       )
       .order("created_at", { ascending: false })
       .eq("userId", userId)
@@ -180,7 +180,7 @@ export const fetchPostDetails = async (postId) => {
         postLikes(*),
         savedPosts(*),
         comments(*, user: users(id, name, username, image))
-        `
+        `,
       )
       .eq("id", postId)
       .order("created_at", { ascending: false, referencedTable: "comments" })
@@ -254,7 +254,7 @@ export const createPostLike = async (postLike, post, currentUser) => {
       post?.user?.id, // receiver id
       "like", // type
       "liked your post", // message
-      post?.id // postId
+      post?.id, // postId
     );
     return { success: true, data: data };
   } catch (error) {
@@ -334,7 +334,7 @@ export const addNewComment = async ({
         "comment", // type
         "commented on your post", // message
         post.id, // postId
-        data.id // commentId
+        data.id, // commentId
       );
     }
 
@@ -381,7 +381,7 @@ export const removePostComment = async (commentId, setPost) => {
     setPost((prevPost) => {
       let updatedPost = { ...prevPost };
       updatedPost.comments = updatedPost.comments.filter(
-        (c) => c.id != commentId
+        (c) => c.id != commentId,
       );
       return updatedPost;
     });
@@ -454,7 +454,7 @@ export const fetchSavedPosts = async (limit = 9, userId) => {
           savedPosts (*),
           comments (count)
         )
-      `
+      `,
       )
       .order("created_at", { ascending: false })
       .limit(limit);

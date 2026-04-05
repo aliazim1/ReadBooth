@@ -1,10 +1,8 @@
 import { useRouter } from "expo-router";
 import { View } from "react-native";
 
-import AppButton from "../../components/AppButton";
-import HeaderPunchLine from "../../components/HeaderPunchLine";
-import Illustration from "../../components/Illustration";
 import { authStyles } from ".././../styles/authStyles";
+import { AppButton, HeaderPunchLine, Illustration } from "../../components";
 
 const Welcome = () => {
   const { styles, activeColors } = authStyles();

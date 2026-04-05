@@ -1,16 +1,16 @@
-import { Ionicons, MaterialIcons, Octicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { useEffect, useState } from "react";
+import { Ionicons, MaterialIcons, Octicons } from "@expo/vector-icons";
 
-import AppText from "../../../components/AppText";
-import { useAuth } from "../../../contexts/AuthContext";
-import { useTabBadge } from "../../../contexts/BadgeContext";
+import { AppText } from "../../../components";
 import { supabase } from "../../../lib/supabase";
+import { useAuth } from "../../../contexts/AuthContext";
 import { useTabsStyles } from "../../../styles/tabsStyles";
+import { useTabBadge } from "../../../contexts/BadgeContext";
 
 const TabLayout = () => {
-  const { styles, activeColors } = useTabsStyles();
   const { user } = useAuth();
+  const { styles, activeColors } = useTabsStyles();
   const { badgeCount, setBadgeCount } = useTabBadge();
   const [notifications, setNotifications] = useState([]);
 
@@ -43,7 +43,7 @@ const TabLayout = () => {
         (payload) => {
           setNotifications((prev) => [payload.new, ...prev]);
           setBadgeCount((prev) => prev + 1);
-        }
+        },
       )
       .subscribe();
     return () => {

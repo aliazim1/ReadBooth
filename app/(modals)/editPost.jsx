@@ -1,22 +1,24 @@
-import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useEffect, useLayoutEffect, useState } from "react";
+import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { Alert, Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import AppButton from "../../components/AppButton";
-import AppIoniconTouchable from "../../components/AppIoniconTouchable";
-import CustomInput from "../../components/CustomInput";
-import PostHeader from "../../components/PostHeader";
-import SafeScreen from "../../components/SafeScreen";
-import { useAuth } from "../../contexts/AuthContext";
+import {
+  AppButton,
+  AppIoniconTouchable,
+  CustomInput,
+  PostHeader,
+  SafeScreen,
+} from "../../components";
 import { hp, wp } from "../../lib/common";
+import { useAuth } from "../../contexts/AuthContext";
 import { updatePost } from "../../services/postService";
 
 const EditPost = () => {
-  const post = useLocalSearchParams();
-  const navigation = useNavigation();
   const { user } = useAuth();
   const router = useRouter();
+  const navigation = useNavigation();
+  const post = useLocalSearchParams();
   const [loading, setLoading] = useState(false);
   const [bodyContent, setBodyContent] = useState("");
 

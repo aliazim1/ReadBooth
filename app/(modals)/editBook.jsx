@@ -1,29 +1,30 @@
-import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useEffect, useLayoutEffect, useState } from "react";
+import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { Alert, Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import AppButton from "../../components/AppButton";
-import CustomInput from "../../components/CustomInput";
-import HeaderIcons from "../../components/HeaderIcons";
-import PostHeader from "../../components/PostHeader";
-import SafeScreen from "../../components/SafeScreen";
-import { useAuth } from "../../contexts/AuthContext";
+import {
+  AppButton,
+  CustomInput,
+  HeaderIcons,
+  PostHeader,
+  SafeScreen,
+} from "../../components";
 import { wp } from "../../lib/common";
-
+import { useAuth } from "../../contexts/AuthContext";
 import { editBook } from "../../services/bookServices";
 import { useScreensStyles } from ".././../styles/screensStyles";
 
 const EditBook = () => {
-  const { styles, activeColors } = useScreensStyles();
-  const book = useLocalSearchParams();
-  const navigation = useNavigation();
   const { user } = useAuth();
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
+  const book = useLocalSearchParams();
+  const [link, setLink] = useState("");
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
-  const [link, setLink] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { styles, activeColors } = useScreensStyles();
 
   //   initially fill the textInputs with book's info
   useEffect(() => {

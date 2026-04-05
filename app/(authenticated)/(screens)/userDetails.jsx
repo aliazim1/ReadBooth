@@ -1,37 +1,40 @@
-import { Ionicons } from "@expo/vector-icons";
 import {
   useFocusEffect,
   useLocalSearchParams,
   useNavigation,
   useRouter,
 } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { FlatList, Pressable, TouchableOpacity, View } from "react-native";
 
-import AppText from "../../../components/AppText";
-import Avatar from "../../../components/Avatar";
-import BookItem from "../../../components/BookItem";
-import HorizontalPadding from "../../../components/HorizontalPadding";
-import Loading from "../../../components/Loading";
-import OptionsModal from "../../../components/OptionsModal";
-import PostGridItem from "../../../components/PostGridItem";
-import SafeScreen from "../../../components/SafeScreen";
-import StatsItem from "../../../components/StatsItem";
-import { appTheme } from "../../../config/theme";
-import { useAuth } from "../../../contexts/AuthContext";
-import { hp } from "../../../lib/common";
-import { supabase } from "../../../lib/supabase";
+import {
+  Avatar,
+  AppText,
+  BookItem,
+  HorizontalPadding,
+  Loading,
+  OptionsModal,
+  PostGridItem,
+  StatsItem,
+  AppText,
+  SafeScreen,
+} from "../../components";
 import {
   fetchBooks,
   getSavedBookIdsForUser,
 } from "../../../services/bookServices";
-import { fetchPostsByUserId } from "../../../services/postService";
 import {
   getFollows,
   getUserData,
   toggleFollow,
 } from "../../../services/userService";
+import { hp } from "../../../lib/common";
+import { appTheme } from "../../../config/theme";
+import { supabase } from "../../../lib/supabase";
+import { useAuth } from "../../../contexts/AuthContext";
 import { useTabsStyles } from "../../../styles/tabsStyles";
+import { fetchPostsByUserId } from "../../../services/postService";
 
 // global variable for the number of posts (limit)
 var limit = 0;
@@ -162,7 +165,7 @@ const UserDetails = () => {
       getBooks();
       getSavedBooks();
       loadFollowsCount();
-    }, [userId])
+    }, [userId]),
   );
 
   // Get correct content based on active tab

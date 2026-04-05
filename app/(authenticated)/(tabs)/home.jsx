@@ -1,27 +1,29 @@
 import { useNavigation, useRouter } from "expo-router";
-import { useEffect, useLayoutEffect, useState } from "react";
 import { FlatList, Pressable, View } from "react-native";
+import { useEffect, useLayoutEffect, useState } from "react";
 
-import AppMaterialCommunityIcon from "../../../components/AppMaterialCommunityIcon";
-import AppText from "../../../components/AppText";
-import HeaderIcons from "../../../components/HeaderIcons";
-import Loading from "../../../components/Loading";
-import PostCard from "../../../components/PostCard";
-import { useAuth } from "../../../contexts/AuthContext";
+import {
+  AppMaterialCommunityIcon,
+  AppText,
+  HeaderIcons,
+  Loading,
+  PostCard,
+} from "../../components";
 import { supabase } from "../../../lib/supabase";
+import { useAuth } from "../../../contexts/AuthContext";
+import { useTabsStyles } from "../../../styles/tabsStyles";
 import { fetchPosts } from "../../../services/postService";
 import { getUserData } from "../../../services/userService";
-import { useTabsStyles } from "../../../styles/tabsStyles";
 
 // global variable for the number of posts (limit)
 var limit = 0;
 
 const Home = () => {
-  const { styles, activeColors } = useTabsStyles();
   const router = useRouter();
-  const navigation = useNavigation();
   const { user } = useAuth();
+  const navigation = useNavigation();
   const [posts, setPosts] = useState([]);
+  const { styles, activeColors } = useTabsStyles();
   const [hasMorePosts, setHasMorePosts] = useState(true);
 
   // once user add a post, it updates the posts array
@@ -68,7 +70,7 @@ const Home = () => {
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "posts" },
-        handlePostEvent
+        handlePostEvent,
       )
       .subscribe();
 

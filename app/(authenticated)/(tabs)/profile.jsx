@@ -1,26 +1,28 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import { useCallback, useLayoutEffect, useState } from "react";
+import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import { FlatList, Pressable, TouchableOpacity, View } from "react-native";
 
-import AppMaterialCommunityIcon from "../../../components/AppMaterialCommunityIcon";
-import AppText from "../../../components/AppText";
-import Avatar from "../../../components/Avatar";
-import HeaderIcons from "../../../components/HeaderIcons";
-import HorizontalPadding from "../../../components/HorizontalPadding";
-import PostGridItem from "../../../components/PostGridItem";
-import SafeScreen from "../../../components/SafeScreen";
-import StatsItem from "../../../components/StatsItem";
-import { appTheme } from "../../../config/theme";
-import { useAuth } from "../../../contexts/AuthContext";
-import { hp, wp } from "../../../lib/common";
-import { fetchBooksCount } from "../../../services/bookServices";
+import {
+  AppMaterialCommunityIcon,
+  AppText,
+  Avatar,
+  HeaderIcons,
+  HorizontalPadding,
+  PostGridItem,
+  StatsItem,
+  SafeScreen,
+} from "../../components";
 import {
   fetchPostsByUserId,
   fetchSavedPosts,
 } from "../../../services/postService";
+import { hp, wp } from "../../../lib/common";
+import { appTheme } from "../../../config/theme";
+import { useAuth } from "../../../contexts/AuthContext";
 import { getFollows } from "../../../services/userService";
 import { useTabsStyles } from "../../../styles/tabsStyles";
+import { fetchBooksCount } from "../../../services/bookServices";
 
 // global variable for the number of posts (limit)
 var limit = 0;
@@ -107,7 +109,7 @@ const Profile = () => {
       getBookCount();
       getSavedPosts();
       loadFollowsCount();
-    }, [user?.id])
+    }, [user?.id]),
   );
 
   // Get correct content based on active tab

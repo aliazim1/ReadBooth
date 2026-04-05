@@ -1,6 +1,6 @@
 import { Stack, useRouter } from "expo-router";
 
-import AppIoniconTouchable from "../../../components/AppIoniconTouchable";
+import { AppIoniconTouchable } from "../../../components";
 import { useScreensStyles } from ".././../../styles/screensStyles";
 
 const ScreensLayout = () => {

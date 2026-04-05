@@ -1,28 +1,30 @@
+import { FlatList, View } from "react-native";
 import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, View } from "react-native";
 
-import CustomAlert from "../../../components/CustomAlert";
-import HeaderIcons from "../../../components/HeaderIcons";
-import NotExist from "../../../components/NotExist";
-import NotificationItem from "../../../components/NotificationItem";
-import NotificationOptionsModal from "../../../components/NotificationModal";
-import SafeScreen from "../../../components/SafeScreen";
-import { useAuth } from "../../../contexts/AuthContext";
-import { useTabBadge } from "../../../contexts/BadgeContext";
-import { supabase } from "../../../lib/supabase";
+import {
+  CustomAlert,
+  HeaderIcons,
+  NotExist,
+  NotificationItem,
+  NotificationOptionsModal,
+  SafeScreen,
+} from "../../components";
 import {
   clearAllNotifications,
   deleteNotification,
   fetchNotifications,
   markAllNotificationsRead,
 } from "../../../services/notificationService";
+import { supabase } from "../../../lib/supabase";
+import { useAuth } from "../../../contexts/AuthContext";
+import { useTabBadge } from "../../../contexts/BadgeContext";
 import { useTabsStyles } from "../../../styles/tabsStyles";
 
 const Notifications = () => {
-  const { styles } = useTabsStyles();
   const { user } = useAuth();
   const router = useRouter();
+  const { styles } = useTabsStyles();
   const navigation = useNavigation();
   const { setBadgeCount } = useTabBadge();
   const [notifications, setNotifications] = useState([]);
@@ -58,15 +60,15 @@ const Notifications = () => {
           } else if (payload.eventType === "UPDATE") {
             setNotifications((prev) =>
               prev.map((n) =>
-                n.id === payload.new.id ? { ...n, ...payload.new } : n
-              )
+                n.id === payload.new.id ? { ...n, ...payload.new } : n,
+              ),
             );
           } else if (payload.eventType === "DELETE") {
             setNotifications((prev) =>
-              prev.filter((n) => n.id !== payload.old.id)
+              prev.filter((n) => n.id !== payload.old.id),
             );
           }
-        }
+        },
       )
       .subscribe();
 
@@ -78,7 +80,7 @@ const Notifications = () => {
   useFocusEffect(
     useCallback(() => {
       setBadgeCount(0);
-    }, [])
+    }, []),
   );
 
   useLayoutEffect(() => {
@@ -103,7 +105,7 @@ const Notifications = () => {
       .update({ isRead: true })
       .eq("id", item?.id);
     setNotifications((prev) =>
-      prev.map((n) => (n.id === item.id ? { ...n, isRead: true } : n))
+      prev.map((n) => (n.id === item.id ? { ...n, isRead: true } : n)),
     );
     if (item?.type != "follow") {
       router.push({
@@ -170,7 +172,7 @@ const Notifications = () => {
           const { success } = await markAllNotificationsRead(user.id);
           if (success) {
             setNotifications((prev) =>
-              prev.map((n) => ({ ...n, isRead: true }))
+              prev.map((n) => ({ ...n, isRead: true })),
             );
           }
           setModalVisible(false);

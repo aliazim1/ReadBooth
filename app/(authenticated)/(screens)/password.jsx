@@ -2,12 +2,10 @@ import { useEffect, useState } from "react";
 import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import AppButton from "../../../components/AppButton";
-import CustomInput from "../../../components/CustomInput";
-import SafeScreen from "../../../components/SafeScreen";
-import { useAuth } from "../../../contexts/AuthContext";
 import { wp } from "../../../lib/common";
+import { useAuth } from "../../../contexts/AuthContext";
 import { useScreensStyles } from "../../../styles/screensStyles";
+import { AppButton, CustomInput, SafeScreen } from "../../components";
 
 const ChangePassword = () => {
   const { styles, activeColors } = useScreensStyles();

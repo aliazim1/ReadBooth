@@ -1,9 +1,9 @@
 import { useContext, useMemo } from "react";
 import { Platform, StyleSheet } from "react-native";
 
+import { hp, wp } from "../lib/common";
 import { appTheme, colors } from "../config/theme";
 import { ThemeContext } from "../contexts/ThemeContext";
-import { hp, wp } from "../lib/common";
 
 export const useComponentsStyles = () => {
   const { theme } = useContext(ThemeContext);
@@ -422,7 +422,7 @@ export const useComponentsStyles = () => {
           marginTop: hp(30),
         },
       }),
-    [theme]
+    [theme],
   );
   return { styles, activeColors };
 };

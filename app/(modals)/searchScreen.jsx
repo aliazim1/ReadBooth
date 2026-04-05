@@ -1,14 +1,16 @@
-import { useLocalSearchParams, useRouter } from "expo-router";
 import _ from "lodash";
 import { useCallback, useState } from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { FlatList, Keyboard, TouchableWithoutFeedback } from "react-native";
 
-import BookSerachListItem from "../../components/BookSerachListItem";
-import CustomInput from "../../components/CustomInput";
-import FollowsListItem from "../../components/FollowsListItem";
-import SafeScreen from "../../components/SafeScreen";
-import { searchBooks } from "../../services/bookServices";
+import {
+  BookSerachListItem,
+  CustomInput,
+  FollowsListItem,
+  SafeScreen,
+} from "../../components";
 import { searchUsers } from "../../services/userService";
+import { searchBooks } from "../../services/bookServices";
 import { useScreensStyles } from "../../styles/screensStyles";
 
 //
@@ -16,11 +18,11 @@ import { useScreensStyles } from "../../styles/screensStyles";
 // get the parameter from home/books which determines whether it should search users/books (by author/title).
 //
 const SearchScreen = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const { searchingForBooks, currentUserId } = useLocalSearchParams();
-  const [results, setResults] = useState([]);
   const router = useRouter();
   const { styles } = useScreensStyles();
+  const [results, setResults] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const { searchingForBooks, currentUserId } = useLocalSearchParams();
 
   // debounced function that calls the API
   const debouncedSearch = useCallback(
@@ -35,7 +37,7 @@ const SearchScreen = () => {
         : await searchUsers(text.trim());
       if (res.success) setResults(res.data);
     }, 500), // 500ms delay after user stops typing
-    []
+    [],
   );
 
   const handleSearch = (text) => {
